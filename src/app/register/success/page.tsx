@@ -1,6 +1,5 @@
 "use client";
 import ButtonRedirect from "@/components/ui/ButtonRedirect";
-import { getTeamDocumentsMidtransStatus } from "@/utils/midtrans/getTeamDocumentsMidtransStatus";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -67,33 +66,6 @@ const page = () => {
 
     fetchCompetitionName();
   }, []);
-
-  useEffect(() => {
-    async function fetchPaymentStatus() {
-      const result = await getTeamDocumentsMidtransStatus();
-
-      if (result?.success) {
-        if (result.data) {
-          if (result.data.midtrans_transaction_status !== "settlement") {
-            router.push("/");
-          }
-          // else {
-          // console.log(result.message);
-          // }
-        } else if (
-          result?.message ===
-          "Anda tidak memiliki tim terdaftar atau tidak memimpin tim manapun."
-        ) {
-          router.push("/");
-        } else {
-          //   console.error("Error fetching payment status:", result?.message);
-          router.push("/");
-        }
-      }
-    }
-
-    fetchPaymentStatus();
-  }, [router]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-2 sm:px-4">
