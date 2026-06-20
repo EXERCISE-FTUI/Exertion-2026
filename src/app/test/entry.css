@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Orbitron&display=swap');
+.clip-custom {
+  clip-path: polygon(
+    0% 0%,         /* top-left */
+    95% 0%,        /* top-right corner before cut */
+    100% 10%,      /* top-right cut inward */
+    100% 100%,     /* bottom-right */
+    10% 100%,      /* bottom-left corner before cut */
+    0% 90%         /* bottom-left cut inward */
+  );
+}
+.gradient-bg {
+  background: linear-gradient(285.21deg, #059669 -13.17%, #1E3A8A 100%);
+}
+.orbitron-400 {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: #88CAEF;
+}
+
+.orbitron-500 {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  color: #88CAEF;
+}
+
+.exo-2-200 {
+  font-family: "Exo 2", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}

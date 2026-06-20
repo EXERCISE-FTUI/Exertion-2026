@@ -1,0 +1,49 @@
+.first-item {
+  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
+}
+
+.second-item {
+  clip-path: polygon(
+    0 30px,
+    30px 0,
+    calc(100% - 30px) 0,
+    100% 30px,
+    100% 100%,
+    0 100%
+  );
+}
+
+.third-item {
+  clip-path: polygon(0 30px, 30px 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.first-opt {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 30px) 0,
+    100% 30px,
+    100% 100%,
+    30px 100%,
+    0 calc(100% - 30px)
+  );
+}
+
+.second-opt {
+  clip-path: polygon(
+    0 30px,
+    30px 0,
+    100% 0,
+    100% calc(100% - 30px),
+    calc(100% - 30px) 100%,
+    0 100%
+  );
+}
+
+.highlight {
+  filter: drop-shadow(0px 0px 3px white);
+}
+
+.highlight:hover {
+  filter: drop-shadow(1px 1px 1px white) drop-shadow(1px -1px 1px white)
+    drop-shadow(-1px 1px 1px white) drop-shadow(-1px -1px 1px white);
+}
