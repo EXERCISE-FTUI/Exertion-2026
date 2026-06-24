@@ -4,11 +4,10 @@
 import Background from "@/components/register/Background";
 import Competition from "@/components/register/competition";
 import Documents, { DocumentRef } from "@/components/register/documents";
-import Payment from "@/components/register/payment";
+import Payment, { PaymentRef } from "@/components/register/payment";
 import PaymentSuccessModal from "@/components/register/PaymentSuccessModal";
 import Personal, { PersonalRef } from "@/components/register/personal";
 import Submission, { SubmissionRef } from "@/components/register/submission";
-import { getTeamDocumentsMidtransStatus } from "@/utils/midtrans/getTeamDocumentsMidtransStatus";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -40,6 +39,8 @@ export interface FormData {
   exertionUIPromptDriveId: string;
   exerciseFTUIPromptDriveId: string;
   submissionDriveId: string;
+  paymentProof: File | null;
+  paymentProofDriveId: string;
 }
 
 const steps = [
@@ -74,6 +75,7 @@ export default function RegisterPage() {
   const personalRef = useRef<PersonalRef>(null);
   const documentRef = useRef<DocumentRef>(null);
   const submissionRef = useRef<SubmissionRef>(null);
+  const paymentRef = useRef<PaymentRef>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -102,25 +104,14 @@ export default function RegisterPage() {
     exerciseFTUIPromptDriveId: "",
     exertionUIPromptDriveId: "",
     submissionDriveId: "",
+    paymentProof: null,
+    paymentProofDriveId: "",
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [teamData, setTeamData] = useState(null);
 
   useEffect(() => {
-    const snapScript = "https://app.midtrans.com/snap/snap.js";
-    const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-
-    const script = document.createElement("script");
-    script.src = snapScript;
-    script.setAttribute("data-client-key", clientKey || "");
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
+    // Payment script initialization removed
   }, []);
 
   const isStepComplete = (step: number): boolean => {
@@ -144,7 +135,7 @@ export default function RegisterPage() {
       case 4:
         return !!formData.submission;
       case 5:
-        return true;
+        return !!formData.paymentProof;
       default:
         return false;
     }
@@ -169,14 +160,14 @@ export default function RegisterPage() {
           if (formData.competition === "ExerMind") {
             setCurrentStep(5);
           } else {
-            setCurrentStep((prev) => Math.min(prev + 1, 5));
+            setCurrentStep((prev: number) => Math.min(prev + 1, 5));
           }
         } else if (currentStep === 4 && submissionRef.current) {
           const saveSuccess = await submissionRef.current.handleSave();
           if (!saveSuccess) return;
-          setCurrentStep((prev) => Math.min(prev + 1, 5));
+          setCurrentStep((prev: number) => Math.min(prev + 1, 5));
         } else {
-          setCurrentStep((prev) => Math.min(prev + 1, 5));
+          setCurrentStep((prev: number) => Math.min(prev + 1, 5));
         }
       } catch (error) {
         console.error("Error during next step:", error);
@@ -195,7 +186,7 @@ export default function RegisterPage() {
       if (currentStep === 5 && formData.competition === "ExerMind") {
         setCurrentStep(3);
       } else {
-        setCurrentStep((prev) => Math.max(prev - 1, 1));
+        setCurrentStep((prev: number) => Math.max(prev - 1, 1));
       }
       setErrors({});
     }
@@ -230,125 +221,32 @@ export default function RegisterPage() {
   };
 
   const updateFormData = (field: keyof FormData, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev: FormData) => ({ ...prev, [field]: value }));
   };
 
   const handleFileUpload = (field: keyof FormData, file: File | null) => {
-    setFormData((prev) => ({ ...prev, [field]: file }));
+    setFormData((prev: FormData) => ({ ...prev, [field]: file }));
   };
 
   const removeDocument = (field: keyof FormData) => {
-    setFormData((prev) => ({ ...prev, [field]: null }));
+    setFormData((prev: FormData) => ({ ...prev, [field]: null }));
   };
 
   const handlePayment = async () => {
     setIsSaving(true);
     try {
-      const res = await fetch("/api/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: 45000,
-          first_name: formData.groupName,
-        }),
-      });
-
-      const data = await res.json();
-      // @ts-ignore
-      window.snap.pay(data.token.token, {
-        onSuccess: function (result: any) {
-          sendSelectedMidtransDataToSupabase(
-            result,
-            formData.groupName,
-            formData.teamId,
-          );
+      if (paymentRef.current) {
+        const success = await paymentRef.current.handleSave();
+        if (success) {
           router.push("/register/success");
-          // console.log(result);
-        },
-        onPending: function (result: any) {
-          router.push("/register/failed");
-          // console.log(result);
-        },
-        onError: function (result: any) {
-          router.push("/register/failed");
-          // alert("Payment failed!");
-          // console.log(result);
-        },
-        onClose: function (result: any) {
-          router.push("/register/failed");
-          // console.log(result);
-        },
-      });
+        }
+      }
     } catch (error) {
       console.error("Payment error:", error);
     } finally {
       setIsSaving(false);
     }
   };
-
-  type MidtransData = {
-    transaction_id: string;
-    order_id: string;
-    gross_amount: string;
-    transaction_time: string;
-    transaction_status: string;
-  };
-
-  async function sendSelectedMidtransDataToSupabase(
-    mdtransData: MidtransData,
-    teamName: string,
-    teamId: string,
-  ) {
-    try {
-      const {
-        transaction_id,
-        order_id,
-        gross_amount,
-        transaction_time,
-        transaction_status,
-      } = mdtransData;
-      // console.log("Sending selected Midtrans data to Supabase:", {
-      //   transaction_id,
-      //   order_id,
-      //   gross_amount,
-      //   transaction_time,
-      //   transaction_status,
-      // });
-      // console.log("sending team name ", teamName);
-      // console.log("sending team id ", teamId);
-      const supabase = await createClient();
-
-      const { data, error } = await supabase
-        .from("submission_transaction") // Your Supabase table name
-        .insert([
-          {
-            team_name: teamName,
-            team_id: teamId,
-            midtrans_transaction_id: transaction_id,
-            midtrans_order_id: order_id,
-            midtrans_gross_amount: parseFloat(gross_amount),
-            midtrans_transaction_status: transaction_status,
-            midtrans_transaction_time: transaction_time,
-          },
-        ]);
-
-      if (error) {
-        // console.error("Error inserting selected data into Supabase:", error);
-        return { success: false, error: error.message };
-      } else {
-        // console.log("Selected data successfully inserted into Supabase:", data);
-        return { success: true, data: data };
-      }
-    } catch (err) {
-      console.error("An unexpected error occurred:", err);
-      return {
-        success: false,
-        error: err instanceof Error ? err.message : "An unknown error occurred",
-      };
-    }
-  }
 
   const stepContent = useMemo(() => {
     switch (currentStep) {
@@ -389,7 +287,15 @@ export default function RegisterPage() {
           />
         );
       case 5:
-        return <Payment formData={formData} handlePayment={handlePayment} />;
+        return (
+          <Payment
+            ref={paymentRef}
+            formData={formData}
+            updateFormData={updateFormData}
+            handleFileUpload={handleFileUpload}
+            removeDocument={removeDocument}
+          />
+        );
       default:
         return null;
     }
@@ -407,22 +313,20 @@ export default function RegisterPage() {
         if (user) {
           const { data, error } = await supabase
             .from("teams")
-            .select("*")
+            .select("*, submission_documents(*)")
             .eq("leader_user_id", user.id)
             .single();
 
           if (error) {
             if (error.code === "PGRST116") {
-              // console.log("No team found for this user.");
               setTeamData(null);
             } else {
               throw error;
             }
           } else {
-            // console.log("Fetched team data:", data);
             setTeamData(data);
             if (data) {
-              setFormData((prev) => ({
+              setFormData((prev: FormData) => ({
                 ...prev,
                 groupName: data.team_name || "",
                 institute: data.institute || "",
@@ -436,6 +340,59 @@ export default function RegisterPage() {
                 competition: data.competition_name || "",
                 teamId: data.id || "",
               }));
+
+              // Determine the highest incomplete step based on data
+              let nextStep = 1;
+              if (data.competition_id) nextStep = 2;
+              if (
+                data.team_name &&
+                data.institute &&
+                data.leader_name &&
+                data.leader_whatsapp_number
+              ) {
+                nextStep = 3;
+              }
+
+              const docs = data.submission_documents?.[0];
+              if (docs) {
+                if (
+                  docs.student_id_card_link &&
+                  docs.twibbon_upload_link &&
+                  docs.exertion_follow_proof_link &&
+                  docs.exercise_ftui_follow_proof_link
+                ) {
+                  // Simulate file existence for step validation (dummy files since we can't recreate Files from URLs easily)
+                  setFormData((prev: FormData) => ({
+                    ...prev,
+                    studentIdCard: new File([""], "uploaded.pdf"),
+                    twibbon: new File([""], "uploaded.pdf"),
+                    exertionUIPrompt: new File([""], "uploaded.pdf"),
+                    exerciseFTUIPrompt: new File([""], "uploaded.pdf"),
+                  }));
+                  nextStep = 4;
+                  
+                  if (data.competition_name === "ExerMind") {
+                      nextStep = 5;
+                  } else if (docs.task_link) {
+                      setFormData((prev: FormData) => ({
+                          ...prev,
+                          submission: new File([""], "submission.pdf"),
+                      }));
+                      nextStep = 5;
+                  }
+                }
+                
+                if (docs.payment_proof) {
+                  setFormData((prev: FormData) => ({
+                      ...prev,
+                      paymentProof: new File([""], "payment_proof.pdf"),
+                  }));
+                  // They finished the payment step too
+                  router.push("/register/success");
+                }
+              }
+              
+              setCurrentStep(nextStep);
             }
           }
         } else {
@@ -458,30 +415,7 @@ export default function RegisterPage() {
   }, []);
 
   useEffect(() => {
-    async function fetchPaymentStatus() {
-      const result = await getTeamDocumentsMidtransStatus();
-
-      if (result?.success) {
-        if (result.data) {
-          const hasSettledPayment =
-            result.data.midtrans_transaction_status === "settlement";
-          setPaymentSuccess(hasSettledPayment);
-        } else {
-          // console.log(result.message);
-          setPaymentSuccess(false);
-        }
-      } else if (
-        result?.message ===
-        "Anda tidak memiliki tim terdaftar atau tidak memimpin tim manapun."
-      )
-        return null;
-      else {
-        console.error("Error fetching payment status:", result?.message);
-        setPaymentSuccess(false); // Ensure payment success is false on error
-      }
-    }
-
-    fetchPaymentStatus();
+    // fetchPaymentStatus removed
   }, []);
 
   return (

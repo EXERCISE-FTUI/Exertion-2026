@@ -18,7 +18,6 @@
     "dotenv": "^17.4.2",
     "googleapis": "^150.0.1",
     "lucide-react": "^0.510.0",
-    "midtrans-client": "^1.4.3",
     "motion": "^12.23.6",
     "next": "^15.4.4",
     "react": "^19.0.0",
