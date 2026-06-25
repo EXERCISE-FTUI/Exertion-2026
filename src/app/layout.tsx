@@ -36,8 +36,8 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | EXERTION UI 2025",
-    default: "EXERTION UI 2025",
+    template: "%s | EXERTION UI 2026",
+    default: "EXERTION UI 2026",
   },
   description: "EXERTION UI BY EXERCISE FTUI",
 };
