@@ -6,9 +6,11 @@ import { File as FileIcon, Trash, Upload } from "lucide-react";
 import React, {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useState,
 } from "react";
+import { toast } from "sonner";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 
 const apiInitiateUploadSession = async (
@@ -272,6 +274,17 @@ const Documents = forwardRef<DocumentRef, Props>(
     const [fileProgress, setFileProgress] = useState<Record<string, number>>(
       {},
     ); // { fieldName: percent }
+
+    // Surface every backend / upload result through a toast so the user always
+    // sees errors (and the wizard never advances silently on a failure).
+    useEffect(() => {
+      if (!result) return;
+      if (result.error) {
+        toast.error(result.message);
+      } else if (result.success) {
+        toast.success(result.message);
+      }
+    }, [result]);
 
     // Helper function to update progress for a specific file
     const updateFileProgress = useCallback(

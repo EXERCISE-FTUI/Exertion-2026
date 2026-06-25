@@ -1,5 +1,12 @@
 "use client";
-import { useState, forwardRef, useImperativeHandle, ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  ChangeEvent,
+} from "react";
+import { toast } from "sonner";
 import { personalInformation } from "@/actions/upload/personalInformation";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 
@@ -220,6 +227,17 @@ const Personal = forwardRef<PersonalRef, Props>(
       error?: boolean;
       message: string;
     } | null>(null);
+
+    // Surface every validation / backend result through a toast so the user
+    // always gets feedback (and never advances silently on an error).
+    useEffect(() => {
+      if (!result) return;
+      if (result.error) {
+        toast.error(result.message);
+      } else if (result.success) {
+        toast.success(result.message);
+      }
+    }, [result]);
 
     const handleSave = async (): Promise<boolean> => {
       setLoading(true);
@@ -539,14 +557,6 @@ const Personal = forwardRef<PersonalRef, Props>(
             type="tel"
           />
         </div>
-
-        {result && (
-          <div
-            className={`mx-auto mt-4 max-w-4xl rounded p-2 text-center ${result.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
-          >
-            {result.message}
-          </div>
-        )}
       </div>
     );
   },

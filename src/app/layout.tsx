@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,6 +55,7 @@ export default function RootLayout({
     >
       <body>
         {children}
+        <Toaster position="top-center" richColors closeButton theme="dark" />
         <Script
           src="https://apis.google.com/js/api.js"
           strategy="afterInteractive"

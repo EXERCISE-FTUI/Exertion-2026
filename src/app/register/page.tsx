@@ -10,6 +10,7 @@ import Personal, { PersonalRef } from "@/components/register/personal";
 import Submission, { SubmissionRef } from "@/components/register/submission";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./register.css";
 import LoadingScreen from "@/components/ui/LoadingScreen";
@@ -171,6 +172,7 @@ export default function RegisterPage() {
         }
       } catch (error) {
         console.error("Error during next step:", error);
+        toast.error("Something went wrong. Please try again.");
         setErrors({});
       } finally {
         setIsSaving(false);
@@ -243,6 +245,7 @@ export default function RegisterPage() {
       }
     } catch (error) {
       console.error("Payment error:", error);
+      toast.error("Payment submission failed. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -408,6 +411,7 @@ export default function RegisterPage() {
             err,
           );
         }
+        toast.error("Failed to load your registration data. Please refresh.");
       }
     };
 
