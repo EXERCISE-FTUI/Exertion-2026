@@ -18,10 +18,10 @@ export const saveTaskSubmission = async (formData: FormData): Promise<ActionResp
 
     const { error } = await supabase
         .from('submission_documents')
-        .update({
+        .upsert({
+            team_id: teamId,
             task_link: submissionLink,
-        })
-        .eq('team_id', teamId);
+        }, { onConflict: 'team_id' });
     if (error) {
         const msg = "Error saving documents to Supabase:";
         console.error(msg, error);
