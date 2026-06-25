@@ -8,30 +8,50 @@ import { createClient } from "@/utils/supabase/client";
 export interface FormData {
   competition: string;
   name: string;
-  institute: string;
   phone: string;
   studentIdCard: File | null;
   twibbon: File | null;
-  exertionUIPrompt: File | null;
-  exerciseFTUIPrompt: File | null;
+  instagramStory: File | null;
+
+  member2StudentIdCard: File | null;
+  member2Twibbon: File | null;
+  member2InstagramStory: File | null;
+
+  member3StudentIdCard: File | null;
+  member3Twibbon: File | null;
+  member3InstagramStory: File | null;
+
   submission: File | null;
   payment: { amount: number };
   groupName: string;
   leaderName: string;
+  leaderInstitute: string;
+  leaderEmail: string;
   leaderWhatsappNumber: string;
-  member1Name?: string;
-  member1WhatsappNumber?: string;
+  memberCount: number;
   member2Name?: string;
-  member2WhatsappNumber?: string;
+  member2Institute?: string;
+  member3Name?: string;
+  member3Institute?: string;
   competitionId?: string;
   teamId: string;
-  studentIdCardDriveId?: string;
-  twibbonDriveId?: string;
-  exertionUIPromptDriveId?: string;
-  exerciseFTUIPromptDriveId?: string;
-  submissionDriveId?: string;
+
+  // Drive IDs
+  studentIdCardDriveId: string;
+  twibbonDriveId: string;
+  instagramStoryDriveId: string;
+
+  member2StudentIdCardDriveId: string;
+  member2TwibbonDriveId: string;
+  member2InstagramStoryDriveId: string;
+
+  member3StudentIdCardDriveId: string;
+  member3TwibbonDriveId: string;
+  member3InstagramStoryDriveId: string;
+
+  submissionDriveId: string;
   paymentProof: File | null;
-  paymentProofDriveId?: string;
+  paymentProofDriveId: string;
 }
 
 // --- Component Props ---

@@ -7,28 +7,50 @@ import React from "react";
 export interface FormData {
   competition: string;
   name: string;
-  institute: string;
   phone: string;
   studentIdCard: File | null;
   twibbon: File | null;
-  exertionUIPrompt: File | null;
-  exerciseFTUIPrompt: File | null;
+  instagramStory: File | null;
+
+  member2StudentIdCard: File | null;
+  member2Twibbon: File | null;
+  member2InstagramStory: File | null;
+
+  member3StudentIdCard: File | null;
+  member3Twibbon: File | null;
+  member3InstagramStory: File | null;
+
   submission: File | null;
   payment: { amount: number };
   groupName: string;
   leaderName: string;
+  leaderInstitute: string;
+  leaderEmail: string;
   leaderWhatsappNumber: string;
-  member1Name?: string;
-  member1WhatsappNumber?: string;
+  memberCount: number;
   member2Name?: string;
-  member2WhatsappNumber?: string;
+  member2Institute?: string;
+  member3Name?: string;
+  member3Institute?: string;
   competitionId?: string;
   teamId: string;
+
+  // Drive IDs
   studentIdCardDriveId: string;
   twibbonDriveId: string;
-  exertionUIPromptDriveId: string;
-  exerciseFTUIPromptDriveId: string;
+  instagramStoryDriveId: string;
+
+  member2StudentIdCardDriveId: string;
+  member2TwibbonDriveId: string;
+  member2InstagramStoryDriveId: string;
+
+  member3StudentIdCardDriveId: string;
+  member3TwibbonDriveId: string;
+  member3InstagramStoryDriveId: string;
+
   submissionDriveId: string;
+  paymentProof: File | null;
+  paymentProofDriveId: string;
 }
 // --- END: COPY THIS FormData INTERFACE TO ALL FILES ---
 
@@ -40,38 +62,38 @@ interface Props {
 
 // Using the competitions array from your main file with UUIDs
 const competitions = [
-    {
-        id: 'ui/ux',
-        name: "UI/UX Design",
-        icon: "/icons/uixdesign.sv",
-        uuid: "ae179e48-61c7-4d24-a19f-5c29b833ef18",
-        documentDriveId: "134x09gvtgwisQ2WLWfDFGLnCqT5iyVRN"
-    },
+  {
+    id: 'ui/ux',
+    name: "UI/UX Design",
+    icon: "/icons/uixdesign.sv",
+    uuid: "ae179e48-61c7-4d24-a19f-5c29b833ef18",
+    documentDriveId: "134x09gvtgwisQ2WLWfDFGLnCqT5iyVRN"
+  },
 
-    {
-        id: "exermind",
-        name: "ExerMind",
-        icon: "icons/exermind.png",
-        uuid: "50fd83d0-b25f-4d55-ab94-59c8d0cddaf0",
-        documentDriveId: "1MGp0KxfyEYYM4JM9xIfSNwsQeoH8m0G6"
-    },
+  {
+    id: "exermind",
+    name: "ExerMind",
+    icon: "icons/exermind.png",
+    uuid: "50fd83d0-b25f-4d55-ab94-59c8d0cddaf0",
+    documentDriveId: "1MGp0KxfyEYYM4JM9xIfSNwsQeoH8m0G6"
+  },
 
-    {
-        id: "business",
-        name: "Business Case",
-        icon: "/icons/business.png",
-        uuid: "9c200794-6ade-4817-b7ec-f039242705ef",
-        documentDriveId: "1w9bwTTpJXmL-UdK2WFFFRVOrRzH4D7mk"
-    },
+  {
+    id: "business",
+    name: "Business Case",
+    icon: "/icons/business.png",
+    uuid: "9c200794-6ade-4817-b7ec-f039242705ef",
+    documentDriveId: "1w9bwTTpJXmL-UdK2WFFFRVOrRzH4D7mk"
+  },
 
-    {
-        id: "infografis",
-        name: "Infografis",
-        // TUGAS FRONTEND: ganti ke yang baru
-        icon: "icons/exermind.png",
-        uuid: "087f3607-8cc5-478c-973e-3c638fbca82e",
-        documentDriveId: "1PeyZgiZoaPbc33IlDkqwBEv2opPSO5C6"
-    }
+  {
+    id: "infografis",
+    name: "Infografis",
+    // TUGAS FRONTEND: ganti ke yang baru
+    icon: "icons/exermind.png",
+    uuid: "087f3607-8cc5-478c-973e-3c638fbca82e",
+    documentDriveId: "1PeyZgiZoaPbc33IlDkqwBEv2opPSO5C6"
+  }
 ]
 
 // --- New SVG-based Competition Button Component ---

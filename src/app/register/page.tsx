@@ -17,27 +17,46 @@ import LoadingScreen from "@/components/ui/LoadingScreen";
 export interface FormData {
   competition: string;
   name: string;
-  institute: string;
   phone: string;
   studentIdCard: File | null;
   twibbon: File | null;
-  exertionUIPrompt: File | null;
-  exerciseFTUIPrompt: File | null;
+  instagramStory: File | null;
+
+  member2StudentIdCard: File | null;
+  member2Twibbon: File | null;
+  member2InstagramStory: File | null;
+
+  member3StudentIdCard: File | null;
+  member3Twibbon: File | null;
+  member3InstagramStory: File | null;
+
   submission: File | null;
   payment: { amount: number };
   groupName: string;
   leaderName: string;
+  leaderInstitute: string;
+  leaderEmail: string;
   leaderWhatsappNumber: string;
-  member1Name?: string;
-  member1WhatsappNumber?: string;
+  memberCount: number;
   member2Name?: string;
-  member2WhatsappNumber?: string;
+  member2Institute?: string;
+  member3Name?: string;
+  member3Institute?: string;
   competitionId?: string;
   teamId: string;
+
   studentIdCardDriveId: string;
   twibbonDriveId: string;
-  exertionUIPromptDriveId: string;
-  exerciseFTUIPromptDriveId: string;
+  instagramStoryDriveId: string;
+
+  member2StudentIdCardDriveId: string;
+  member2TwibbonDriveId: string;
+  member2InstagramStoryDriveId: string;
+
+  member3StudentIdCardDriveId: string;
+  member3TwibbonDriveId: string;
+  member3InstagramStoryDriveId: string;
+
   submissionDriveId: string;
   paymentProof: File | null;
   paymentProofDriveId: string;
@@ -82,27 +101,46 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState<FormData>({
     competition: "",
     name: "",
-    institute: "",
     phone: "",
     studentIdCard: null,
     twibbon: null,
-    exertionUIPrompt: null,
-    exerciseFTUIPrompt: null,
+    instagramStory: null,
+
+    member2StudentIdCard: null,
+    member2Twibbon: null,
+    member2InstagramStory: null,
+
+    member3StudentIdCard: null,
+    member3Twibbon: null,
+    member3InstagramStory: null,
+
     submission: null,
     payment: { amount: 0 },
     groupName: "",
     leaderName: "",
+    leaderInstitute: "",
+    leaderEmail: "",
     leaderWhatsappNumber: "",
-    member1Name: "",
-    member1WhatsappNumber: "",
+    memberCount: 1,
     member2Name: "",
-    member2WhatsappNumber: "",
+    member2Institute: "",
+    member3Name: "",
+    member3Institute: "",
     competitionId: "",
     teamId: "",
+
     studentIdCardDriveId: "",
     twibbonDriveId: "",
-    exerciseFTUIPromptDriveId: "",
-    exertionUIPromptDriveId: "",
+    instagramStoryDriveId: "",
+
+    member2StudentIdCardDriveId: "",
+    member2TwibbonDriveId: "",
+    member2InstagramStoryDriveId: "",
+
+    member3StudentIdCardDriveId: "",
+    member3TwibbonDriveId: "",
+    member3InstagramStoryDriveId: "",
+
     submissionDriveId: "",
     paymentProof: null,
     paymentProofDriveId: "",
@@ -121,17 +159,29 @@ export default function RegisterPage() {
       case 2:
         return !!(
           formData.groupName &&
-          formData.institute &&
           formData.leaderName &&
+          formData.leaderInstitute &&
+          formData.leaderEmail &&
           formData.leaderWhatsappNumber
         );
       case 3:
-        return !!(
+        // Leader wajib, member 2 & 3 hanya wajib kalau nama mereka diisi
+        const leaderDocsComplete = !!(
           formData.studentIdCard &&
           formData.twibbon &&
-          formData.exertionUIPrompt &&
-          formData.exerciseFTUIPrompt
+          formData.instagramStory
         );
+        const member2DocsComplete = !formData.member2Name || !!(
+          formData.member2StudentIdCard &&
+          formData.member2Twibbon &&
+          formData.member2InstagramStory
+        );
+        const member3DocsComplete = !formData.member3Name || !!(
+          formData.member3StudentIdCard &&
+          formData.member3Twibbon &&
+          formData.member3InstagramStory
+        );
+        return leaderDocsComplete && member2DocsComplete && member3DocsComplete;
       case 4:
         return !!formData.submission;
       case 5:
@@ -329,13 +379,15 @@ export default function RegisterPage() {
               setFormData((prev: FormData) => ({
                 ...prev,
                 groupName: data.team_name || "",
-                institute: data.institute || "",
                 leaderName: data.leader_name || "",
+                leaderInstitute: data.leader_institute || "",
+                leaderEmail: data.leader_email || "",
                 leaderWhatsappNumber: data.leader_whatsapp_number || "",
-                member1Name: data.member1_name || "",
-                member1WhatsappNumber: data.member1_whatsapp_number || "",
+                memberCount: data.member_count || 1,
                 member2Name: data.member2_name || "",
-                member2WhatsappNumber: data.member2_whatsapp_number || "",
+                member2Institute: data.member2_institute || "",
+                member3Name: data.member3_name || "",
+                member3Institute: data.member3_institute || "",
                 competitionId: data.competition_id || "",
                 competition: data.competition_name || "",
                 teamId: data.id || "",
@@ -346,8 +398,9 @@ export default function RegisterPage() {
               if (data.competition_id) nextStep = 2;
               if (
                 data.team_name &&
-                data.institute &&
                 data.leader_name &&
+                data.leader_institute &&
+                data.leader_email &&
                 data.leader_whatsapp_number
               ) {
                 nextStep = 3;
@@ -355,43 +408,38 @@ export default function RegisterPage() {
 
               const docs = data.submission_documents?.[0];
               if (docs) {
-                if (
-                  docs.student_id_card_link &&
-                  docs.twibbon_upload_link &&
-                  docs.exertion_follow_proof_link &&
-                  docs.exercise_ftui_follow_proof_link
-                ) {
-                  // Simulate file existence for step validation (dummy files since we can't recreate Files from URLs easily)
-                  setFormData((prev: FormData) => ({
-                    ...prev,
-                    studentIdCard: new File([""], "uploaded.pdf"),
-                    twibbon: new File([""], "uploaded.pdf"),
-                    exertionUIPrompt: new File([""], "uploaded.pdf"),
-                    exerciseFTUIPrompt: new File([""], "uploaded.pdf"),
-                  }));
+                const updates: Partial<FormData> = {};
+
+                // Leader docs
+                if (docs.student_id_card_link) updates.studentIdCard = new File([""], "uploaded.pdf");
+                if (docs.twibbon_upload_link) updates.twibbon = new File([""], "uploaded.pdf");
+                if (docs.instagram_story_link) updates.instagramStory = new File([""], "uploaded.pdf");
+
+                // Member 2 docs
+                if (docs.member2_student_id_card_link) updates.member2StudentIdCard = new File([""], "uploaded.pdf");
+                if (docs.member2_twibbon_upload_link) updates.member2Twibbon = new File([""], "uploaded.pdf");
+                if (docs.member2_instagram_story_link) updates.member2InstagramStory = new File([""], "uploaded.pdf");
+
+                // Member 3 docs
+                if (docs.member3_student_id_card_link) updates.member3StudentIdCard = new File([""], "uploaded.pdf");
+                if (docs.member3_twibbon_upload_link) updates.member3Twibbon = new File([""], "uploaded.pdf");
+                if (docs.member3_instagram_story_link) updates.member3InstagramStory = new File([""], "uploaded.pdf");
+
+                if (docs.task_link) updates.submission = new File([""], "submission.pdf");
+                if (docs.payment_proof) updates.paymentProof = new File([""], "payment_proof.pdf");
+
+                setFormData((prev: FormData) => ({ ...prev, ...updates }));
+
+                // Determine next step
+                const leaderComplete = docs.student_id_card_link && docs.twibbon_upload_link && docs.instagram_story_link;
+                if (leaderComplete) {
                   nextStep = 4;
-                  
-                  if (data.competition_name === "ExerMind") {
-                      nextStep = 5;
-                  } else if (docs.task_link) {
-                      setFormData((prev: FormData) => ({
-                          ...prev,
-                          submission: new File([""], "submission.pdf"),
-                      }));
-                      nextStep = 5;
-                  }
+                  if (data.competition_name === "ExerMind") nextStep = 5;
+                  else if (docs.task_link) nextStep = 5;
                 }
-                
-                if (docs.payment_proof) {
-                  setFormData((prev: FormData) => ({
-                      ...prev,
-                      paymentProof: new File([""], "payment_proof.pdf"),
-                  }));
-                  // They finished the payment step too
-                  router.push("/register/success");
-                }
+                if (docs.payment_proof) router.push("/register/success");
               }
-              
+
               setCurrentStep(nextStep);
             }
           }

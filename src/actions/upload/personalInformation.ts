@@ -10,13 +10,15 @@ interface ActionResponse {
 
 interface TeamInput {
     groupName: string;
-    institute: string;
     leaderName: string;
+    leaderInstitute: string;
+    leaderEmail: string;
     leaderWhatsappNumber: string;
-    member1Name?: string;
-    member1WhatsappNumber?: string;
+    memberCount: number;
     member2Name?: string;
-    member2WhatsappNumber?: string;
+    member2Institute?: string;
+    member3Name?: string;
+    member3Institute?: string;
     competitionId: string;
     competition: string;
 }
@@ -28,18 +30,20 @@ export const personalInformation = async (
 
     const {
         groupName,
-        institute,
         leaderName,
+        leaderInstitute,
+        leaderEmail,
         leaderWhatsappNumber,
-        member1Name,
-        member1WhatsappNumber,
+        memberCount,
         member2Name,
-        member2WhatsappNumber,
+        member2Institute,
+        member3Name,
+        member3Institute,
         competitionId,
-        competition
+        competition,
     } = input;
 
-    if (!groupName || !institute || !leaderName || !leaderWhatsappNumber) {
+    if (!groupName || !leaderName || !leaderInstitute || !leaderEmail || !leaderWhatsappNumber) {
         return {
             error: true,
             message: "Please fill in all required team information fields.",
@@ -47,7 +51,6 @@ export const personalInformation = async (
     }
 
     const whatsappRegex = /^\+?[0-9\s\-()]{7,20}$/;
-
     if (!whatsappRegex.test(leaderWhatsappNumber)) {
         return {
             error: true,
@@ -55,17 +58,11 @@ export const personalInformation = async (
         };
     }
 
-    if (member1WhatsappNumber && !whatsappRegex.test(member1WhatsappNumber)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(leaderEmail)) {
         return {
             error: true,
-            message: "Please enter a valid WhatsApp number for member 1.",
-        };
-    }
-
-    if (member2WhatsappNumber && !whatsappRegex.test(member2WhatsappNumber)) {
-        return {
-            error: true,
-            message: "Please enter a valid WhatsApp number for member 2.",
+            message: "Please enter a valid email address for the team leader.",
         };
     }
 
@@ -82,15 +79,17 @@ export const personalInformation = async (
     const teamDataToUpsert = {
         leader_user_id: user.id,
         team_name: groupName,
-        institute: institute,
         leader_name: leaderName,
+        leader_institute: leaderInstitute,
+        leader_email: leaderEmail,
         leader_whatsapp_number: leaderWhatsappNumber,
-        member1_name: member1Name || null,
-        member1_whatsapp_number: member1WhatsappNumber || null,
+        member_count: memberCount,
         member2_name: member2Name || null,
-        member2_whatsapp_number: member2WhatsappNumber || null,
-        competition_id: competitionId || null, // Ensure competitionId is always a string
-        competition_name: competition || null, // Added to match the competition selection
+        member2_institute: member2Institute || null,
+        member3_name: member3Name || null,
+        member3_institute: member3Institute || null,
+        competition_id: competitionId || null,
+        competition_name: competition || null,
     };
 
     const { data: upsertedTeam, error: upsertError } = await supabase
