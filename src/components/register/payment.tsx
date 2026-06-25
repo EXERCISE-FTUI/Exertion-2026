@@ -1,6 +1,6 @@
 "use client";
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from "react";
-import { getOrCreateTeamFolder } from "@/utils/google/getOrCreateTeamFolder";
+import { getTeamDriveFolderId } from "@/utils/supabase/getTeamDriveFolderId";
 import { File as FileIcon, Trash, Upload } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
@@ -245,26 +245,22 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
 
   const handleSave = async (): Promise<boolean> => {
     if (!formData.paymentProof) return false;
-    
+
     try {
-      const folderResult = await getOrCreateTeamFolder(formData.competitionId || "");
-      const teamFolderId = folderResult?.folderId;
+      const teamFolderId = await getTeamDriveFolderId();
       if (!teamFolderId) throw new Error("No folder ID");
 
       const driveFileName = `${formData.groupName}_${formData.competition}_paymentproof`;
       const fileId = await uploadSingleFile(formData.paymentProof, driveFileName, teamFolderId);
-      
+
       const fileUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
-      
+
       const supabase = await createClient();
       const { error } = await supabase
         .from('submission_documents')
-        .update({ payment_proof: fileUrl })
-        .eq('team_id', formData.teamId);
+        .upsert({ team_id: formData.teamId, payment_proof: fileUrl }, { onConflict: 'team_id' })
 
       if (error) throw error;
-      
-      // Google Sheets Integration Call
       await fetch('/api/sheets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
