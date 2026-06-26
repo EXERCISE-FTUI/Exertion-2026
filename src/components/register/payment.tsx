@@ -2,6 +2,7 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import { getTeamDriveFolderId } from "@/utils/supabase/getTeamDriveFolderId";
 import { File as FileIcon, Trash, Upload } from "lucide-react";
+import { toast } from "sonner";
 import { createClient } from "@/utils/supabase/client";
 
 // --- FormData Interface ---
@@ -264,11 +265,14 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
   }, []);
 
   const handleSave = async (): Promise<boolean> => {
-    if (!formData.paymentProof) return false;
+    if (!formData.paymentProof) {
+      toast.error("Please upload your payment proof.");
+      return false;
+    }
 
     try {
       const teamFolderId = await getTeamDriveFolderId();
-      if (!teamFolderId) throw new Error("No folder ID");
+      if (!teamFolderId) throw new Error("Failed to find your team folder.");
 
       const driveFileName = `${formData.groupName}_${formData.competition}_paymentproof`;
       const fileId = await uploadSingleFile(formData.paymentProof, driveFileName, teamFolderId);
@@ -290,6 +294,11 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
       return true;
     } catch (e) {
       console.error(e);
+      toast.error(
+        e instanceof Error
+          ? e.message
+          : "Failed to submit payment proof. Please try again.",
+      );
       return false;
     }
   };

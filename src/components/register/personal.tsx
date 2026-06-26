@@ -1,5 +1,12 @@
 "use client";
-import { useState, forwardRef, useImperativeHandle, ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  ChangeEvent,
+} from "react";
+import { toast } from "sonner";
 import { personalInformation } from "@/actions/upload/personalInformation";
 
 export interface FormData {
@@ -193,6 +200,15 @@ const Personal = forwardRef<PersonalRef, Props>(({ formData, updateFormData }, r
       updateFormData("member3Institute", "");
     }
   };
+
+  useEffect(() => {
+    if (!result) return;
+    if (result.error) {
+      toast.error(result.message);
+    } else if (result.success) {
+      toast.success(result.message);
+    }
+  }, [result]);
 
   const handleSave = async (): Promise<boolean> => {
     setLoading(true);

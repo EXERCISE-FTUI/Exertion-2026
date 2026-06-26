@@ -5,9 +5,11 @@ import { File as FileIcon, Trash, Upload } from "lucide-react";
 import React, {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useState,
 } from "react";
+import { toast } from "sonner";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 
 const apiInitiateUploadSession = async (
@@ -336,6 +338,15 @@ const Documents = forwardRef<DocumentRef, Props>(
     } | null>(null);
     const [overallUploadStatus, setOverallUploadStatus] = useState<string>("");
     const [fileProgress, setFileProgress] = useState<Record<string, number>>({});
+
+    useEffect(() => {
+      if (!result) return;
+      if (result.error) {
+        toast.error(result.message);
+      } else if (result.success) {
+        toast.success(result.message);
+      }
+    }, [result]);
 
     const updateFileProgress = useCallback(
       (fieldName: string, percent: number) => {

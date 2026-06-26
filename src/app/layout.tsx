@@ -7,6 +7,7 @@ import {
   Montserrat,
 } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -54,6 +55,7 @@ export default function RootLayout({
     >
       <body>
         {children}
+        <Toaster position="top-center" richColors closeButton theme="dark" />
         <Script
           src="https://apis.google.com/js/api.js"
           strategy="afterInteractive"

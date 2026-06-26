@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { Upload, File as FileIcon, Trash } from "lucide-react";
+import { toast } from "sonner";
 import { saveTaskSubmission } from "@/actions/upload/taskSubmission"; // Assuming this path is correct
 import { getTeamDriveFolderId } from "@/utils/supabase/getTeamDriveFolderId";
 import LoadingScreen from "@/components/ui/LoadingScreen";
@@ -409,12 +410,14 @@ const Submission = forwardRef<SubmissionRef, Props>(
       if (!formData.submission) {
         setSaveError(true);
         setSaveMessage("Please upload a submission file.");
+        toast.error("Please upload a submission file.");
         setIsSaving(false);
         return false;
       }
       if (!formData.teamId || !formData.competitionId || !formData.groupName) {
         setSaveError(true);
         setSaveMessage("Team ID, Competition ID, and Group Name are required.");
+        toast.error("Team ID, Competition ID, and Group Name are required.");
         setIsSaving(false);
         return false;
       }
@@ -462,11 +465,13 @@ const Submission = forwardRef<SubmissionRef, Props>(
           setSaveMessage(
             response.message || "Failed to save submission record.",
           );
+          toast.error(response.message || "Failed to save submission record.");
           return false;
         }
       } catch (error: any) {
         setSaveError(true);
         setSaveMessage(`Submission failed: ${error.message}`);
+        toast.error(`Submission failed: ${error.message}`);
         console.error("Submission error:", error);
         return false;
       } finally {
