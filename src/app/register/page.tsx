@@ -19,19 +19,19 @@ export interface FormData {
   competition: string;
   name: string;
   phone: string;
-  studentIdCard: File | null;
-  twibbon: File | null;
-  instagramStory: File | null;
+  studentIdCard: any;
+  twibbon: any;
+  instagramStory: any;
 
-  member2StudentIdCard: File | null;
-  member2Twibbon: File | null;
-  member2InstagramStory: File | null;
+  member2StudentIdCard: any;
+  member2Twibbon: any;
+  member2InstagramStory: any;
 
-  member3StudentIdCard: File | null;
-  member3Twibbon: File | null;
-  member3InstagramStory: File | null;
+  member3StudentIdCard: any;
+  member3Twibbon: any;
+  member3InstagramStory: any;
 
-  submission: File | null;
+  submission: any;
   payment: { amount: number };
   groupName: string;
   leaderName: string;
@@ -59,7 +59,7 @@ export interface FormData {
   member3InstagramStoryDriveId: string;
 
   submissionDriveId: string;
-  paymentProof: File | null;
+  paymentProof: any;
   paymentProofDriveId: string;
 }
 
