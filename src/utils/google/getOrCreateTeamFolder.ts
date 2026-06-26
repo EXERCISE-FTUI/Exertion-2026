@@ -120,26 +120,12 @@ export async function getOrCreateTeamFolder(competitionUuid: string) {
     if (submissionData?.team_folder_link) {
         const tempFolderId = submissionData.team_folder_link.split('/').pop();
         if (tempFolderId) {
-            try {
-                await drive.files.delete({
-                    fileId: tempFolderId,
-                });
-                console.log(`Successfully deleted old Drive folder: ${tempFolderId}`);
-            } catch (error: any) {
-                console.warn(`Could not delete old team folder (${tempFolderId}) from Drive: ${error.message}`);
-            }
+            console.log(`Using existing Drive folder: ${tempFolderId}`);
+            return {
+                folderLink: submissionData.team_folder_link,
+                folderId: tempFolderId
+            };
         }
-
-        const { error: deleteSupabaseError } = await supabase
-            .from("submission_documents")
-            .delete()
-            .eq("team_id", teamData.id);
-
-        if (deleteSupabaseError) {
-            console.error("Error deleting old team folder link from Supabase:", deleteSupabaseError);
-            throw new Error(`Failed to clear old team folder data from database: ${deleteSupabaseError.message}`);
-        }
-        console.log(`Successfully cleared old folder link for team ${teamData.id} from Supabase.`);
     }
 
     const folderMetadata = {

@@ -150,7 +150,7 @@ interface Props {
 
 interface FileUploadBoxProps {
   fieldName: keyof FormData;
-  currentFile: File | null;
+  currentFile: any;
   onFileUpload: (field: keyof FormData, file: File | null) => void;
   onRemoveFile: (field: keyof FormData) => void;
   supportedFormats: string;
@@ -231,7 +231,7 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   };
 
   return (
-    <div className="group relative flex h-22 w-9/10 flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-800 shadow-md md:h-40 md:w-full md:p-3">
+    <div className="group relative flex h-24 w-full flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-800 shadow-md md:h-36 md:p-3">
       <div
         className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed p-2 transition-colors duration-200 ${isDragging ? "border-blue-400 bg-blue-50" : "border-gray-300 hover:border-gray-400"}`}
         onDragEnter={(e) => handleDrag(e, true)}
@@ -241,15 +241,25 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
       >
         {currentFile ? (
           <>
-            <FileIcon className="mb-1 h-3 w-3 text-green-500 md:h-5 md:w-5" />
-            <span className="max-w-[90%] truncate text-center text-[8px] font-medium text-gray-700 md:text-xs">
-              {currentFile.name}
-            </span>
-            <span className="text-[6px] text-gray-500 md:text-[8px] md:text-[10px]">
-              {(currentFile.size / (1024 * 1024)).toFixed(2)} MB
+            <FileIcon className="mb-1 h-4 w-4 text-green-500 md:h-6 md:w-6" />
+            {currentFile.url ? (
+              <a href={currentFile.url} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[10px] font-medium text-blue-500 hover:underline md:text-sm">
+                {currentFile.name}
+              </a>
+            ) : currentFile instanceof File ? (
+              <a href={URL.createObjectURL(currentFile)} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[10px] font-medium text-blue-500 hover:underline md:text-sm">
+                {currentFile.name}
+              </a>
+            ) : (
+              <span className="max-w-[90%] truncate text-center text-[10px] font-medium text-gray-700 md:text-sm">
+                {currentFile.name}
+              </span>
+            )}
+            <span className="text-[8px] text-gray-500 md:text-xs">
+              {currentFile.size !== undefined ? (currentFile.size / (1024 * 1024)).toFixed(2) + " MB" : ""}
             </span>
             <Trash
-              className="2-3 absolute top-2 right-2 z-10 h-3 cursor-pointer text-gray-500 hover:text-red-500 md:h-4 md:w-4"
+              className="absolute top-2 right-2 z-10 h-3 w-3 cursor-pointer text-gray-500 hover:text-red-500 md:h-4 md:w-4"
               onClick={() => onRemoveFile(fieldName)}
             />
           </>

@@ -409,27 +409,27 @@ export default function RegisterPage() {
                 nextStep = 3;
               }
 
-              const docs = data.submission_documents?.[0];
+              const docs = Array.isArray(data.submission_documents) ? data.submission_documents[0] : data.submission_documents;
               if (docs) {
                 const updates: Partial<FormData> = {};
 
                 // Leader docs
-                if (docs.student_id_card_link) updates.studentIdCard = new File([""], "uploaded.pdf");
-                if (docs.twibbon_upload_link) updates.twibbon = new File([""], "uploaded.pdf");
-                if (docs.instagram_story_link) updates.instagramStory = new File([""], "uploaded.pdf");
+                if (docs.student_id_card_link) updates.studentIdCard = { name: "View ID Card", url: docs.student_id_card_link };
+                if (docs.twibbon_upload_link) updates.twibbon = { name: "View Twibbon", url: docs.twibbon_upload_link };
+                if (docs.instagram_story_link) updates.instagramStory = { name: "View IG Story", url: docs.instagram_story_link };
 
                 // Member 2 docs
-                if (docs.member2_student_id_card_link) updates.member2StudentIdCard = new File([""], "uploaded.pdf");
-                if (docs.member2_twibbon_upload_link) updates.member2Twibbon = new File([""], "uploaded.pdf");
-                if (docs.member2_instagram_story_link) updates.member2InstagramStory = new File([""], "uploaded.pdf");
+                if (docs.member2_student_id_card_link) updates.member2StudentIdCard = { name: "View ID Card", url: docs.member2_student_id_card_link };
+                if (docs.member2_twibbon_upload_link) updates.member2Twibbon = { name: "View Twibbon", url: docs.member2_twibbon_upload_link };
+                if (docs.member2_instagram_story_link) updates.member2InstagramStory = { name: "View IG Story", url: docs.member2_instagram_story_link };
 
                 // Member 3 docs
-                if (docs.member3_student_id_card_link) updates.member3StudentIdCard = new File([""], "uploaded.pdf");
-                if (docs.member3_twibbon_upload_link) updates.member3Twibbon = new File([""], "uploaded.pdf");
-                if (docs.member3_instagram_story_link) updates.member3InstagramStory = new File([""], "uploaded.pdf");
+                if (docs.member3_student_id_card_link) updates.member3StudentIdCard = { name: "View ID Card", url: docs.member3_student_id_card_link };
+                if (docs.member3_twibbon_upload_link) updates.member3Twibbon = { name: "View Twibbon", url: docs.member3_twibbon_upload_link };
+                if (docs.member3_instagram_story_link) updates.member3InstagramStory = { name: "View IG Story", url: docs.member3_instagram_story_link };
 
-                if (docs.task_link) updates.submission = new File([""], "submission.pdf");
-                if (docs.payment_proof) updates.paymentProof = new File([""], "payment_proof.pdf");
+                if (docs.task_link) updates.submission = { name: "View Submission", url: docs.task_link };
+                if (docs.payment_proof) updates.paymentProof = { name: "View Payment", url: docs.payment_proof };
 
                 setFormData((prev: FormData) => ({ ...prev, ...updates }));
 

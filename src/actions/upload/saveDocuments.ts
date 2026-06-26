@@ -36,31 +36,28 @@ export const saveDocuments = async (formData: FormData): Promise<ActionResponse>
     if (!teamId) {
         return { error: true, message: "Team ID is required." };
     }
-    if (!studentIdCardLink || !twibbonUploadLink || !instagramStoryLink) {
-        return { error: true, message: "All leader documents are required." };
-    }
 
-    const { error } = await supabase
-        .from('submission_documents')
-        .upsert({
-            team_id: teamId,
+    const updates: any = {};
+    if (studentIdCardLink) updates.student_id_card_link = studentIdCardLink;
+    if (twibbonUploadLink) updates.twibbon_upload_link = twibbonUploadLink;
+    if (instagramStoryLink) updates.instagram_story_link = instagramStoryLink;
+    if (member2StudentIdCardLink) updates.member2_student_id_card_link = member2StudentIdCardLink;
+    if (member2TwibbonLink) updates.member2_twibbon_upload_link = member2TwibbonLink;
+    if (member2InstagramStoryLink) updates.member2_instagram_story_link = member2InstagramStoryLink;
+    if (member3StudentIdCardLink) updates.member3_student_id_card_link = member3StudentIdCardLink;
+    if (member3TwibbonLink) updates.member3_twibbon_upload_link = member3TwibbonLink;
+    if (member3InstagramStoryLink) updates.member3_instagram_story_link = member3InstagramStoryLink;
 
-            student_id_card_link: studentIdCardLink,
-            twibbon_upload_link: twibbonUploadLink,
-            instagram_story_link: instagramStoryLink,
+    if (Object.keys(updates).length > 0) {
+        const { error } = await supabase
+            .from('submission_documents')
+            .update(updates)
+            .eq('team_id', teamId);
 
-            member2_student_id_card_link: member2StudentIdCardLink,
-            member2_twibbon_upload_link: member2TwibbonLink,
-            member2_instagram_story_link: member2InstagramStoryLink,
-
-            member3_student_id_card_link: member3StudentIdCardLink,
-            member3_twibbon_upload_link: member3TwibbonLink,
-            member3_instagram_story_link: member3InstagramStoryLink,
-        }, { onConflict: 'team_id' });
-
-    if (error) {
-        console.error("Error saving documents to Supabase:", error);
-        return { error: true, message: `Failed to save documents: ${error.message}` };
+        if (error) {
+            console.error("Error saving documents to Supabase:", error);
+            return { error: true, message: `Failed to save documents: ${error.message}` };
+        }
     }
 
     return { success: true, message: "Documents saved successfully.", data: { teamId } };
