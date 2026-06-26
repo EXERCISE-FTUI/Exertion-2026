@@ -83,19 +83,19 @@ export interface FormData {
   competition: string;
   name: string;
   phone: string;
-  studentIdCard: File | null;
-  twibbon: File | null;
-  instagramStory: File | null;
+  studentIdCard: any;
+  twibbon: any;
+  instagramStory: any;
 
-  member2StudentIdCard: File | null;
-  member2Twibbon: File | null;
-  member2InstagramStory: File | null;
+  member2StudentIdCard: any;
+  member2Twibbon: any;
+  member2InstagramStory: any;
 
-  member3StudentIdCard: File | null;
-  member3Twibbon: File | null;
-  member3InstagramStory: File | null;
+  member3StudentIdCard: any;
+  member3Twibbon: any;
+  member3InstagramStory: any;
 
-  submission: File | null;
+  submission: any;
   payment: { amount: number };
   groupName: string;
   leaderName: string;
@@ -123,7 +123,7 @@ export interface FormData {
   member3InstagramStoryDriveId: string;
 
   submissionDriveId: string;
-  paymentProof: File | null;
+  paymentProof: any;
   paymentProofDriveId: string;
 }
 
@@ -140,7 +140,7 @@ export interface DocumentRef {
 
 interface FileUploadBoxProps {
   fieldName: keyof FormData;
-  currentFile: File | null;
+  currentFile: any;
   onFileUpload: (field: keyof FormData, file: File | null) => void;
   onRemoveFile: (field: keyof FormData) => void;
   supportedFormats: string;
@@ -208,11 +208,21 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
         {currentFile ? (
           <>
             <FileIcon className="mb-1 h-3 w-3 text-green-500 md:h-5 md:w-5" />
-            <span className="max-w-[90%] truncate text-center text-[8px] font-medium text-gray-700 md:text-xs">
-              {currentFile.name}
-            </span>
+            {currentFile.url ? (
+              <a href={currentFile.url} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[8px] font-medium text-blue-500 hover:underline md:text-xs">
+                {currentFile.name}
+              </a>
+            ) : currentFile instanceof File ? (
+              <a href={URL.createObjectURL(currentFile)} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[8px] font-medium text-blue-500 hover:underline md:text-xs">
+                {currentFile.name}
+              </a>
+            ) : (
+              <span className="max-w-[90%] truncate text-center text-[8px] font-medium text-gray-700 md:text-xs">
+                {currentFile.name}
+              </span>
+            )}
             <span className="text-[6px] text-gray-500 md:text-[10px]">
-              {(currentFile.size / (1024 * 1024)).toFixed(2)} MB
+              {currentFile.size !== undefined ? (currentFile.size / (1024 * 1024)).toFixed(2) + " MB" : ""}
             </span>
             <Trash
               className="absolute top-2 right-2 z-10 h-3 w-3 cursor-pointer text-gray-500 hover:text-red-500 md:h-4 md:w-4"
@@ -258,9 +268,9 @@ interface MemberDocSectionProps {
   studentIdCardField: keyof FormData;
   twibbonField: keyof FormData;
   instagramStoryField: keyof FormData;
-  studentIdCardFile: File | null;
-  twibbonFile: File | null;
-  instagramStoryFile: File | null;
+  studentIdCardFile: any;
+  twibbonFile: any;
+  instagramStoryFile: any;
   onFileUpload: (field: keyof FormData, file: File | null) => void;
   onRemoveFile: (field: keyof FormData) => void;
 }
@@ -472,6 +482,13 @@ const Documents = forwardRef<DocumentRef, Props>(
           allUploadsSuccessful = false;
           break;
         }
+        
+        // Skip uploading if it's the dummy file from a previous session (now an object with a url)
+        if (!(file instanceof File) || file.name === "uploaded.pdf" || file.name === "submission.pdf" || file.name === "payment_proof.pdf" || (file as any).url) {
+            setOverallUploadStatus(`Skipping previously uploaded ${typeName}...`);
+            continue;
+        }
+
         try {
           const driveFileName = `${formData.groupName}_${formData.competition}_${typeName}`;
           setOverallUploadStatus(`Uploading ${typeName}...`);

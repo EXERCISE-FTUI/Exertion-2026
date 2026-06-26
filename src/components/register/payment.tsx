@@ -131,7 +131,7 @@ const CHUNK_SIZE = 256 * 1024;
 
 interface FileUploadBoxProps {
   fieldName: keyof FormData;
-  currentFile: File | null;
+  currentFile: any;
   onFileUpload: (field: keyof FormData, file: File | null) => void;
   onRemoveFile: (field: keyof FormData) => void;
   supportedFormats: string;
@@ -171,7 +171,7 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
     const fileType = file.type;
 
     if (!acceptedFormatsArray.includes(fileExtension) && !acceptedFormatsArray.includes(fileType)) {
-      setFileError(`Unsupported file format.`);
+      setFileError(`Unsupported file format. Accepted: ${supportedFormats.toUpperCase()}.`);
       return false;
     }
 
@@ -198,7 +198,7 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   };
 
   return (
-    <div className="group relative flex h-22 w-full flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-800 shadow-md md:h-40 md:p-3">
+    <div className="group relative flex h-24 w-full flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-800 shadow-md md:h-36 md:p-3">
       <div
         className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed p-2 transition-colors duration-200 ${isDragging ? "border-blue-400 bg-blue-50" : "border-gray-300 hover:border-gray-400"}`}
         onDragEnter={(e) => handleDrag(e, true)}
@@ -208,12 +208,22 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
       >
         {currentFile ? (
           <>
-            <FileIcon className="mb-1 h-3 w-3 text-green-500 md:h-5 md:w-5" />
-            <span className="max-w-[90%] truncate text-center text-[8px] font-medium text-gray-700 md:text-xs">
-              {currentFile.name}
-            </span>
-            <span className="text-[6px] text-gray-500 md:text-[8px]">
-              {(currentFile.size / (1024 * 1024)).toFixed(2)} MB
+            <FileIcon className="mb-1 h-4 w-4 text-green-500 md:h-6 md:w-6" />
+            {currentFile.url ? (
+              <a href={currentFile.url} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[10px] font-medium text-blue-500 hover:underline md:text-sm">
+                {currentFile.name}
+              </a>
+            ) : currentFile instanceof File ? (
+              <a href={URL.createObjectURL(currentFile)} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[10px] font-medium text-blue-500 hover:underline md:text-sm">
+                {currentFile.name}
+              </a>
+            ) : (
+              <span className="max-w-[90%] truncate text-center text-[10px] font-medium text-gray-700 md:text-sm">
+                {currentFile.name}
+              </span>
+            )}
+            <span className="text-[8px] text-gray-500 md:text-xs">
+              {currentFile.size !== undefined ? (currentFile.size / (1024 * 1024)).toFixed(2) + " MB" : ""}
             </span>
             <Trash
               className="absolute top-2 right-2 z-10 h-3 w-3 cursor-pointer text-gray-500 hover:text-red-500 md:h-4 md:w-4"
@@ -274,17 +284,26 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
       const teamFolderId = await getTeamDriveFolderId();
       if (!teamFolderId) throw new Error("Failed to find your team folder.");
 
-      const driveFileName = `${formData.groupName}_${formData.competition}_paymentproof`;
-      const fileId = await uploadSingleFile(formData.paymentProof, driveFileName, teamFolderId);
+      let fileUrl = "";
 
-      const fileUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+      if (!(formData.paymentProof instanceof File) || (formData.paymentProof as any).url || formData.paymentProof.name === "payment_proof.pdf") {
+          // If it's a previously uploaded custom object, do nothing (skip upload)
+      } else {
+          const driveFileName = `${formData.groupName}_${formData.competition}_paymentproof`;
+          const fileId = await uploadSingleFile(formData.paymentProof, driveFileName, teamFolderId);
+          fileUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+      }
 
-      const supabase = await createClient();
-      const { error } = await supabase
-        .from('submission_documents')
-        .upsert({ team_id: formData.teamId, payment_proof: fileUrl }, { onConflict: 'team_id' })
+      if (fileUrl) {
+          const supabase = await createClient();
+          const { error } = await supabase
+            .from('submission_documents')
+            .update({ payment_proof: fileUrl })
+            .eq('team_id', formData.teamId);
 
-      if (error) throw error;
+          if (error) throw error;
+      }
+
       await fetch('/api/sheets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
