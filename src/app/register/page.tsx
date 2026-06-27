@@ -491,7 +491,7 @@ export default function RegisterPage() {
               <img
                 src="/register/exertion.svg"
                 alt="Exertion Logo"
-                className="h-auto w-24 lg:w-[150px] -mt-2"
+                className="h-auto w-24 lg:w-[320px] -mt-3"
               />
             </div>
           
@@ -591,7 +591,7 @@ export default function RegisterPage() {
                 />
               </svg>
 
-              <div className="absolute left-2.5 min-[480px]:left-9 md:left-10 top-44 bottom-38 md:top-42 md:bottom-42 w-[2.5px] md:w-[3.5px] bg-white pointer-events-none z-10 block" />
+              <div className="absolute left-2.5 min-[480px]:left-4 min-[620px]:left-9 md:left-10 top-44 bottom-38 md:top-42 md:bottom-42 w-[2.5px] md:w-[3.5px] bg-white pointer-events-none z-10 block" />
 
               <div className="flex-1 overflow-y-auto custom-scrollbar-hidden z-10 p-6 md:p-10 flex flex-col justify-center">
                 {stepContent}
@@ -622,16 +622,18 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <img 
-  src="/register/hexagon.svg" 
-  alt="" 
-  className={`absolute h-auto pointer-events-none z-0 opacity-80 drop-shadow-[0_0_10px_rgba(78,142,162,0.5)] transition-all duration-300
-    w-12 min-[360px]:w-16 min-[480px]:w-20 md:w-36 lg:w-40
-    ${currentStep === 1 
-      ? "top-12 right-4 md:top-18 md:right-8" 
-      : "bottom-1 left-1 min-[360px]:bottom-2 min-[360px]:left-2 min-[480px]:bottom-4 min-[480px]:left-4 md:bottom-6 md:left-10"
-    }`}
-/>
+            {(currentStep === 1 || currentStep === 2) && (
+              <img 
+                src="/register/hexagon.svg" 
+                alt="" 
+                className={`absolute h-auto pointer-events-none z-0 opacity-80 drop-shadow-[0_0_10px_rgba(78,142,162,0.5)] transition-all duration-300
+                  w-12 min-[360px]:w-16 min-[480px]:w-20 md:w-36 lg:w-40
+                  ${currentStep === 1 
+                    ? "top-12 right-4 md:top-18 md:right-8" 
+                    : "bottom-1 left-1 min-[360px]:bottom-2 min-[360px]:left-2 min-[480px]:bottom-4 min-[480px]:left-4 md:bottom-6 md:left-10"
+                  }`}
+              />
+            )}
 
             <img 
               src="/register/vector-corner-right.svg" 
@@ -639,11 +641,11 @@ export default function RegisterPage() {
               className="absolute -bottom-2 -right-2 md:-bottom-5 md:-right-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
             />
 
-            {currentStep === 1 && (
+            {(currentStep === 1 || currentStep === 3) && (
               <img 
                 src="/register/vector-corner-left.svg" 
                 alt="" 
-                className="absolute -bottom-2 -left-2 min-[480px]:-bottom-3 min-[480px]:-left-3 md:-bottom-5 md:-left-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+                className="absolute -bottom-1 -left-1 min-[360px]:-bottom-2 min-[360px]:-left-2 min-[480px]:-bottom-3 min-[480px]:-left-3 md:-bottom-5 md:-left-3 w-10 min-[360px]:w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
               />
             )}
           </div>
