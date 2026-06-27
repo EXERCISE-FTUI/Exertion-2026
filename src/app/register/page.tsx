@@ -1,4 +1,3 @@
-// pages.tsx
 "use client";
 
 import Background from "@/components/register/Background";
@@ -85,11 +84,10 @@ const stepIcons = [
   "/register/competition.svg",
   "/register/personalInformation.svg",
   "/register/documents.svg",
-  "/register/sumbission.svg",
+  "/register/submission.svg",
   "/register/payment.svg",
 ];
 
-// --- Main Page Component ---
 export default function RegisterPage() {
   const router = useRouter();
   const personalRef = useRef<PersonalRef>(null);
@@ -150,7 +148,6 @@ export default function RegisterPage() {
   const [teamData, setTeamData] = useState(null);
 
   useEffect(() => {
-    // Payment script initialization removed
   }, []);
 
   const isStepComplete = (step: number): boolean => {
@@ -166,7 +163,6 @@ export default function RegisterPage() {
           formData.leaderWhatsappNumber
         );
       case 3:
-        // Leader wajib, member 2 & 3 hanya wajib kalau nama mereka diisi
         const leaderDocsComplete = !!(
           formData.studentIdCard &&
           formData.twibbon &&
@@ -355,14 +351,10 @@ export default function RegisterPage() {
   }, [currentStep, formData]);
 
   useEffect(() => {
-    const fetchTeam = async () => {
+    const initFetch = async () => {
       const supabase = createClient();
-
       try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
+        const { data: { user } } = await supabase.auth.getUser();
         if (user) {
           const { data, error } = await supabase
             .from("teams")
@@ -370,104 +362,66 @@ export default function RegisterPage() {
             .eq("leader_user_id", user.id)
             .single();
 
-          if (error) {
-            if (error.code === "PGRST116") {
-              setTeamData(null);
-            } else {
-              throw error;
-            }
-          } else {
+          if (!error && data) {
             setTeamData(data);
-            if (data) {
-              setFormData((prev: FormData) => ({
-                ...prev,
-                groupName: data.team_name || "",
-                leaderName: data.leader_name || "",
-                leaderInstitute: data.leader_institute || "",
-                leaderEmail: data.leader_email || "",
-                leaderWhatsappNumber: data.leader_whatsapp_number || "",
-                memberCount: data.member_count || 1,
-                member2Name: data.member2_name || "",
-                member2Institute: data.member2_institute || "",
-                member3Name: data.member3_name || "",
-                member3Institute: data.member3_institute || "",
-                competitionId: data.competition_id || "",
-                competition: data.competition_name || "",
-                teamId: data.id || "",
-              }));
+            setFormData((prev: FormData) => ({
+              ...prev,
+              groupName: data.team_name || "",
+              leaderName: data.leader_name || "",
+              leaderInstitute: data.leader_institute || "",
+              leaderEmail: data.leader_email || "",
+              leaderWhatsappNumber: data.leader_whatsapp_number || "",
+              memberCount: data.member_count || 1,
+              member2Name: data.member2_name || "",
+              member2Institute: data.member2_institute || "",
+              member3Name: data.member3_name || "",
+              member3Institute: data.member3_institute || "",
+              competitionId: data.competition_id || "",
+              competition: data.competition_name || "",
+              teamId: data.id || "",
+            }));
 
-              // Determine the highest incomplete step based on data
-              let nextStep = 1;
-              if (data.competition_id) nextStep = 2;
-              if (
-                data.team_name &&
-                data.leader_name &&
-                data.leader_institute &&
-                data.leader_email &&
-                data.leader_whatsapp_number
-              ) {
-                nextStep = 3;
-              }
-
-              const docs = Array.isArray(data.submission_documents) ? data.submission_documents[0] : data.submission_documents;
-              if (docs) {
-                const updates: Partial<FormData> = {};
-
-                // Leader docs
-                if (docs.student_id_card_link) updates.studentIdCard = { name: "View ID Card", url: docs.student_id_card_link };
-                if (docs.twibbon_upload_link) updates.twibbon = { name: "View Twibbon", url: docs.twibbon_upload_link };
-                if (docs.instagram_story_link) updates.instagramStory = { name: "View IG Story", url: docs.instagram_story_link };
-
-                // Member 2 docs
-                if (docs.member2_student_id_card_link) updates.member2StudentIdCard = { name: "View ID Card", url: docs.member2_student_id_card_link };
-                if (docs.member2_twibbon_upload_link) updates.member2Twibbon = { name: "View Twibbon", url: docs.member2_twibbon_upload_link };
-                if (docs.member2_instagram_story_link) updates.member2InstagramStory = { name: "View IG Story", url: docs.member2_instagram_story_link };
-
-                // Member 3 docs
-                if (docs.member3_student_id_card_link) updates.member3StudentIdCard = { name: "View ID Card", url: docs.member3_student_id_card_link };
-                if (docs.member3_twibbon_upload_link) updates.member3Twibbon = { name: "View Twibbon", url: docs.member3_twibbon_upload_link };
-                if (docs.member3_instagram_story_link) updates.member3InstagramStory = { name: "View IG Story", url: docs.member3_instagram_story_link };
-
-                if (docs.task_link) updates.submission = { name: "View Submission", url: docs.task_link };
-                if (docs.payment_proof) updates.paymentProof = { name: "View Payment", url: docs.payment_proof };
-
-                setFormData((prev: FormData) => ({ ...prev, ...updates }));
-
-                // Determine next step
-                const leaderComplete = docs.student_id_card_link && docs.twibbon_upload_link && docs.instagram_story_link;
-                if (leaderComplete) {
-                  nextStep = 4;
-                  if (data.competition_name === "ExerMind") nextStep = 5;
-                  else if (docs.task_link) nextStep = 5;
-                }
-                if (docs.payment_proof) router.push("/register/success");
-              }
-
-              setCurrentStep(nextStep);
+            let nextStep = 1;
+            if (data.competition_id) nextStep = 2;
+            if (data.team_name && data.leader_name && data.leader_institute && data.leader_email && data.leader_whatsapp_number) {
+              nextStep = 3;
             }
+
+            const docs = Array.isArray(data.submission_documents) ? data.submission_documents[0] : data.submission_documents;
+            if (docs) {
+              const updates: Partial<FormData> = {};
+              if (docs.student_id_card_link) updates.studentIdCard = { name: "View ID Card", url: docs.student_id_card_link };
+              if (docs.twibbon_upload_link) updates.twibbon = { name: "View Twibbon", url: docs.twibbon_upload_link };
+              if (docs.instagram_story_link) updates.instagramStory = { name: "View IG Story", url: docs.instagram_story_link };
+              if (docs.member2_student_id_card_link) updates.member2StudentIdCard = { name: "View ID Card", url: docs.member2_student_id_card_link };
+              if (docs.member2_twibbon_upload_link) updates.member2Twibbon = { name: "View Twibbon", url: docs.member2_twibbon_upload_link };
+              if (docs.member2_instagram_story_link) updates.member2InstagramStory = { name: "View IG Story", url: docs.member2_instagram_story_link };
+              if (docs.member3_student_id_card_link) updates.member3StudentIdCard = { name: "View ID Card", url: docs.member3_student_id_card_link };
+              if (docs.member3_twibbon_upload_link) updates.member3Twibbon = { name: "View Twibbon", url: docs.member3_twibbon_upload_link };
+              if (docs.member3_instagram_story_link) updates.member3InstagramStory = { name: "View IG Story", url: docs.member3_instagram_story_link };
+              if (docs.task_link) updates.submission = { name: "View Submission", url: docs.task_link };
+              if (docs.payment_proof) updates.paymentProof = { name: "View Payment", url: docs.payment_proof };
+
+              setFormData((prev: FormData) => ({ ...prev, ...updates }));
+
+              if (docs.student_id_card_link && docs.twibbon_upload_link && docs.instagram_story_link) {
+                nextStep = 4;
+                if (data.competition_name === "ExerMind") nextStep = 5;
+                else if (docs.task_link) nextStep = 5;
+              }
+              if (docs.payment_proof) router.push("/register/success");
+            }
+            setCurrentStep(nextStep);
           }
-        } else {
-          // console.log("No user logged in.");
-          setTeamData(null);
         }
-      } catch (err) {
-        if (err instanceof Error) {
-          console.error("Error fetching team data:", err.message);
-        } else {
-          console.error(
-            "An unknown error occurred while fetching team data:",
-            err,
-          );
-        }
-        toast.error("Failed to load your registration data. Please refresh.");
+      } catch (e) {
+        console.error(e);
       }
     };
-
-    fetchTeam();
+    initFetch();
   }, []);
 
   useEffect(() => {
-    // fetchPaymentStatus removed
   }, []);
 
   return (
@@ -478,71 +432,43 @@ export default function RegisterPage() {
         name={formData.name}
         competition={formData.competition}
       />
-      <div className="h-screen w-screen bg-[#0F172A]">
-        {/* --- Mobile View --- */}
-        <div className="flex h-full w-full flex-col overflow-x-hidden p-4 md:hidden">
-          <div className="mb-4 flex-shrink-0 pl-2">
+      <div className="h-screen w-screen flex flex-col md:flex-row overflow-hidden relative bg-[#7BBDE8]">
+        <img
+          src="/register/background-pattern.svg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none opacity-80"
+        />
+
+        <div className="flex w-full flex-col overflow-x-hidden md:hidden z-10 shrink-0 bg-[#001D39]">
+          <div className="flex items-center justify-between p-4 border-b border-[#4E8EA2]/30">
             <img
               src="/register/exertion.svg"
               alt="Exertion Logo"
               className="h-auto w-24"
             />
+            <button
+              onClick={() => router.push("/home")}
+              className="flex items-center gap-2 text-white/70 hover:text-white"
+            >
+              <img src="/register/home.svg" alt="" className="w-5 h-5 opacity-70" />
+            </button>
           </div>
-          <main
-            className="relative flex flex-1 flex-col"
-            style={{
-              background:
-                "linear-gradient(210.35deg, #1E3A8A 0%, #059669 136.05%)",
-              clipPath: "polygon(0 0, 92% 0, 100% 8%, 100% 100%, 0 100%)",
-            }}
-          >
-            <div className="scrollable-container relative flex min-h-0 flex-1 flex-col items-center p-4">
-              <div className="custom-scrollbar-hidden w-full flex-1 overflow-y-auto">
-                {stepContent}
-              </div>
-              <div className="flex w-full flex-shrink-0 justify-center gap-4 pt-4">
-                <button
-                  onClick={handleBack}
-                  disabled={isSaving}
-                  className="h-9 rounded-lg bg-white px-8 font-orbitron text-sm font-semibold text-[#0F172A] transition-all hover:bg-gray-200 disabled:opacity-50"
-                >
-                  {currentStep === 1 ? "Home" : "Back"}
-                </button>
-                <button
-                  onClick={currentStep === 5 ? handlePayment : handleNext}
-                  disabled={!canGoNext() || isSaving}
-                  className={`h-9 rounded-lg px-8 font-orbitron text-sm font-semibold transition-all ${canGoNext() && !isSaving ? "bg-[#0F172A] text-white hover:bg-[#1D3B89]" : "cursor-not-allowed bg-gray-500 text-gray-300"}`}
-                >
-                  {isSaving ? "Saving..." : currentStep === 5 ? "Pay" : "Next"}
-                </button>
-              </div>
-            </div>
-
-            <Background />
-          </main>
-
-          <nav className="flex flex-shrink-0 items-center justify-around bg-[#1E293B] p-2">
+          <nav className="flex items-center justify-around bg-[#001D39] px-2 py-3 shadow-md">
             {steps.map((step, idx) => {
               const isCurrent = currentStep === step.id;
-              const canNavigate =
-                step.id <= currentStep || isStepComplete(step.id - 1);
+              const canNavigate = step.id <= currentStep || isStepComplete(step.id - 1);
               return (
                 <div
                   key={step.id}
-                  className={`flex flex-col items-center transition-opacity ${canNavigate ? null : "opacity-50"}`}
+                  onClick={() => canNavigate && handleStepClick(step.id)}
+                  className={`flex flex-col items-center transition-opacity ${canNavigate ? "cursor-pointer" : "opacity-40"}`}
                 >
-                  <div
-                    className={`relative rounded-full p-2 transition-all duration-300 ${isCurrent ? "bg-cyan-400/20" : ""}`}
-                  >
+                  <div className={`relative p-2 rounded-full transition-all duration-300 ${isCurrent ? "bg-white" : ""}`}>
                     <img
                       src={stepIcons[idx]}
                       alt=""
-                      className="h-7 w-7"
-                      style={{ filter: "brightness(0) invert(1)" }}
+                      className={`h-5 w-5 object-contain ${isCurrent ? "" : "brightness-0 invert opacity-60"}`}
                     />
-                    {isCurrent && (
-                      <div className="absolute -top-1 h-1 w-6 rounded-full bg-cyan-300"></div>
-                    )}
                   </div>
                 </div>
               );
@@ -550,42 +476,53 @@ export default function RegisterPage() {
           </nav>
         </div>
 
-        {/* --- Desktop View --- */}
-        <div className="hidden h-full w-full flex-row overflow-hidden overflow-x-hidden md:flex">
-          <aside className="flex w-64 flex-shrink-0 flex-col items-center justify-center overflow-x-hidden bg-[#0F172A] px-4 py-10">
-            <div className="flex w-full flex-col items-center gap-5 overflow-x-hidden">
-              <div className="mb-3 ml-3">
-                <img
-                  src="/register/exertion.svg"
-                  alt="Exertion Logo"
-                  className="h-auto w-40"
-                />
+        <aside className="hidden md:flex w-24 lg:w-35 flex-shrink-0 flex-col items-center pt-0 pb-4 z-30 relative bg-[#001D39] text-white select-none">
+          <div 
+            className="absolute top-0 left-0 w-[135%] h-40 bg-[#001D39] z-0"
+            style={{ 
+              clipPath: "polygon(0% 0%, 74% 0%, 74% 15%, 95% 30%, 95% 64%, 74% 79%, 74% 100%, 0% 100%)"
+            }}
+          />
+          
+          <div className="absolute top-40 inset-x-0 bottom-0 bg-[#001D39] z-0" />
+
+          <div className="relative z-10 w-full h-full flex flex-col items-center">
+            <div className="h-40 w-full flex items-center justify-start pl-4 lg:pl-6 pr-2 shrink-0">
+              <img
+                src="/register/exertion.svg"
+                alt="Exertion Logo"
+                className="h-auto w-24 lg:w-[150px] -mt-2"
+              />
+            </div>
+          
+            <div className="flex flex-col gap-2 w-full items-center mt-1 px-0">
+              <div 
+                onClick={() => router.push("/home")}
+                className="w-full flex flex-col items-center justify-center py-2.5 cursor-pointer text-white/80 hover:bg-white/10 hover:text-white transition-all"
+              >
+                <img src="/register/home.svg" alt="" className="h-5 w-5 lg:h-10 lg:w-10 mb-1 brightness-0 invert opacity-80 object-contain" />
+                <span className="text-[10px] lg:text-xs tracking-wide text-center font-medium">Home</span>
               </div>
+
               {steps.map((step, idx) => {
                 const isCurrent = currentStep === step.id;
-                const canNavigate =
-                  step.id <= currentStep || isStepComplete(step.id - 1);
+                const canNavigate = step.id <= currentStep || isStepComplete(step.id - 1);
                 return (
                   <div
                     key={step.id}
-                    className={`flex w-full flex-col items-center transition-all ${canNavigate ? null : "cursor-not-allowed opacity-50"}`}
+                    onClick={() => canNavigate && handleStepClick(step.id)}
+                    className={`w-full flex flex-col items-center justify-center py-3 px-2 transition-all
+                      ${isCurrent ? "bg-white text-[#001D39]" : "text-white hover:bg-white/10"} 
+                      ${canNavigate ? "cursor-pointer" : "opacity-40 cursor-not-allowed"}
+                    `}
                   >
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-full transition-all ${isCurrent ? "bg-gradient-to-tr from-[#44EAB0] to-[#38BDF8]" : "border border-[#44EAB0]"}`}
-                    >
-                      <img
-                        src={stepIcons[idx]}
-                        alt=""
-                        className="h-6 w-6"
-                        style={{
-                          filter: isCurrent
-                            ? "brightness(0)"
-                            : "brightness(0) invert(1)",
-                        }}
-                      />
-                    </div>
-                    <div className="mt-2 text-center">
-                      <h3 className="text-xs leading-tight font-medium text-white">
+                    <img
+                      src={stepIcons[idx]}
+                      alt=""
+                      className={`h-5 w-5 lg:h-10 lg:w-10 mb-1 object-contain transition-all ${isCurrent ? "" : "brightness-0 invert opacity-100"}`}
+                    />
+                    <div className="flex w-full items-center justify-center px-1">
+                      <h3 className={`text-[10px] lg:text-xs tracking-wide leading-tight text-center ${isCurrent ? "font-bold" : "font-medium"}`}>
                         {step.sidebarTitle || step.title}
                       </h3>
                     </div>
@@ -593,41 +530,103 @@ export default function RegisterPage() {
                 );
               })}
             </div>
-          </aside>
-          <main
-            className="relative m-8 flex flex-1 flex-col overflow-hidden"
-            style={{
-              background:
-                "linear-gradient(249.76deg, #08896D 0%, #1D3B89 100%)",
-              clipPath: "polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 8%)",
-            }}
-          >
-            <div className="scrollable-container relative flex flex-1 flex-col items-center justify-between p-8">
-              {/* CHANGE: The generic title div has been removed from here */}
-              <div className="custom-scrollbar-hidden flex w-full flex-1 flex-col justify-center">
+          </div>
+        </aside>
+
+        <main className="flex-1 relative z-10 flex flex-col justify-center items-center p-4 md:p-8 lg:p-12 min-h-0 overflow-hidden">
+          <img
+            src="/register/bg-utama.svg"
+            alt=""
+            className="absolute inset-y-0 -left-6 w-[108%] max-w-none h-full object-cover z-0 pointer-events-none opacity-100 brightness-100 contrast-110"
+          />
+
+          <div className="w-full h-full max-w-5xl relative z-10 md:-translate-x-4 lg:-translate-x-3">
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden md:block"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <polygon
+                points="0 20, 12 10, 58 10, 65 0, 100 0, 100 100, 0 100"
+                fill="none"
+                stroke="#4E8EA2"
+                strokeWidth="8.5"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                className="opacity-90 drop-shadow-[0_0_10px_rgba(78,142,162,0.7)]"
+              />
+            </svg>
+
+            <div 
+              className="w-full h-full bg-[#001D39]/90 shadow-[0_0_40px_rgba(0,29,57,0.8)] border border-[#4E8EA2]/40 relative flex flex-col overflow-hidden" 
+              style={{ 
+                clipPath: "polygon(0% 20%, 12% 10%, 58% 10%, 65% 0%, 100% 0%, 100% 100%, 0% 100%)" 
+              }}
+            >
+              <svg 
+                className="absolute inset-0 w-full h-full pointer-events-none z-20 block"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                <polyline
+                  points="61.3 9, 65.5 3, 96 3"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  className="block md:hidden drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]"
+                />
+
+                <polyline
+                  points="61.3 9, 65.5 3, 96 3"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  className="hidden md:block drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]"
+                />
+              </svg>
+
+              <div className="absolute left-9 md:left-10 top-44 bottom-38 md:top-42 md:bottom-42 w-[2.5px] md:w-[3.5px] bg-white pointer-events-none z-10 block" />
+
+              <div className="flex-1 overflow-y-auto custom-scrollbar-hidden z-10 p-6 md:p-10 flex flex-col justify-center">
                 {stepContent}
               </div>
-              <div className="flex w-full justify-end gap-4 pt-4">
-                <button
-                  onClick={handleBack}
-                  disabled={isSaving}
-                  className={`h-8 rounded-lg bg-white px-16 font-orbitron text-base font-semibold text-[#0F172A] transition-all hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50 xl:h-10`}
-                >
-                  {currentStep === 1 ? "Home" : "Back"}
-                </button>
+
+              <div className="flex w-full justify-center pb-8 pt-4 z-20 shrink-0">
                 <button
                   onClick={currentStep === 5 ? handlePayment : handleNext}
                   disabled={!canGoNext() || isSaving}
-                  className={`h-8 rounded-lg px-16 font-orbitron text-base font-semibold transition-all xl:h-10 ${canGoNext() && !isSaving ? "bg-[#0F172A] text-white hover:bg-[#1f2536]" : "cursor-not-allowed bg-gray-200 text-gray-400"}`}
+                  className={`h-10 md:h-12 rounded-full px-12 md:px-16 font-orbitron text-sm md:text-base font-black transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] ${canGoNext() && !isSaving ? "bg-white text-[#001D39] hover:bg-gray-200 cursor-pointer" : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"}`}
                 >
-                  {isSaving ? "Saving..." : currentStep === 5 ? "Pay" : "Next"}
+                  {isSaving ? "SAVING..." : currentStep === 5 ? "PAY" : "NEXT"}
                 </button>
               </div>
             </div>
 
-            <Background />
-          </main>
-        </div>
+            <img 
+              src="/register/hexagon.svg" 
+              alt="" 
+              className="absolute top-12 right-4 md:top-18 md:right-8 w-20 md:w-36 lg:w-40 h-auto pointer-events-none z-20 opacity-80 drop-shadow-[0_0_10px_rgba(78,142,162,0.5)]"
+            />
+
+            <img 
+              src="/register/vector-corner-right.svg" 
+              alt="" 
+              className="absolute -bottom-2 -right-2 md:-bottom-5 md:-right-3 w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+            />
+
+            <img 
+              src="/register/vector-corner-left.svg" 
+              alt="" 
+              className="absolute -bottom-2 -left-2 md:-bottom-5 md:-left-3 w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+            />
+          </div>
+        </main>
       </div>
     </>
   );
