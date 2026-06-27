@@ -591,17 +591,21 @@ export default function RegisterPage() {
                 />
               </svg>
 
-              <div className="absolute left-9 md:left-10 top-44 bottom-38 md:top-42 md:bottom-42 w-[2.5px] md:w-[3.5px] bg-white pointer-events-none z-10 block" />
+              <div className="absolute left-2.5 min-[480px]:left-9 md:left-10 top-44 bottom-38 md:top-42 md:bottom-42 w-[2.5px] md:w-[3.5px] bg-white pointer-events-none z-10 block" />
 
               <div className="flex-1 overflow-y-auto custom-scrollbar-hidden z-10 p-6 md:p-10 flex flex-col justify-center">
                 {stepContent}
               </div>
 
-              <div className="flex w-full justify-center pb-8 pt-4 z-20 shrink-0">
+              <div className="flex w-full justify-center pb-18 pt-4 min-[480px]:pb-8 z-20 shrink-0">
                 <button
                   onClick={currentStep === 5 ? handlePayment : handleNext}
                   disabled={!canGoNext() || isSaving}
-                  className={`h-10 md:h-12 rounded-full px-12 md:px-16 font-orbitron text-sm md:text-base font-black transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] ${canGoNext() && !isSaving ? "bg-white text-[#001D39] hover:bg-gray-200 cursor-pointer" : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"}`}
+                  className={`h-11 md:h-14 rounded-xl md:rounded-2xl px-12 md:px-16 font-orbitron text-sm md:text-base font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] 
+                    ${canGoNext() && !isSaving 
+                      ? "bg-white text-[#001D39] hover:bg-gray-100 cursor-pointer" 
+                      : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"
+                    }`}
                 >
                   {isSaving ? "SAVING..." : currentStep === 5 ? "PAY" : "NEXT"}
                 </button>
@@ -617,7 +621,7 @@ export default function RegisterPage() {
             <img 
               src="/register/vector-corner-right.svg" 
               alt="" 
-              className="absolute -bottom-2 -right-2 md:-bottom-5 md:-right-3 w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+              className="absolute -bottom-2 -right-2 md:-bottom-5 md:-right-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
             />
 
             <img 

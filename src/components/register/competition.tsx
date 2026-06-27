@@ -129,9 +129,9 @@ export default function Competition({
   handleNext,
 }: Props) {
   return (
-    <div className="mx-auto flex h-full w-full max-w-2xl flex-col items-center justify-start pt-20 md:pt-18 p-4 md:px-8 z-10 relative">
+    <div className="mx-auto flex h-full w-full max-w-2xl flex-col items-center justify-start pt-32 min-[480px]:pt-20 md:pt-18 px-2 py-4 min-[480px]:p-4 md:px-8 z-10 relative">
       <div className="w-full text-center mb-11 md:mb-8">
-        <h1 className="font-orbitron text-3xl md:text-5xl font-black tracking-[0.15em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+        <h1 className="font-orbitron text-2xl min-[480px]:text-3xl md:text-5xl font-black tracking-[0.15em] text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
           COMPETITION
         </h1>
         <p className="font-montserrat text-sm md:text-base text-white/60 tracking-wide font-medium mt-2">
@@ -139,7 +139,7 @@ export default function Competition({
         </p>
       </div>
 
-      <div className="w-full max-w-sm md:max-w-md flex flex-col gap-4 md:gap-5 px-4">
+      <div className="w-full max-w-[92%] min-[480px]:max-w-sm md:max-w-md flex flex-col gap-4 md:gap-5 px-1 min-[480px]:px-4">
         {competitions.map((c) => {
           const isSelected = formData.competitionId === c.uuid;
           return (
