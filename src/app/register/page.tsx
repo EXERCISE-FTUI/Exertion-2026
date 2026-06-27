@@ -597,11 +597,21 @@ export default function RegisterPage() {
                 {stepContent}
               </div>
 
-              <div className="flex w-full justify-center pb-18 pt-4 min-[480px]:pb-8 z-20 shrink-0">
+              <div className="flex w-full justify-center items-center gap-2 min-[360px]:gap-4 min-[480px]:gap-8 pb-18 pt-4 min-[480px]:pb-8 z-20 shrink-0 px-4">
+                {currentStep > 1 && (
+                  <button
+                    onClick={handleBack}
+                    type="button"
+                    className="h-9 min-[360px]:h-10 min-[480px]:h-11 md:h-14 rounded-xl md:rounded-2xl w-24 min-[360px]:w-28 min-[480px]:w-auto min-[480px]:px-12 md:px-16 font-orbitron text-[11px] min-[360px]:text-xs min-[480px]:text-sm md:text-base font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] bg-white text-[#001D39] hover:bg-gray-100 cursor-pointer"
+                  >
+                    BACK
+                  </button>
+                )}
+
                 <button
                   onClick={currentStep === 5 ? handlePayment : handleNext}
                   disabled={!canGoNext() || isSaving}
-                  className={`h-11 md:h-14 rounded-xl md:rounded-2xl px-12 md:px-16 font-orbitron text-sm md:text-base font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] 
+                  className={`h-9 min-[360px]:h-10 min-[480px]:h-11 md:h-14 rounded-xl md:rounded-2xl w-24 min-[360px]:w-28 min-[480px]:w-auto min-[480px]:px-12 md:px-16 font-orbitron text-[11px] min-[360px]:text-xs min-[480px]:text-sm md:text-base font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] 
                     ${canGoNext() && !isSaving 
                       ? "bg-white text-[#001D39] hover:bg-gray-100 cursor-pointer" 
                       : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"
@@ -613,10 +623,15 @@ export default function RegisterPage() {
             </div>
 
             <img 
-              src="/register/hexagon.svg" 
-              alt="" 
-              className="absolute top-12 right-4 md:top-18 md:right-8 w-20 md:w-36 lg:w-40 h-auto pointer-events-none z-20 opacity-80 drop-shadow-[0_0_10px_rgba(78,142,162,0.5)]"
-            />
+  src="/register/hexagon.svg" 
+  alt="" 
+  className={`absolute h-auto pointer-events-none z-0 opacity-80 drop-shadow-[0_0_10px_rgba(78,142,162,0.5)] transition-all duration-300
+    w-12 min-[360px]:w-16 min-[480px]:w-20 md:w-36 lg:w-40
+    ${currentStep === 1 
+      ? "top-12 right-4 md:top-18 md:right-8" 
+      : "bottom-1 left-1 min-[360px]:bottom-2 min-[360px]:left-2 min-[480px]:bottom-4 min-[480px]:left-4 md:bottom-6 md:left-10"
+    }`}
+/>
 
             <img 
               src="/register/vector-corner-right.svg" 
@@ -624,11 +639,13 @@ export default function RegisterPage() {
               className="absolute -bottom-2 -right-2 md:-bottom-5 md:-right-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
             />
 
-            <img 
-              src="/register/vector-corner-left.svg" 
-              alt="" 
-              className="absolute -bottom-2 -left-2 md:-bottom-5 md:-left-3 w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
-            />
+            {currentStep === 1 && (
+              <img 
+                src="/register/vector-corner-left.svg" 
+                alt="" 
+                className="absolute -bottom-2 -left-2 min-[480px]:-bottom-3 min-[480px]:-left-3 md:-bottom-5 md:-left-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+              />
+            )}
           </div>
         </main>
       </div>
