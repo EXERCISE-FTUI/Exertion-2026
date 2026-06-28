@@ -509,10 +509,10 @@ const Submission = forwardRef<SubmissionRef, Props>(
     );
 
     return (
-      <div className="flex h-full w-full flex-col items-center p-4 text-white md:p-8">
-        <h2 className="mb-6 text-center font-orbitron text-2xl font-bold md:text-3xl lg:text-5xl">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-start px-2 py-4 min-[480px]:p-4 min-[480px]:pt-12 md:px-10 lg:pt-20">
+        <h1 className="mt-8 min-[480px]:mt-0 mb-6 w-full text-center font-orbitron text-xl font-black tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] min-[340px]:text-2xl min-[340px]:tracking-[0.15em] min-[480px]:mb-10 min-[480px]:text-3xl md:mb-14 md:text-5xl">
           SUBMISSION
-        </h2>
+        </h1>
         <div className="w-full max-w-sm md:max-w-4xl">
           <a
             href="https://drive.google.com/drive/folders/1RZM1bc2-XpTd0RKb_DF_QOKdMLIhL43h"

@@ -287,21 +287,21 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
       let fileUrl = "";
 
       if (!(formData.paymentProof instanceof File) || (formData.paymentProof as any).url || formData.paymentProof.name === "payment_proof.pdf") {
-          // If it's a previously uploaded custom object, do nothing (skip upload)
+        // If it's a previously uploaded custom object, do nothing (skip upload)
       } else {
-          const driveFileName = `${formData.groupName}_${formData.competition}_paymentproof`;
-          const fileId = await uploadSingleFile(formData.paymentProof, driveFileName, teamFolderId);
-          fileUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+        const driveFileName = `${formData.groupName}_${formData.competition}_paymentproof`;
+        const fileId = await uploadSingleFile(formData.paymentProof, driveFileName, teamFolderId);
+        fileUrl = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
       }
 
       if (fileUrl) {
-          const supabase = await createClient();
-          const { error } = await supabase
-            .from('submission_documents')
-            .update({ payment_proof: fileUrl })
-            .eq('team_id', formData.teamId);
+        const supabase = await createClient();
+        const { error } = await supabase
+          .from('submission_documents')
+          .update({ payment_proof: fileUrl })
+          .eq('team_id', formData.teamId);
 
-          if (error) throw error;
+        if (error) throw error;
       }
 
       await fetch('/api/sheets', {
@@ -325,10 +325,10 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
   useImperativeHandle(ref, () => ({ handleSave }));
 
   return (
-    <div className="flex h-full w-full flex-col items-center p-4 text-white">
-      <h2 className="mx-auto mb-4 w-full max-w-xs text-left font-orbitron text-xl font-bold text-white md:mb-8 md:text-center md:text-4xl sm:max-w-4xl">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-start px-2 py-4 min-[480px]:p-4 min-[480px]:pt-12 md:px-10 lg:pt-20">
+      <h1 className="mt-8 min-[480px]:mt-0 mb-6 w-full text-center font-orbitron text-xl font-black tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] min-[340px]:text-2xl min-[340px]:tracking-[0.15em] min-[480px]:mb-10 min-[480px]:text-3xl md:mb-14 md:text-5xl">
         PAYMENT
-      </h2>
+      </h1>
       <div className="flex w-full max-w-sm flex-col items-center md:max-w-md">
         <div className="mb-4 flex w-full flex-col justify-center rounded-lg bg-white p-4 text-center shadow-lg md:p-6">
           <div className="text-base font-medium text-[#1D3B89] md:text-lg">Registration Fee</div>
