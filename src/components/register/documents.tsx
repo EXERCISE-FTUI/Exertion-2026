@@ -77,7 +77,7 @@ const apiFinalizeUploadSession = async (resumableSessionUri: string) => {
   return data.fileMetadata;
 };
 
-const CHUNK_SIZE = 256 * 1024; // 256KB
+const CHUNK_SIZE = 256 * 1024;
 
 export interface FormData {
   competition: string;
@@ -86,15 +86,12 @@ export interface FormData {
   studentIdCard: any;
   twibbon: any;
   instagramStory: any;
-
   member2StudentIdCard: any;
   member2Twibbon: any;
   member2InstagramStory: any;
-
   member3StudentIdCard: any;
   member3Twibbon: any;
   member3InstagramStory: any;
-
   submission: any;
   payment: { amount: number };
   groupName: string;
@@ -109,19 +106,15 @@ export interface FormData {
   member3Institute?: string;
   competitionId?: string;
   teamId: string;
-
   studentIdCardDriveId: string;
   twibbonDriveId: string;
   instagramStoryDriveId: string;
-
   member2StudentIdCardDriveId: string;
   member2TwibbonDriveId: string;
   member2InstagramStoryDriveId: string;
-
   member3StudentIdCardDriveId: string;
   member3TwibbonDriveId: string;
   member3InstagramStoryDriveId: string;
-
   submissionDriveId: string;
   paymentProof: any;
   paymentProofDriveId: string;
@@ -165,7 +158,10 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   };
 
   const validateFile = (file: File | null): boolean => {
-    if (!file) { setFileError(null); return true; }
+    if (!file) {
+      setFileError(null);
+      return true;
+    }
     if (file.size > maxSizeMB * 1024 * 1024) {
       setFileError(`File size exceeds ${maxSizeMB} MB.`);
       return false;
@@ -174,7 +170,7 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
     const fileExtension = "." + file.name.split(".").pop()?.toLowerCase();
     const fileType = file.type;
     if (!acceptedFormatsArray.includes(fileExtension) && !acceptedFormatsArray.includes(fileType)) {
-      setFileError(`Unsupported file format. Accepted: ${supportedFormats.toUpperCase()}.`);
+      setFileError(`Unsupported format. Accepted: ${supportedFormats.toUpperCase()}.`);
       return false;
     }
     setFileError(null);
@@ -193,45 +189,62 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (validateFile(file)) onFileUpload(fieldName, file);
-    else { onFileUpload(fieldName, null); e.target.value = ""; }
+    else {
+      onFileUpload(fieldName, null);
+      e.target.value = "";
+    }
   };
 
+  const formatDisplay = supportedFormats.replace(/\./g, "").replace(/,/g, ", ").toUpperCase();
+
   return (
-    <div className="group relative flex h-22 w-full flex-col items-center justify-between rounded-lg border border-gray-200 bg-white p-2 text-gray-800 shadow-md md:h-36 md:p-3">
+    <div className="w-full relative flex flex-col rounded-xl bg-white p-2.5 shadow-[0_0_15px_rgba(255,255,255,0.15)] md:p-3">
       <div
-        className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed p-2 transition-colors duration-200 ${isDragging ? "border-blue-400 bg-blue-50" : "border-gray-300 hover:border-gray-400"}`}
+        className={`relative flex w-full min-h-[100px] min-[480px]:min-h-[120px] md:min-h-[150px] flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors duration-200 ${
+          isDragging ? "border-blue-400 bg-blue-50" : "border-gray-300 hover:border-gray-400"
+        }`}
         onDragEnter={(e) => handleDrag(e, true)}
         onDragLeave={(e) => handleDrag(e, false)}
         onDragOver={(e) => handleDrag(e, true)}
         onDrop={handleDrop}
       >
         {currentFile ? (
-          <>
-            <FileIcon className="mb-1 h-3 w-3 text-green-500 md:h-5 md:w-5" />
+          <div className="flex flex-col items-center justify-center p-4">
+            <FileIcon className="mb-2 h-5 w-5 text-green-500 min-[480px]:h-6 min-[480px]:w-6 md:h-8 md:w-8" />
             {currentFile.url ? (
-              <a href={currentFile.url} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[8px] font-medium text-blue-500 hover:underline md:text-xs">
+              <a
+                href={currentFile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="max-w-[150px] min-[480px]:max-w-[180px] md:max-w-[220px] truncate text-center text-[9px] min-[480px]:text-[10px] md:text-sm font-medium text-blue-500 hover:underline"
+              >
                 {currentFile.name}
               </a>
             ) : currentFile instanceof File ? (
-              <a href={URL.createObjectURL(currentFile)} target="_blank" rel="noopener noreferrer" className="max-w-[90%] truncate text-center text-[8px] font-medium text-blue-500 hover:underline md:text-xs">
+              <a
+                href={URL.createObjectURL(currentFile)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="max-w-[150px] min-[480px]:max-w-[180px] md:max-w-[220px] truncate text-center text-[9px] min-[480px]:text-[10px] md:text-sm font-medium text-blue-500 hover:underline"
+              >
                 {currentFile.name}
               </a>
             ) : (
-              <span className="max-w-[90%] truncate text-center text-[8px] font-medium text-gray-700 md:text-xs">
+              <span className="max-w-[150px] min-[480px]:max-w-[180px] md:max-w-[220px] truncate text-center text-[9px] min-[480px]:text-[10px] md:text-sm font-medium text-gray-700">
                 {currentFile.name}
               </span>
             )}
-            <span className="text-[6px] text-gray-500 md:text-[10px]">
+            <span className="mt-1 text-[8px] text-gray-500 md:text-xs">
               {currentFile.size !== undefined ? (currentFile.size / (1024 * 1024)).toFixed(2) + " MB" : ""}
             </span>
             <Trash
-              className="absolute top-2 right-2 z-10 h-3 w-3 cursor-pointer text-gray-500 hover:text-red-500 md:h-4 md:w-4"
+              className="absolute right-2 top-2 z-10 h-3.5 w-3.5 md:h-5 md:w-5 cursor-pointer text-gray-400 transition-colors hover:text-red-500"
               onClick={() => onRemoveFile(fieldName)}
             />
-          </>
+          </div>
         ) : (
           <>
-            <Upload className="mb-1 h-4 w-4 text-gray-400 md:h-6 md:w-6" />
+            <Upload className="mb-2 h-5 w-5 md:h-7 md:w-7 text-[#94A3B8]" strokeWidth={1.5} />
             <input
               type="file"
               id={`file-upload-${String(fieldName)}`}
@@ -241,23 +254,28 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
             />
             <label
               htmlFor={`file-upload-${String(fieldName)}`}
-              className="cursor-pointer text-center text-[8px] text-gray-600 md:text-[10px]"
+              className="cursor-pointer text-center text-[9px] font-medium text-gray-700 min-[480px]:text-[10px] md:text-xs"
             >
-              Drag & drop or{" "}
-              <span className="font-semibold text-blue-600">Choose File</span>
+              Drag and drop file or <span className="font-bold text-[#3B82F6] underline">Choose File</span>
             </label>
           </>
         )}
       </div>
-      <div className="mt-1 flex w-full justify-between px-1 text-[7px] text-gray-500 md:text-[9px]">
-        <span>Formats: {supportedFormats.toUpperCase()}</span>
-        <span>Max: {maxSizeMB} MB</span>
-        {fileError && (
-          <span className="mt-1 w-1/3 text-center text-red-500 md:w-1/4 md:text-[8px]">
-            {fileError}
-          </span>
-        )}
+
+      <div className="mt-2 flex w-full items-center justify-between px-1 md:mt-3">
+        <span className="text-[7px] font-semibold tracking-wide text-gray-500 min-[480px]:text-[8px] md:text-[10px]">
+          Supported formats: {formatDisplay}
+        </span>
+        <span className="text-[7px] font-semibold tracking-wide text-gray-500 min-[480px]:text-[8px] md:text-[10px]">
+          Maximum Size: {maxSizeMB} MB
+        </span>
       </div>
+
+      {fileError && (
+        <div className="absolute -bottom-5 left-0 w-full text-center text-[9px] font-semibold text-red-400 md:text-xs">
+          {fileError}
+        </div>
+      )}
     </div>
   );
 };
@@ -286,57 +304,62 @@ const MemberDocSection: React.FC<MemberDocSectionProps> = ({
   instagramStoryFile,
   onFileUpload,
   onRemoveFile,
-}) => (
-  <div className="w-full rounded-xl bg-transparent p-3 md:p-5">
-    <div className="mb-3 flex items-center gap-2 md:mb-4">
-      <div>
-        {name && <p className="text-[9px] text-[#44EAB0] md:text-xs">{name}</p>}
-      </div>
-    </div>
+}) => {
+  const displayName = name ? `${label.toUpperCase()} - ${name.toUpperCase()}` : label.toUpperCase();
 
-    <div className="grid grid-cols-3 gap-2 md:gap-4">
-      <div className="flex flex-col items-center gap-1">
-        <p className="text-center font-orbitron text-[7px] text-white md:text-[10px]">
-          Student ID Card
-        </p>
-        <FileUploadBox
-          fieldName={studentIdCardField}
-          currentFile={studentIdCardFile}
-          onFileUpload={onFileUpload}
-          onRemoveFile={onRemoveFile}
-          supportedFormats=".pdf,.png,.jpg,.jpeg"
-          maxSizeMB={20}
-        />
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <p className="text-center font-orbitron text-[7px] text-white md:text-[10px]">
-          Twibbon
-        </p>
-        <FileUploadBox
-          fieldName={twibbonField}
-          currentFile={twibbonFile}
-          onFileUpload={onFileUpload}
-          onRemoveFile={onRemoveFile}
-          supportedFormats=".png,.jpg,.jpeg"
-          maxSizeMB={20}
-        />
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <p className="text-center font-orbitron text-[7px] text-white md:text-[10px]">
-          Instagram Story
-        </p>
-        <FileUploadBox
-          fieldName={instagramStoryField}
-          currentFile={instagramStoryFile}
-          onFileUpload={onFileUpload}
-          onRemoveFile={onRemoveFile}
-          supportedFormats=".png,.jpg,.jpeg"
-          maxSizeMB={20}
-        />
+  return (
+    <div className="flex w-full flex-col mb-8 md:mb-12">
+      <h3 className="mb-4 font-orbitron text-base font-black tracking-wider text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] min-[360px]:text-lg min-[480px]:text-xl md:mb-6 md:text-2xl">
+        {displayName}
+      </h3>
+
+      <div className="flex w-full flex-col gap-4 md:gap-8">
+        <div className="flex w-full flex-col gap-4 md:flex-row md:gap-8">
+          <div className="flex flex-1 flex-col">
+            <span className="mb-1.5 ml-1 text-xs font-medium text-[#FFF2CA] min-[480px]:text-sm md:mb-2 md:text-base">
+              Student Identification Card
+            </span>
+            <FileUploadBox
+              fieldName={studentIdCardField}
+              currentFile={studentIdCardFile}
+              onFileUpload={onFileUpload}
+              onRemoveFile={onRemoveFile}
+              supportedFormats=".pdf,.png,.jpg,.jpeg"
+              maxSizeMB={10}
+            />
+          </div>
+          <div className="flex flex-1 flex-col">
+            <span className="mb-1.5 ml-1 text-xs font-medium text-[#FFF2CA] min-[480px]:text-sm md:mb-2 md:text-base">
+              Twibbon Upload
+            </span>
+            <FileUploadBox
+              fieldName={twibbonField}
+              currentFile={twibbonFile}
+              onFileUpload={onFileUpload}
+              onRemoveFile={onRemoveFile}
+              supportedFormats=".pdf,.png,.jpg,.jpeg"
+              maxSizeMB={10}
+            />
+          </div>
+        </div>
+
+        <div className="mx-auto flex w-full flex-col md:w-[48%]">
+          <span className="mb-1.5 ml-1 text-xs font-medium text-[#FFF2CA] min-[480px]:text-sm md:mb-2 md:text-base">
+            Instagram Story
+          </span>
+          <FileUploadBox
+            fieldName={instagramStoryField}
+            currentFile={instagramStoryFile}
+            onFileUpload={onFileUpload}
+            onRemoveFile={onRemoveFile}
+            supportedFormats=".pdf,.png,.jpg,.jpeg"
+            maxSizeMB={10}
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Documents = forwardRef<DocumentRef, Props>(
   ({ formData, handleFileUpload, removeDocument, updateFormData }, ref) => {
@@ -398,7 +421,6 @@ const Documents = forwardRef<DocumentRef, Props>(
           updateFileProgress(String(fieldName), 100);
           return finalizationResult.id;
         } catch (error: any) {
-          console.error(`Error uploading ${fileNameInDrive}:`, error);
           updateFileProgress(String(fieldName), -1);
           throw error;
         }
@@ -483,7 +505,6 @@ const Documents = forwardRef<DocumentRef, Props>(
           break;
         }
         
-        // Skip uploading if it's the dummy file from a previous session (now an object with a url)
         if (!(file instanceof File) || file.name === "uploaded.pdf" || file.name === "submission.pdf" || file.name === "payment_proof.pdf" || (file as any).url) {
             setOverallUploadStatus(`Skipping previously uploaded ${typeName}...`);
             continue;
@@ -497,7 +518,6 @@ const Documents = forwardRef<DocumentRef, Props>(
           (formData as any)[driveIdField] = fileId;
           setOverallUploadStatus(`${typeName} uploaded successfully!`);
         } catch (error: any) {
-          console.error(`Error uploading ${typeName}:`, error);
           setResult({ error: true, message: `Failed to upload ${typeName}: ${error.message}` });
           allUploadsSuccessful = false;
           break;
@@ -530,7 +550,6 @@ const Documents = forwardRef<DocumentRef, Props>(
           if (saveResponse.error) throw new Error(saveResponse.message);
           setResult({ success: true, message: "Documents saved successfully!" });
         } catch (error: any) {
-          console.error("Error saving documents:", error);
           setResult({ error: true, message: `Failed to save documents: ${error.message}` });
           allUploadsSuccessful = false;
         }
@@ -543,14 +562,14 @@ const Documents = forwardRef<DocumentRef, Props>(
     useImperativeHandle(ref, () => ({ handleSave }));
 
     return (
-      <div className="flex h-full w-full flex-col items-center px-4 pt-2 md:pt-4">
-        <h2 className="mx-auto mb-4 w-full max-w-xs text-left font-orbitron text-xl font-bold text-white md:mb-6 md:text-center md:text-4xl sm:max-w-4xl">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-start px-2 py-4 min-[480px]:p-4 min-[480px]:pt-12 md:px-10 lg:pt-20">
+        <h1 className="mt-8 min-[480px]:mt-0 mb-6 w-full text-center font-orbitron text-xl font-black tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] min-[340px]:text-2xl min-[340px]:tracking-[0.15em] min-[480px]:mb-10 min-[480px]:text-3xl md:mb-14 md:text-5xl">
           REQUIRED DOCUMENTS
-        </h2>
+        </h1>
 
-        <div className="custom-scrollbar-hidden w-full max-w-xs space-y-3 overflow-y-auto pb-4 sm:max-w-4xl md:space-y-4">
+        <div className="flex w-full max-w-[96%] flex-col pb-8 min-[480px]:max-w-md md:max-w-2xl lg:max-w-4xl">
           <MemberDocSection
-            label="Leader"
+            label="Member #1"
             name={formData.leaderName}
             studentIdCardField="studentIdCard"
             twibbonField="twibbon"
@@ -595,8 +614,9 @@ const Documents = forwardRef<DocumentRef, Props>(
 
         {result && (
           <div
-            className={`mx-auto mt-3 w-full max-w-xs rounded-lg p-2 text-center text-sm font-medium sm:max-w-4xl ${result.error ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
-              }`}
+            className={`mx-auto mt-2 w-full max-w-[96%] min-[480px]:max-w-sm rounded-lg p-2 text-center text-sm font-medium ${
+              result.error ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
+            }`}
           >
             {result.message}
           </div>
