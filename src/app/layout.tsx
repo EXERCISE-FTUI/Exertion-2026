@@ -6,6 +6,7 @@ import {
   Exo_2,
   Montserrat,
 } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Script from "next/script";
@@ -35,6 +36,11 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
+const robotechGp = localFont({
+  src: "./fonts/ROBOTECH_GP.ttf",
+  variable: "--font-robotech-gp",
+});
+
 export const metadata: Metadata = {
   title: {
     template: "%s | EXERTION UI 2026",
@@ -51,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${exo2.variable} ${montserrat.className} ${montserrat.variable} scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${exo2.variable} ${montserrat.className} ${montserrat.variable} ${robotechGp.variable} scroll-smooth antialiased`}
     >
       <body>
         {children}
