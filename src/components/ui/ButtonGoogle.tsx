@@ -9,7 +9,7 @@ const ButtonGoogle: React.FC<ButtonGoogleProps> = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="flex w-full cursor-pointer items-center justify-center rounded-3xl border-2 border-baby-blue px-3 py-2 hover:opacity-80"
+      className="flex w-full cursor-pointer items-center justify-center rounded-full bg-[#88D6FA] border-2 border-white px-3 py-2.5 sm:py-3 hover:bg-sky-400 transition-colors"
     >
       <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
         <path
@@ -29,8 +29,8 @@ const ButtonGoogle: React.FC<ButtonGoogleProps> = ({ onClick }) => {
           fill="#EA4335"
         />
       </svg>
-      <h1 className="text-center font-orbitron text-xs font-semibold text-baby-blue sm:text-sm">
-        CONTINUE WITH GOOGLE
+      <h1 className="text-center font-montserrat text-sm font-semibold text-black">
+        Continue With Google
       </h1>
     </div>
   );

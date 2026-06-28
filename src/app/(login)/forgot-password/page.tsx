@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { motion } from "framer-motion";
 import "./forgotpass.css";
 
 const formSchema = z.object({
@@ -91,51 +92,99 @@ const ForgotPasswordPage = () => {
     checkUser();
   }, [router]);
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.5, ease: "easeOut" } 
+    },
+  };
+
   return (
-    <div className="bg-[#0F172A] min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 font-sans relative overflow-hidden max-md:bg-[linear-gradient(29.69deg,_#1E3A8A_2.47%,_#059669_116.12%)] max-sm:bg-[linear-gradient(29.69deg,_#1E3A8A_2.47%,_#059669_116.12%)]">
-      <div className="w-full max-w-2xl sm:max-w-3xl lg:max-w-5xl xl:max-w-6xl z-10 max-md:w-[85vw]">
-        <div
-          className="md:bg-[linear-gradient(29.69deg,_#1E3A8A_2.47%,_#059669_116.12%)] backdrop-blur-lg p-6 sm:p-8 lg:p-12 rounded-2xl max-md:rounded-none md:[clip-path:polygon(0%_0%,90%_0%,100%_20%,100%_100%,10%_100%,0%_80%)] max-md:[clip-path:polygon(0%_0%,85%_0%,100%_15%,100%_100%,15%_100%,0%_85%)] border border-white/10 shadow-2xl min-h-[400px] max-md:min-h-[360px] max-md:bg-[#0F172A]"
-          style={
-            isMdOrLarger
-              ? {
-                  backgroundImage:
-                    "url('/topPolygon.svg'), url('/bottomPolygon.svg'), url('/circuit.svg'), linear-gradient(29.69deg, #1E3A8A 2.47%, #059669 116.12%)",
-                  backgroundRepeat: "no-repeat, no-repeat, no-repeat, no-repeat",
-                  backgroundPosition: "top right, bottom left, center, center",
-                  backgroundSize: "50% 50%, 30% 30%, contain, cover",
-                }
-              : undefined
-          }
+    <div
+      className="relative flex min-h-screen w-full items-stretch justify-center py-20 bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url('/background_login.svg'), linear-gradient(180deg, #528CC0 0%, #7CBCE8 75%, #FFFFFF 100%)`
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="z-20 relative flex flex-col items-center justify-center w-[90%] sm:w-full max-w-[903px] sm:aspect-[903/641] bg-center bg-no-repeat bg-cover sm:bg-contain drop-shadow-2xl rounded-3xl sm:rounded-none overflow-hidden sm:overflow-visible bg-[#042440] sm:bg-transparent"
+        style={{ backgroundImage: "url('/base_verification.svg')" }}
+      >
+        <motion.div 
+          className="flex flex-col items-center justify-center px-6 text-center z-10 space-y-6 sm:space-y-8 w-full max-w-md lg:max-w-xl -mt-4 sm:-mt-8"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.1, delayChildren: 0.3 }
+            }
+          }}
         >
-          <h2 className="orbitron-400 text-2xl max-md:text-3xl max-md:w-xs max-md:text-left sm:text-4xl md:text-4xl lg:text-5xl pt-6 lg:pt-24 lg:pb-32 font-bold max-sm:pt-none mb-2 text-center text-white tracking-wider uppercase">
-            Reset Password
-          </h2>
+          {/* Title */}
+          <motion.h1 
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 1 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.08, delayChildren: 0.6 },
+              },
+            }}
+            className="font-robotech-gp text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wider text-white drop-shadow-[0_0_15px_rgba(68,213,234,0.8)]"
+          >
+            {"FORGOT PASSWORD?".split("").map((char, index) => (
+              <motion.span
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, filter: "blur(4px)" },
+                  visible: { opacity: 1, filter: "blur(0px)" },
+                }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </motion.h1>
+
+          <motion.p 
+            variants={itemVariants}
+            className="font-exo-2 text-sm sm:text-base lg:text-lg text-white"
+          >
+            Enter the email used for your account and we’ll send you a link to reset your password
+          </motion.p>
 
           {errorMessage && (
-            <div className="mb-6 text-center">
-              <p className="text-red-400 text-sm font-medium">{errorMessage}</p>
-            </div>
+            <motion.div variants={itemVariants} className="w-full text-center">
+              <p className="text-red-400 text-sm font-medium bg-red-900/30 py-2 px-4 rounded-md border border-red-500/50">{errorMessage}</p>
+            </motion.div>
           )}
 
           {isSent ? (
-            <div className="text-center space-y-4">
-              <div className="bg-green-500/20 border border-green-400/30 text-green-300 px-6 py-4 pb-4 rounded-lg backdrop-blur-sm">
+            <motion.div variants={itemVariants} className="w-full text-center space-y-4">
+              <div className="bg-green-500/20 border border-green-400/30 text-green-300 px-6 py-4 rounded-lg backdrop-blur-sm">
                 <p className="font-semibold mb-2 text-lg">Reset link sent!</p>
                 <p className="text-sm opacity-90">
                   Please check your email inbox (and spam folder) for
                   instructions to reset your password.
                 </p>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <form
+            <motion.form
+              variants={itemVariants}
               onSubmit={handleSubmit(onSubmit)}
-              className="space-y-6 mt-4 sm:mt-12 lg:mt-2 lg:mb-24"
+              className="w-full space-y-6 flex flex-col items-center"
             >
-              <div className="space-y-2 px-4 sm:px-8 lg:px-16">
-                <div className="relative flex items-center justify-center">
-                  <div className="flex w-full max-w-xl items-center rounded-md border border-gray-300 bg-white transition-all duration-200 focus-within:border-transparent focus-within:ring-2 focus-within:ring-blue-400 sm:max-w-2xl lg:max-w-xl xl:max-w-lg">
+              <div className="w-full space-y-2">
+                <div className="relative flex items-center justify-center w-full">
+                  <div className="flex w-full items-center rounded-md border border-gray-300 bg-white transition-all duration-200 focus-within:border-transparent focus-within:ring-2 focus-within:ring-blue-400">
                     <div className="flex items-center pl-4 sm:pl-5">
                       <svg
                         className="h-5 w-5 text-gray-500 sm:h-6 sm:w-6"
@@ -156,67 +205,61 @@ const ForgotPasswordPage = () => {
                       type="email"
                       placeholder="Enter your email"
                       {...register("email")}
-                      className="exo-2-200 flex-1 border-none bg-transparent py-3 pr-4 pb-8 pl-3 text-base text-gray-800 outline-none placeholder:text-gray-500 max-md:text-lg max-sm:py-4 sm:py-4 sm:pr-5 sm:pl-4 lg:py-5 lg:text-xl"
+                      className="font-exo-2 flex-1 border-none bg-transparent py-3 pr-4 pl-3 text-base text-gray-800 outline-none placeholder:text-gray-500 max-md:text-lg max-sm:py-4 sm:py-4 sm:pr-5 sm:pl-4 lg:py-4 lg:text-xl"
                       aria-invalid={errors.email ? "true" : "false"}
-                      aria-describedby={
-                        errors.email ? "email-error" : undefined
-                      }
+                      aria-describedby={errors.email ? "email-error" : undefined}
                       disabled={isLoading || cooldown > 0}
                     />
                   </div>
                 </div>
                 {errors.email && (
-                  <p
-                    id="email-error"
-                    className="text-red-400 text-sm font-medium"
-                  >
+                  <p id="email-error" className="text-red-400 text-sm font-medium text-center mt-2">
                     {errors.email.message}
                   </p>
                 )}
               </div>
-              <div className="flex justify-center items-center">
-                <div className="relative orbitron-500 w-full px-4 sm:px-8 lg:px-16 flex justify-center">
-                  <button
-                    type="submit"
-                    disabled={isLoading || cooldown > 0}
-                    className="orbitron-500 w-full max-w-xl sm:max-w-2xl lg:max-w-xl xl:max-w-lg items-center border border-[#88CAEF] text-[#88CAEF] font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-full transition-all duration-200 tracking-wider text-xs sm:text-sm uppercase hover:bg-[#88CAEF]/10 focus:outline-none focus:ring-2 focus:ring-[#88CAEF]/40 focus:ring-offset-2 text-center text-base sm:text-lg"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center justify-center">
-                        <svg
-                          className="animate-spin -ml-1 mr-3 h-4 w-4 sm:h-5 sm:w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Sending...
-                      </div>
-                    ) : cooldown > 0 ? (
-                      `Resend available in ${cooldown}s`
-                    ) : (
-                      "Send Code"
-                    )}
-                  </button>
-                </div>
+              
+              <div className="w-full mt-4 flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isLoading || cooldown > 0}
+                  className="font-orbitron w-full max-w-sm flex items-center justify-center bg-[#88CAEF] text-[#042440] font-bold py-3 px-8 rounded-full transition-all duration-200 tracking-wider uppercase hover:bg-[#88CAEF]/90 focus:outline-none focus:ring-2 focus:ring-[#88CAEF]/40 focus:ring-offset-2 text-center text-sm sm:text-base lg:text-lg"
+                >
+                  {isLoading ? (
+                    <div className="flex items-center justify-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#042440]"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Sending...
+                    </div>
+                  ) : cooldown > 0 ? (
+                    `Resend in ${cooldown}s`
+                  ) : (
+                    "Send Code"
+                  )}
+                </button>
               </div>
-            </form>
+            </motion.form>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
