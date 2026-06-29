@@ -252,13 +252,13 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
 };
 
 const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, removeDocument, updateFormData }, ref) => {
-  let price: number = 45000;
+  let price: number = 55001;
   const now = new Date();
   const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
   const currentDate = new Date(utcTime + 7 * 60 * 60 * 1000); // GMT+7
   const targetDate = new Date("2025-07-15T00:00:00+07:00");
   if (currentDate >= targetDate) {
-    price = 55000;
+    price = 65001;
   }
 
   const uploadSingleFile = useCallback(async (file: File, fileNameInDrive: string, teamFolderId: string): Promise<string> => {
@@ -338,19 +338,20 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
         </div>
 
         <div className="mb-6 rounded-lg bg-[#1E293B] p-4 text-center shadow-md w-full">
-          <div className="text-sm font-semibold mb-2">Transfer to:</div>
-          <div className="text-xl font-bold text-[#44EAB0]">123-456-7890 (BCA)</div>
-          <div className="text-sm">a/n Exertion</div>
-          {/* Dummy QR */}
-          <div className="mt-4 flex justify-center">
-            <div className="h-32 w-32 bg-white flex items-center justify-center rounded-md">
-              <span className="text-black font-bold">QR CODE</span>
-            </div>
+          <div className="text-sm font-semibold mb-2 text-white">Transfer to:</div>
+          <div className="text-xl font-bold text-[#44EAB0]">000-302-263-458 (BCA)</div>
+          <div className="text-sm text-white">a/n Muhammad Faqih Mahardhika Digdaya</div>
+          <div className="mt-4 w-full flex justify-center">
+            <img
+              src="/register/QRIS.jpg"
+              alt="QRIS Payment Code"
+              className="h-auto w-full rounded-3xl object-contain"
+            />
           </div>
         </div>
 
         <div className="w-full flex flex-col items-center">
-          <h4 className="mb-2 text-center font-orbitron text-sm">Upload Payment Proof</h4>
+          <h4 className="mb-2 text-center font-orbitron text-sm text-white">Upload Payment Proof</h4>
           <FileUploadBox
             fieldName="paymentProof"
             currentFile={formData.paymentProof}
