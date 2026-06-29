@@ -12,6 +12,7 @@ const page = () => {
 
   const router = useRouter();
 
+  {/* LINK GRUP INFOGRAFIS BLM ADA, NANTI KLO UDH ADA, JANLUP TAMBAHIN DI DASHBOARD JUGAA */}
   const Competitions: Record<CompetitionName, { linkwa: string }> = {
     "ExerMind": {
       linkwa: "https://chat.whatsapp.com/GN4QzCowtvc8VUepQv5sPd",
@@ -58,7 +59,6 @@ const page = () => {
           router.push("/");
         }
       } catch (err: any) {
-        // console.error("Error fetching competition name:", err.message || err);
         setCompName("");
         setWhatsappLink("");
       }
@@ -92,24 +92,24 @@ const page = () => {
         </p>
         <div className="mx-auto flex w-65 flex-col gap-4">
           <ButtonRedirect
-            to="/home"
+            to="/dashboard"
             className="text-md flex h-11 items-center justify-center border-2 bg-white font-semibold text-black transition-all hover:bg-gray-300"
           >
-            <img src="/register/home.svg" alt="Home" className="mr-2 h-6 w-6" />
-            <p className="text-black">Home</p>
+            <img src="/register/dashboard.svg" alt="Dashboard" className="mr-2 h-6 w-6" />
+            <p className="text-black">Dashboard</p>
           </ButtonRedirect>
-          {/* Pastikan whatsappLink ada sebelum merender tombol */}
+
           {whatsappLink && (
             <a
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-md flex h-11 items-center justify-center rounded-lg bg-white font-semibold text-[#00CB24] shadow transition-all hover:bg-gray-300"
+              className="text-sm max-[280px]:text-[10px] max-[280px]:h-9 max-[280px]:px-2 min-[480px]:text-md flex h-11 items-center justify-center rounded-lg bg-white font-semibold text-[#00CB24] shadow transition-all hover:bg-gray-300 px-5 min-[480px]:px-8 whitespace-nowrap"
             >
               <img
                 src="/register/whatsapp.svg"
                 alt="WhatsApp"
-                className="mt-2 mr-2 h-9 w-9"
+                className="mt-1.5 max-[280px]:mt-0.5 mr-2 max-[280px]:mr-1 h-7 w-7 max-[280px]:h-5 max-[280px]:w-5 min-[480px]:h-8 min-[480px]:w-8 object-contain"
               />
               <span className="font-bold">Join WhatsApp Group</span>
             </a>
