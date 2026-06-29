@@ -16,26 +16,34 @@ const inter = Inter({ subsets: ["latin"] });
 
 const About = () => {
   return (
-    <section className="relative flex h-[70vw] w-[120vw] flex-col items-center justify-center gap-[5vw] pl-3 xs:pl-2 md:-mt-10 md:h-[35rem] md:max-w-[2200px] md:gap-3 md:p-0 md:pb-13 lg2:gap-[1.3rem] lg:h-[55rem] lg:gap-[0.67rem]">
+    <section className="home-about-section relative flex h-[60vw] w-[120vw] flex-col items-center justify-center gap-[5vw] pt-[10vw] pl-3 xs:pl-2 lg:-mt-10 lg:h-[55rem] lg:max-w-[1200px] lg:items-start lg:justify-start lg:gap-[0.67rem] lg:p-0 lg:pb-13 lg2:gap-[1.3rem] lg1300:max-w-[2200px]">
+      <img
+        src="/home/about/poly.svg"
+        alt="poly"
+        className="home-about-poly absolute top-[4vw] left-[18vw] z-30 h-[15vw] lg:left-[7rem] lg:top-[40%] lg:h-[11rem] lg:-translate-y-[16vw]"
+      />
+      <img
+        src="/home/about/robot.svg"
+        alt="tangan robot"
+        className="home-about-robot absolute -top-[6vw] right-8 z-30 h-[21vw] lg:top-[40%] lg:h-[14rem] lg:-translate-y-[22rem] md:right-[10vw] lg:right-[8rem]"
+      />
+      <img
+        src="/home/about/segiEnam.svg"
+        alt="segi enam"
+        className="home-about-hex animate-pulse-slow absolute z-10 top-[8vw] right-[25vw] h-[20vw] lg:top-[40%] lg:h-[12rem] lg:right-[22rem] lg:-translate-y-[12.5rem]"
+      />
       <div
-        className={`${orbitron.className} z-20 mt-[0.5vw] flex gap-[1.8vw] text-center text-[5vw] font-bold text-white xs:-mt-3 xs:pt-[7vw] md:mt-0 md:gap-3 md:pt-7 md:pl-0 md:text-[4vw] lg:pt-0 lg:pb-4 lg:text-[3rem] lg1300:pb-9`}
+        className={`z-10 home-about-title ${orbitron.className} absolute lg:translate-x-[60%] lg:translate-y-[3%] lg1300:right-1/2 z-20 -mt-[26vw] w-[64vw] max-w-[46rem] gap-[1.8vw] text-right text-[5.8vw] font-bold text-white xs:-mt-3 xs:pt-[7vw] lg:top-[16rem] lg:right-[38rem] lg:mt-0 lg:w-auto lg:pt-0 lg:pb-4 lg:pl-0 lg:text-[3.5rem] lg:font-medium lg:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] lg:[paint-order:stroke_fill] lg:[text-shadow:0_0_25px_rgba(255,255,255,0.25)] lg1300:pb-9`}
       >
-        <h1>About</h1>
-        <h1 className="bg-gradient-to-b from-white to-[#60C5FF] bg-clip-text text-transparent">
-          Exertion
-        </h1>
+        <h1>About Exertion</h1>
       </div>
-      <div className="z-20 -mt-[2vw] max-h-[13rem] w-[80vw] max-w-[46rem] px-[8vw] text-center text-[2vw] leading-[3.2vw] text-white xs:-mt-[0vw] md:mt-0 md:w-[30rem] md:px-10 md:text-[0.65rem] md:leading-[2rem] lg:w-[38rem] lg:text-[0.9rem] lg:leading-[2.3rem] lg1300:w-[45rem] lg1300:text-[1.06rem]">
-        EXERTION UI adalah sebuah event yang diselenggarakan oleh EXERCISE FTUI.
-        EXERTION UI 2025 hadir menjadi wadah bagi mahasiswa dan siswa di
-        Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi,
-        dan kreativitas umum. Serangkaian kegiatan yang dilaksanakan mencakup
-        webinar, awarding, serta kompetisi utama.
+      <div className="home-about-copy absolute lg:left-1/2 lg:-translate-x-1/2 z-20 -mb-[6.5vw] max-h-[13rem] w-[70vw] max-w-[46rem] px-[9vw] text-left text-[1.6vw] leading-[3.2vw] text-white md:text-[1.6vw] xs:-mt-[0vw] lg:top-[25.5rem] lg:w-[80vw] lg:px-10 lg:text-[1.5rem] lg:leading-[2.3rem] lg1300:w-[50rem] lg1300:text-[1.2rem]">
+        EXERTION UI adalah sebuah event yang diselenggarakan oleh EXERCISE FTUI. EXERTION UI 2026 hadir menjadi wadah bagi mahasiswa dan siswa di Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi, dan kreativitas umum. Serangkaian kegiatan yang dilaksanakan mencakup webinar, awarding, serta kompetisi utama.
       </div>
       <img
-        src="/home/about/BGJaringFulldanFrame.svg"
-        alt="wire and frame"
-        className="absolute -top-7 -left-[4vw] z-10 w-full md:top-1/2 md:left-1/2 md:w-[85rem] md:-translate-x-[55%] md:-translate-y-[40%]"
+        src="/home/about/FrameAbout.svg"
+        alt="frame about"
+        className="z-10 home-about-frame absolute w-[70%] pt-9 lg:top-1/2 lg:left-1/2 lg:w-[70rem] lg:-translate-x-[50%] lg:-translate-y-[40%]"
       />
     </section>
   );

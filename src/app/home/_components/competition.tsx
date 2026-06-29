@@ -18,23 +18,58 @@ const COMPETITIONS = [
   {
     id: 1,
     title: "UI/UX Design",
-    imageBox: "/home/competition/box1.png",
+    imageBox: "/home/competition/boxsatu.svg",
     imageIcon: "/home/competition/computer.png",
-    description: `UI/UX Design adalah kompetisi bagi mahasiswa/i untuk mengasah keterampilan desain, kreativitas, dan kemampuan mahasiswa dalam melakukan analisis terhadap sebuah masalah untuk diberikan solusi penuh berupa desain dan pengalaman user secara inovatif dan efisien. Semua peserta diminta untuk merancang prototype aplikasi berdasarkan tema yang diberikan untuk memecahkan masalah dengan desain yang menarik dan mudah digunakan oleh pengguna. Nantinya karya akan dinilai oleh juri. Setiap tim beranggotakan maksimal 3 orang dan 1 orang hanya bisa mendaftar sebagai 1 tim.`,
+    description: `UI/UX Design adalah kompetisi bagi mahasiswa/i untuk mengasah
+keterampilan desain, kreativitas, dan kemampuan mahasiswa dalam
+melakukan analisis terhadap sebuah masalah untuk diberikan solusi penuh
+berupa desain dan pengalaman user secara inovatif dan efisien. Semua peserta
+diminta untuk merancang prototype aplikasi berdasarkan tema yang diberikan
+untuk memecahkan masalah dengan desain yang menarik dan mudah
+digunakan oleh pengguna. Nantinya karya akan dinilai oleh juri. Setiap tim
+beranggotakan maksimal 3 orang dan 1 orang hanya bisa mendaftar sebagai 1
+tim.`,
   },
   {
     id: 2,
     title: "ExerMind",
-    imageBox: "/home/competition/box2.png",
-    imageIcon: "/home/competition/braincog.png",
-    description: `ExerMind adalah kompetisi bagi siswa/i SMA/SMK sederajat untuk mengasah dan menguji kemampuan logika dan matematika peserta melalui soal-soal dan permainan. Semua peserta diharapkan untuk dapat menjawab soal-soal yang tersedia. Setiap tim terdiri dari 1 - 3 orang dan dan 1 orang hanya bisa mendaftar sebagai 1 tim. Terdiri dari 2 babak yaitu babak penyisihan dan babak 10 besar.`,
+    imageBox: "/home/competition/boxdua.svg",
+    imageIcon: "/home/competition/brain.png",
+    description: `ExerMind merupakan kompetisi bagi siswa/i SMA/SMK
+sederajat untuk mengasah kemampuan logika dan matematika
+melalui berbagai soal dan permainan. Peserta diharapkan
+mampu menyelesaikan setiap tantangan yang diberikan. Setiap
+tim terdiri dari 1–3 orang dan setiap peserta hanya
+diperbolehkan tergabung dalam 1 tim. Kompetisi ini terdiri dari
+dua babak, yaitu babak penyisihan dan babak 10 besar.`,
   },
   {
     id: 3,
     title: "Business Innovation",
-    imageBox: "/home/competition/box3.png",
+    imageBox: "/home/competition/boxtiga.svg",
     imageIcon: "/home/competition/lightbulb.png",
-    description: `Business Innovation adalah kompetisi bagi mahasiswa/i untuk mendorong kemampuan analisis masalah yang menghasilkan sebuah solusi relevan dalam kehidupan manusia. Mengasah kemampuan mahasiswa/i dalam membuat rancangan ide bisnis sesuai dengan teman yang ditentukan. Seluruh peserta akan mengikuti 3 tahap perlombaan yaitu BMC (Business Model Canvas), Proposal, dan presentasi. Setiap tim beranggotakan maksimal 3 orang. 1 orang hanya bisa mendaftar sebagai 1 tim.`,
+    description: `Business Case Competition merupakan kompetisi bagi
+mahasiswa/i untuk mengasah kemampuan analisis dan pemecahan masalah melalui studi kasus bisnis. Peserta dituntut
+untuk menyusun solusi yang strategis, inovatif, dan relevan
+terhadap permasalahan yang diberikan. Seluruh peserta akan
+mengikuti beberapa tahap perlombaan, yaitu pengerjaan case
+brief, pengumpulan proposal solusi, dan presentasi di hadapan
+juri. Setiap tim terdiri dari maksimal 3 orang dan setiap peserta
+hanya diperbolehkan tergabung dalam 1 tim.`,
+  },
+  {
+    id: 4,
+    title: "Infographic",
+    imageBox: "/home/competition/boxempat.svg",
+    imageIcon: "/home/competition/paper.png",
+    description: `Infografis merupakan kompetisi bagi siswa/i SMA/SMK sederajat
+untuk mengasah kemampuan berpikir kritis, analisis, dan problem
+solving dalam menyelesaikan permasalahan teknologi melalui ide
+solusi yang inovatif dan relevan. Peserta akan diberikan sebuah studi
+kasus teknologi nyata untuk dianalisis dan diselesaikan melalui
+infografis visual yang menarik dan mudah dipahami. Karya peserta akan dinilai oleh juri berdasarkan solusi yang diberikan, serta kualitas
+visual infografis. Setiap tim terdiri dari maksimal 3 orang dan setiap
+peserta hanya diperbolehkan tergabung dalam 1 tim.`,
   },
 ];
 
@@ -63,127 +98,157 @@ const Competition = () => {
       className="relative mb-[1vw] flex h-full w-full max-w-[2200px] flex-col items-center justify-center pt-[3vw]"
     >
       <img
-        src="/home/kotak.svg"
-        alt="kotak"
-        className="absolute top-0 right-0 h-[20vw] animate-pulse md:h-[10rem] lg:h-[16rem]"
+        src="/home/competition/SegiEnam.svg"
+        alt="segienam"
+        className="animate-pulse-slow absolute top-0 right-0 h-[20vw] lg:h-[16rem]"
       />
 
       <img
-        src="/home/kotak.svg"
-        alt="kotak"
-        className="absolute -bottom-[10vw] left-0 h-[20vw] -scale-x-100 animate-pulse md:-bottom-[9rem] md:h-[10rem] lg:h-[16rem]"
+        src="/home/competition/Bulet.svg"
+        alt="segienam"
+        className="animate-pulse-slow absolute -top-8 right-18 h-[12vw] lg:-top-[5rem] lg:right-[10vw] lg:h-[8rem]"
       />
 
       <img
-        src="/home/wire.svg"
-        alt="wire"
-        className="absolute top-[2vw] left-0 z-10 h-[8vw] animate-pulse md:h-[4rem] lg:h-[6rem]"
+        src="/home/competition/Kawat1.svg"
+        alt="kawat"
+        className="absolute -top-[8vw] left-0 z-10 h-[8vw] animate-pulse lg:h-[8rem]"
       />
 
       <img
-        src="/home/wire.svg"
-        alt="wire"
-        className="absolute right-0 bottom-[2vw] h-[7vw] -scale-x-100 animate-pulse md:bottom-[5rem] md:h-[4rem] lg:h-[6rem]"
+        src="/home/competition/SegiEnam2.svg"
+        alt="gambar mascot"
+        className="animate-pulse-slow absolute bottom-[20vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[12rem]"
       />
 
-      <div className="flex h-auto w-[80vw] flex-col items-center justify-center md:w-[55vw] md:gap-[3rem]">
-        <div
-          className={`mb-[3vw] text-center text-[4vw] font-bold text-white md:text-[3rem] lg:mb-[3rem] ${orbitron.className}`}
-        >
-          Competition
+      <img
+        src="/home/competition/Kawat2.svg"
+        alt="kawat"
+        className="absolute right-0 bottom-[4vw] h-[12vw] animate-pulse lg:bottom-[5rem] lg:h-[8rem]"
+      />
+
+      <div className="flex h-auto w-[80vw] flex-col items-center justify-center lg:w-[55vw] lg:gap-[3rem]">
+        <div className="relative flex flex-col items-center justify-center">
+          <img
+            src="/home/timeline/wire3.svg"
+            alt="kawat tipis"
+            className="absolute top-[-0.3rem] left-1/2 z-10 h-[10vw] -translate-x-1/2 animate-pulse md:max-lg:top-[-0.5rem] lg:top-[-2.55rem] lg:h-[9rem]"
+          />
+
+          <div
+            className={`relative z-20 text-center text-[6vw] font-medium text-white lg:text-[3rem] lg:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] lg:[paint-order:stroke_fill] lg:[text-shadow:0_0_12px_rgba(82,151,193,0.9),0_0_25px_rgba(82,151,193,0.5)] ${orbitron.className}`}
+          >
+            Competition
+          </div>
         </div>
 
-        {COMPETITIONS.map((item) => (
-          <div
-            key={item.id}
-            className="flex flex-col items-center justify-center"
-          >
-            <div className="flex h-[15vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center md:h-[5rem] md:w-[100rem]">
-              <img
-                src={item.imageBox}
-                alt={item.title}
-                className="absolute h-[12vw] md:h-[7rem] lg:h-[7rem]"
-              />
+        {COMPETITIONS.map((item) => {
+          const translateClass =
+            openSection === item.id
+              ? item.id % 2 !== 0
+                ? "-translate-x-[11vw] lg:-translate-x-[6.5vw]"
+                : "translate-x-[11vw] lg:translate-x-[12.2vw]"
+              : "translate-x-0";
+          const arrowTranslateClass =
+            openSection === item.id
+              ? item.id % 2 !== 0
+                ? "-translate-x-[11vw] lg:-translate-x-[6.5vw]"
+                : "translate-x-[11vw] lg:translate-x-[12.2vw]"
+              : "translate-x-0";
+          return (
+            <div
+              key={item.id}
+              className="flex flex-col items-center justify-center"
+            >
+              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[5rem]">
+                <img
+                  src={item.imageBox}
+                  alt={item.title}
+                  className={`absolute h-[12vw] transition-transform duration-500 ease-in-out lg:h-[7rem] ${translateClass}`}
+                />
 
-              <div className="relative z-20 w-[70vw] md:w-[40%]">
-                <div
-                  onClick={() =>
-                    setOpenSection(openSection === item.id ? null : item.id)
-                  }
-                  className={`flex cursor-pointer justify-center`}
-                >
+                <div className="relative z-20 w-[70vw] lg:w-[36.5rem]">
                   <div
-                    className={`text-[3vw] font-normal text-white md:text-[2rem] ${orbitron.className}`}
+                    onClick={() =>
+                      setOpenSection(openSection === item.id ? null : item.id)
+                    }
+                    className={`flex cursor-pointer justify-center`}
                   >
-                    {item.title}
-                  </div>
+                    <div
+                      className={`transition-transform duration-500 ease-in-out ${translateClass} text-[3vw] font-normal text-white lg:text-[2rem] ${orbitron.className}`}
+                    >
+                      {item.title}
+                    </div>
 
-                  <div className={`absolute right-0 text-white`}>
-                    <ChevronDownArrow
-                      className={`h-[5vw] w-[5vw] origin-center transform-gpu text-white transition-transform duration-300 ease-in-out md:h-[3.5vw] md:w-[3.5vw] ${
-                        openSection === item.id ? "rotate-180" : "rotate-0"
-                      }`}
-                    />
+                    <div
+                      className={`absolute top-1/2 -translate-y-1/2 fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-500 ease-in-out ${arrowTranslateClass} ${item.id % 2 !== 0 ? "right-[9vw] lg:right-[3rem]" : "left-[9vw] lg:left-[3rem]"}`}
+                    >
+                      <ChevronDownArrow
+                        className={`h-[5vw] w-[5vw] origin-center transform-gpu fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-300 ease-in-out lg:h-[3rem] lg:w-[3rem] ${
+                          openSection === item.id ? "rotate-180" : "rotate-0"
+                        }`}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              className={`flex items-center justify-center overflow-hidden transition-all duration-500 ease-in-out ${
-                openSection === item.id
-                  ? "max-h-screen opacity-100"
-                  : "max-h-0 opacity-0"
-              }`}
-            >
               <div
-                ref={(el) => {
-                  contentRefs.current[item.id] = el;
-                }}
-                className={`flex w-4/5 transform gap-[2vw] border border-cyan-400 border-t-cyan-400 bg-[#0a1033] px-[4vw] py-[3vw] transition-all duration-500 ease-in-out md:mt-[0.5vw] md:mr-[2.5vw] md:ml-[8vw] md:w-1/2 md:gap-[1.5vw] md:border-t-2 md:px-[2vw] md:py-[2vw] ${
-                  openSection === item.id ? "translate-y-0" : "-translate-y-4"
+                className={`flex w-full max-w-[57.5rem] items-center justify-center transition-all duration-500 ease-in-out ${
+                  openSection === item.id
+                    ? "max-h-screen opacity-100"
+                    : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="flex h-auto w-[10vw] items-center text-white">
-                  <img src={item.imageIcon} alt={item.title} />
-                </div>
-                <div className="flex w-[80%] flex-col items-center">
-                  <p
-                    className={`text-justify text-[1.9vw] text-white md:text-[0.8vw] ${exo2.className}`}
-                  >
-                    {item.description}
-                  </p>
+                <div
+                  ref={(el) => {
+                    contentRefs.current[item.id] = el;
+                  }}
+                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[3rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${
+                    openSection === item.id ? "translate-y-0" : "-translate-y-4"
+                  }`}
+                >
+                  <div className="flex h-auto w-[10vw] items-center text-white lg:w-[18vw] lg:translate-x-[1.42rem]">
+                    <img src={item.imageIcon} alt={item.title} />
+                  </div>
+                  <div className="flex w-[80%] flex-col items-center">
+                    <p
+                      className={`text-justify text-[1.9vw] text-white lg:text-[1vw] ${exo2.className}`}
+                    >
+                      {item.description}
+                    </p>
 
-                  <div className="flex w-full justify-center gap-5 pt-[2vw] text-center text-[2vw] md:pt-[1vw] md:text-[0.8vw]">
-                    <button
-                      onClick={() => {
-                        if (user) {
-                          router.push("/register");
-                        } else {
-                          router.push("/sign-in");
+                    <div className="flex w-full justify-center gap-5 pt-[2vw] text-center text-[2vw] lg:pt-[1vw] lg:text-[0.8vw]">
+                      <button
+                        onClick={() => {
+                          if (user) {
+                            router.push("/register");
+                          } else {
+                            router.push("/sign-in");
+                          }
+                        }}
+                        className="w-[50%] rounded-[5px] border border-[#03CDFE] px-[2vw] py-[0.5vw] text-white transition-colors duration-300 hover:bg-white hover:text-[#0a1033] lg:w-[50%] lg:py-[0.8rem] lg:text-[1rem]"
+                      >
+                        Daftar Sekarang
+                      </button>
+                      <button
+                        onClick={() =>
+                          window.open(
+                            "https://drive.google.com/drive/folders/1RZM1bc2-XpTd0RKb_DF_QOKdMLIhL43h",
+                            "_blank",
+                          )
                         }
-                      }}
-                      className="w-[50%] rounded-sm border-1 border-white px-[2vw] py-[0.5vw] text-white transition-colors duration-300 hover:bg-white hover:text-[#0a1033]"
-                    >
-                      Daftar Sekarang
-                    </button>
-                    <button
-                      onClick={() =>
-                        window.open(
-                          "https://drive.google.com/drive/folders/1RZM1bc2-XpTd0RKb_DF_QOKdMLIhL43h",
-                          "_blank",
-                        )
-                      }
-                      className="w-[50%] rounded-sm border-1 border-white px-[2vw] py-[0.5vw] text-white transition-colors duration-300 hover:bg-white hover:text-[#0a1033]"
-                    >
-                      GuideBook
-                    </button>
+                        className="w-[50%] rounded-[5px] border border-[#03CDFE] px-[2vw] py-[0.5vw] text-white transition-colors duration-300 hover:bg-white hover:text-[#0a1033] lg:w-[50%] lg:py-[0.8rem] lg:text-[1rem]"
+                      >
+                        GuideBook
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

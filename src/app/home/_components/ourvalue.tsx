@@ -16,60 +16,70 @@ const inter = Inter({ subsets: ["latin"] });
 const Values = [
   {
     id: 0,
-    title: "Eksploratif",
+    title: "Critical",
     description:
-      "Exertion 2025 mendorong semangat mahasiswa dan siswa untuk bisa bereksplorasi tanpa batas dan mengetahui lebih dalam permasalahan nyata.",
+      "EXERTION 2026 mendorong mahasiswa dan siswa untuk berpikir kritis dalam memahami suatu masalah. Dengan pola pikir yang logis dan objektif, peserta diharapkan mampu menciptakan solusi yang kreatif, tepat sasaran, dan benar-benar bermanfaat bagi masyarakat.",
   },
   {
     id: 1,
-    title: "Solutif",
+    title: "Creative",
     description:
-      "Exertion 2025 membentuk mahasiswa dan siswa yang tidak hanya berfokus terhadap identifikasi masalah, tetapi fokus untuk menciptakan solusi yang terukur dan berdampak.",
+      "EXERTION 2026 memupuk kreativitas mahasiswa dan siswa untuk menciptakan inovasi yang bukan sekadar berbeda. Nilai ini mendorong peserta untuk mengeksplorasi gagasan dan mengubahnya menjadi karya atau solusi yang relevan, bermanfaat, serta memberikan dampak positif yang nyata.",
   },
   {
     id: 2,
-    title: "Inovatif",
+    title: "Contributive",
     description:
-      "Exertion 2025 menanamkan nilai inovatif dengan mendorong mahasiswa dan siswa untuk menciptakan gagasan ide yang tidak hanya fokus pada kreativitas, tetapi tetap aplikatif dan relevan.",
+      "EXERTION 2026 menanamkan nilai kontribusi agar setiap ide dan inovasi tidak hanya sekadar kreatif, tetapi juga membawa manfaat nyata. Nilai contributive ini bertujuan membangun kepedulian peserta terhadap masalah di sekitarnya, sehingga mereka mampu merumuskan solusi yang relevan dan berdampak positif bagi masyarakat di masa depan.",
   },
 ];
 
 const OurValue = () => {
   return (
-    <section className="flex h-full w-full max-w-[2200px] flex-col items-center justify-center pt-[15vw] pb-[10vw] md:pt-8 md:pb-[6rem]">
+    <section className="relative flex h-full w-full max-w-[2200px] flex-col items-center justify-center pt-[5vw] pb-[15vw] md:pt-8 md:pb-[6rem] md:max-lg:pt-[5vw] md:max-lg:pb-[15vw] lg:pt-[6rem] lg:pb-[2rem]">
+      <img
+        src="/home/ourvalue/kawat.svg"
+        alt="kawat"
+        className="pointer-events-none absolute top-[2vw] right-0 z-0 h-[12vw] animate-pulse md:top-8 md:h-[10rem] md:max-lg:top-[2vw] md:max-lg:h-[12vw] lg:-top-6 lg:h-[8rem]"
+      />
+
+      <img
+        src="/home/ourvalue/robot.svg"
+        alt="robot"
+        className="absolute -top-[6vw] left-0 z-0 h-[30vw] md:top-8 md:h-[10rem] md:max-lg:-top-[6vw] md:max-lg:h-[30vw] lg:-top-[9.5rem] lg:h-[20rem]"
+      />
+
       {/* judul */}
       <div
-        className={`${orbitron.className} flex gap-[1vw] pb-[4vw] text-center text-[5vw] font-bold text-white md:gap-2 md:pb-12 md:text-[3.5rem]`}
+        className={`${orbitron.className} flex gap-[1vw] pb-[4vw] text-center text-[6vw] font-medium text-white lg:pb-[10vw] md:gap-2 md:pb-12 md:text-[3.5rem] md:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] md:[paint-order:stroke_fill] md:[text-shadow:0_0_12px_rgba(82,151,193,0.9),0_0_25px_rgba(82,151,193,0.5)] md:max-lg:gap-[1vw] md:max-lg:pb-[6vw] md:max-lg:text-[6vw] lg1:pb-0`}
       >
-        <h1>Our</h1>
-        <h1 className="bg-gradient-to-b from-white to-[#60C5FF] bg-clip-text text-transparent">
-          Value
-        </h1>
+        <h1>Our Value</h1>
       </div>
 
       {/* cards for values */}
-      <div className="relative flex max-w-[1000px] flex-wrap justify-center gap-[5vw] md:gap-10">
+      <div className="relative flex max-w-full max-h-[700px] flex-wrap justify-center gap-[1vw] md:gap-0 md:max-lg:gap-[1vw] lg1:-mt-12">
         {Values.map((value) => (
           <div
             key={value.id}
-            className={`animate-pulse-slow relative flex h-[40vw] w-[38%] flex-col items-center rounded-lg bg-white p-[3vw] shadow-lg drop-shadow-[0_0_10px_#44D5EA] md:h-[31vw] md:w-[13rem] md:p-6 lg2:h-[20rem] lg2:w-[15rem] lg1:w-[17rem] ${value.id % 2 !== 0 ? "translate-y-[0vw] md:translate-y-10" : ""} `}
+            className={`relative flex h-[40vw] w-[45%] flex-col items-center p-[3vw] md:w-[16rem] md:p-6 md:max-lg:h-[40vw] md:max-lg:w-[45%] md:max-lg:p-[3vw] lg:w-[21rem] lg2:w-[28rem] lg1:w-[23rem] ${value.id % 2 !== 0 ? "translate-y-[0vw] md:translate-y-10 md:max-lg:translate-y-[0vw]" : ""} `}
           >
             <img
-              src={`/home/ourvalue/ourvalue.svg`}
-              alt="wire"
-              className="absolute top-0 z-20 h-full w-[110%] md:w-full"
+              src={`/home/ourvalue/FrameOurValue.svg`}
+              alt="frame our value"
+              className="absolute z-20 h-full w-full -mt-[6vw] md:-mt-[8vw] xl:-translate-y-[10%] lg1:-translate-y-[0%] lg1300:-translate-y-[60%]"
             />
 
             <h2
-              className={`${orbitron.className} pb-[1vw] text-[3.8vw] font-bold text-[#60C5FF] md:pb-3 md:text-[1.5rem] lg2:text-[1.9rem] lg1:text-[2rem]`}
+              className={`${orbitron.className} home-value-title z-20 w-full pl-4 text-left text-[3.5vw] font-semibold text-sky-300 md:pt-8 md:pb-3 md:text-[1.5rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 md:max-lg:text-[3.5vw] lg2:text-[1.9rem] lg1:text-[1.8rem] lg:px-[2.2rem] lg2:mt-[10vw] lg1:-mt-[2vw]`}
             >
               {value.title}
             </h2>
             <p
-              className={`${exo2.className} pt-2 text-center text-[2.1vw] text-gray-700 md:px-3 md:text-[0.7rem] lg2:text-[0.8rem] lg1:text-[0.9rem]`}
+              className={`${exo2.className} home-value-desc z-20 pr-4 pl-4 text-left text-[1.5vw] font-medium text-white md:px-3 md:text-[0.7rem] md:max-lg:px-4 md:max-lg:text-[1.5vw] md:max-lg:leading-[1.08] lg2:text-[0.75rem] lg1:text-[0.76rem] lg:px-[2.2rem]`}
             >
               {value.description}
             </p>
+            
           </div>
         ))}
       </div>
