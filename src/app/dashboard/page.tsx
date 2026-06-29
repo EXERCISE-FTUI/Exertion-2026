@@ -95,9 +95,12 @@ export default function DashboardPage() {
               leaderEmail: "naufal@ui.ac.id",
               leaderWhatsappNumber: "081234567890",
               memberCount: 1,
+              competitionName: "UI/UX Design",
               studentIdCard: { name: "View ID Card", url: "#" },
               twibbon: { name: "View Twibbon", url: "#" },
               instagramStory: { name: "View IG Story", url: "#" },
+              submission: { name: "View Submission", url: "#" },
+              paymentProof: { name: "View Payment Proof", url: "#" },
             });
             setWhatsappLink("https://chat.whatsapp.com/GN4QzCowtvc8VUepQv5sPd");
             setLoading(false);
@@ -130,6 +133,7 @@ export default function DashboardPage() {
           leaderEmail: data.leader_email || "",
           leaderWhatsappNumber: data.leader_whatsapp_number || "",
           memberCount: data.member_count || 1,
+          competitionName: data.competition_name || "",
           member2Name: data.member2_name || "",
           member2Institute: data.member2_institute || "",
           member3Name: data.member3_name || "",
@@ -137,6 +141,8 @@ export default function DashboardPage() {
           studentIdCard: docs?.student_id_card_link ? { name: "View ID Card", url: docs.student_id_card_link } : null,
           twibbon: docs?.twibbon_upload_link ? { name: "View Twibbon", url: docs.twibbon_upload_link } : null,
           instagramStory: docs?.instagram_story_link ? { name: "View IG Story", url: docs.instagram_story_link } : null,
+          submission: docs?.task_link ? { name: "View Submission", url: docs.task_link } : null,
+          paymentProof: docs?.payment_proof ? { name: "View Payment Proof", url: docs.payment_proof } : null,
           member2StudentIdCard: docs?.member2_student_id_card_link ? { name: "View ID Card", url: docs.member2_student_id_card_link } : null,
           member2Twibbon: docs?.member2_twibbon_upload_link ? { name: "View Twibbon", url: docs.member2_twibbon_upload_link } : null,
           member2InstagramStory: docs?.member2_instagram_story_link ? { name: "View IG Story", url: docs.member2_instagram_story_link } : null,
@@ -311,6 +317,15 @@ export default function DashboardPage() {
                 </div>
                 <div className="mt-3 min-[480px]:mt-4 flex flex-col sm:w-[48%]">
                   <DocumentDisplayBox label="Instagram Story" fileName={dbData?.instagramStory?.name} fileUrl={dbData?.instagramStory?.url} />
+                </div>
+
+                <div className="mt-5 border-t border-[#4E8EA2]/20 pt-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 md:gap-6">
+                    {dbData?.competitionName !== "ExerMind" && (
+                      <DocumentDisplayBox label="Final Submission Document" fileName={dbData?.submission?.name} fileUrl={dbData?.submission?.url} />
+                    )}
+                    <DocumentDisplayBox label="Payment Receipt Proof" fileName={dbData?.paymentProof?.name} fileUrl={dbData?.paymentProof?.url} />
+                  </div>
                 </div>
               </div>
 
