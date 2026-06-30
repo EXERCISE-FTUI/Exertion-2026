@@ -77,7 +77,7 @@ const PowerUpItemBtn = ({
   );
 };
 
-const ChoosePower = () => {
+const ChoosePower = ({ onComplete }: { onComplete?: (powers: PowerUpOption[]) => void }) => {
   const [currentItem, setCurrentItem] = useState<number | null>(0);
   const [selectedItems, setSelectedItems] = useState<PowerUpOption[]>([
     null,
@@ -179,7 +179,7 @@ const ChoosePower = () => {
           <button
             className="rounded-sm bg-blackish-green px-12 py-2 font-orbitron font-bold text-white disabled:opacity-70"
             onClick={() => {
-              console.log("hello");
+              if (onComplete) onComplete(selectedItems);
             }}
             disabled={!canSubmit()}
           >

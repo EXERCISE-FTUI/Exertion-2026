@@ -6,7 +6,7 @@ import Link from "next/link";
 import { resendEmailSignUp } from "@/actions/auth/resendEmailSignUp";
 import { redirect, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { motion } from "motion/react";
+import { motion, Variants } from "motion/react";
 
 const RESEND_DELAY = 30;
 
@@ -108,7 +108,7 @@ const ConfirmationPage = () => {
     return () => clearInterval(timer);
   }, [canResend, remainingTime]);
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 10 },
     visible: { 
       opacity: 1, 
