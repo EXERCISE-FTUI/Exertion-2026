@@ -23,7 +23,7 @@ const competitions = [
 
     {
         id: "business",
-        name: "Business Case Competition",
+        name: "Business Plan Competition",
         icon: "/icons/business.png",
         uuid: "9c200794-6ade-4817-b7ec-f039242705ef",
         documentDriveId: "1w9bwTTpJXmL-UdK2WFFFRVOrRzH4D7mk"
@@ -57,7 +57,7 @@ const competitions = [
 //     },
 //     {
 //         id: "business",
-//         name: "Business Innovation",
+//         name: "Business Plan",
 //         icon: "/icons/business.png",
 //         uuid: "ba18d40b-fb13-4fd9-a5bb-af9f78aca8c4",
 //         documentDriveId: "1ibOO6PjZjhBZJVNXg7kAPPBV3q7rdghC",

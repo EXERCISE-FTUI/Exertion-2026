@@ -63,13 +63,12 @@ const Header = ({ isSigned, onSignOut, displayName }: HeaderProps) => {
 
   return (
     <div
-      className={`fixed top-0 flex h-[220px] w-full max-w-[2200px] items-center justify-between px-4 md:justify-around ${orbitron.className} z-50 ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300 ease-in-out bg-top bg-no-repeat`}
+      className={`fixed top-0 flex h-[160px] w-full max-w-[2200px] items-center justify-between px-4 md:justify-around ${orbitron.className} z-50 ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300 ease-in-out bg-top bg-no-repeat`}
       style={{
         backgroundImage: `url('/home/header/Header2.svg'),url('/home/header/Frame1.svg')`,
-        backgroundSize: 'auto, auto,',
+        backgroundSize: '100% 77.64%, 100% 100%',
         backgroundPosition: 'top center',
         backgroundRepeat: 'no-repeat'
-        
       }}
     >
       <Link href="#home">
@@ -100,17 +99,25 @@ const Header = ({ isSigned, onSignOut, displayName }: HeaderProps) => {
         >
           TIMELINE
         </Link>
+        <Link
+          href="/dashboard"
+          className="transition-all duration-300 hover:font-bold hover:underline"
+        >
+          DASHBOARD
+        </Link>
       </div>
-      <div className="hidden items-center gap-4 md:flex">
+      <div className="hidden items-center gap-4 mt-[-50px] md:flex">
         {isSigned && displayName ? (
-          <h1 className="text-lg font-semibold whitespace-nowrap text-white">
-            {displayName}
-          </h1>
+          <Link href="/dashboard">
+            <h1 className="cursor-pointer text-lg font-semibold whitespace-nowrap text-white transition-all duration-300 hover:underline">
+              {displayName}
+            </h1>
+          </Link>
         ) : null}
 
         <button
           onClick={handleRedirectSign}
-          className="flex w-fit cursor-pointer items-center justify-center mt-[-50px] rounded-2xl bg-white px-3 py-1 text-center text-[#1C465C] transition-all duration-300 hover:scale-105 hover:font-bold"
+          className="flex w-fit cursor-pointer items-center justify-center rounded-2xl bg-white px-3 py-1 text-center text-[#1C465C] transition-all duration-300 hover:scale-105 hover:font-bold"
         >
           {isSigned ? "SIGN OUT" : "SIGN IN"}
         </button>
@@ -137,10 +144,18 @@ const Header = ({ isSigned, onSignOut, displayName }: HeaderProps) => {
             >
               TIMELINE
             </Link>
+            <Link
+              href="/dashboard"
+              className="w-full py-2 text-center transition-colors duration-200"
+            >
+              DASHBOARD
+            </Link>
             {isSigned && displayName ? (
-              <h1 className="text-lg font-semibold whitespace-nowrap text-white">
-                {displayName}
-              </h1>
+              <Link href="/dashboard">
+                <h1 className="cursor-pointer py-2 text-center text-lg font-semibold whitespace-nowrap text-white transition-colors duration-200 hover:underline">
+                  {displayName}
+                </h1>
+              </Link>
             ) : null}
             <button
               onClick={handleRedirectSign}

@@ -20,6 +20,7 @@ const COMPETITIONS = [
     title: "UI/UX Design",
     imageBox: "/home/competition/boxsatu.svg",
     imageIcon: "/home/competition/computer.png",
+    guideBookLink: "https://drive.google.com/file/d/1dU5RRlT5tJGJ5S4BMvA0mZVOlHM1EdkA/view?usp=sharing",
     description: `UI/UX Design adalah kompetisi bagi mahasiswa/i untuk mengasah
 keterampilan desain, kreativitas, dan kemampuan mahasiswa dalam
 melakukan analisis terhadap sebuah masalah untuk diberikan solusi penuh
@@ -35,6 +36,7 @@ tim.`,
     title: "ExerMind",
     imageBox: "/home/competition/boxdua.svg",
     imageIcon: "/home/competition/brain.png",
+    guideBookLink: "https://drive.google.com/file/d/1myWCG9rkP6FEG_kMdGFxnlDvl7VuxFKX/view?usp=sharing",
     description: `ExerMind merupakan kompetisi bagi siswa/i SMA/SMK
 sederajat untuk mengasah kemampuan logika dan matematika
 melalui berbagai soal dan permainan. Peserta diharapkan
@@ -45,23 +47,18 @@ dua babak, yaitu babak penyisihan dan babak 10 besar.`,
   },
   {
     id: 3,
-    title: "Business Innovation",
+    title: "Business Plan",
     imageBox: "/home/competition/boxtiga.svg",
     imageIcon: "/home/competition/lightbulb.png",
-    description: `Business Case Competition merupakan kompetisi bagi
-mahasiswa/i untuk mengasah kemampuan analisis dan pemecahan masalah melalui studi kasus bisnis. Peserta dituntut
-untuk menyusun solusi yang strategis, inovatif, dan relevan
-terhadap permasalahan yang diberikan. Seluruh peserta akan
-mengikuti beberapa tahap perlombaan, yaitu pengerjaan case
-brief, pengumpulan proposal solusi, dan presentasi di hadapan
-juri. Setiap tim terdiri dari maksimal 3 orang dan setiap peserta
-hanya diperbolehkan tergabung dalam 1 tim.`,
+    guideBookLink: "",
+    description: `Business Plan Competition adalah kompetisi bagi mahasiswa/i untuk mengembangkan ide bisnis yang inovatif menjadi rencana bisnis yang terstruktur dan kompetitif. Peserta akan menyusun model bisnis, strategi, dan peluang pengembangan untuk menghasilkan business plan yang berkualitas. Tujuh tim terbaik (Top 7) akan melaju ke babak final untuk mempresentasikan rencana bisnis mereka di hadapan dewan juri. Setiap tim terdiri dari 1–3 orang.`,
   },
   {
     id: 4,
     title: "Infographic",
     imageBox: "/home/competition/boxempat.svg",
     imageIcon: "/home/competition/paper.png",
+    guideBookLink: "https://drive.google.com/file/d/1WiBdBdHqAP-FlP-xSfMU6-ha47MbyjrB/view?usp=sharing",
     description: `Infografis merupakan kompetisi bagi siswa/i SMA/SMK sederajat
 untuk mengasah kemampuan berpikir kritis, analisis, dan problem
 solving dalam menyelesaikan permasalahan teknologi melalui ide
@@ -184,9 +181,8 @@ const Competition = () => {
                       className={`absolute top-1/2 -translate-y-1/2 fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-500 ease-in-out ${arrowTranslateClass} ${item.id % 2 !== 0 ? "right-[9vw] lg:right-[3rem]" : "left-[9vw] lg:left-[3rem]"}`}
                     >
                       <ChevronDownArrow
-                        className={`h-[5vw] w-[5vw] origin-center transform-gpu fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-300 ease-in-out lg:h-[3rem] lg:w-[3rem] ${
-                          openSection === item.id ? "rotate-180" : "rotate-0"
-                        }`}
+                        className={`h-[5vw] w-[5vw] origin-center transform-gpu fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-300 ease-in-out lg:h-[3rem] lg:w-[3rem] ${openSection === item.id ? "rotate-180" : "rotate-0"
+                          }`}
                       />
                     </div>
                   </div>
@@ -194,19 +190,17 @@ const Competition = () => {
               </div>
 
               <div
-                className={`flex w-full max-w-[57.5rem] items-center justify-center transition-all duration-500 ease-in-out ${
-                  openSection === item.id
-                    ? "max-h-screen opacity-100"
-                    : "max-h-0 opacity-0"
-                }`}
+                className={`flex w-full max-w-[57.5rem] items-center justify-center transition-all duration-500 ease-in-out ${openSection === item.id
+                  ? "max-h-screen opacity-100"
+                  : "max-h-0 opacity-0"
+                  }`}
               >
                 <div
                   ref={(el) => {
                     contentRefs.current[item.id] = el;
                   }}
-                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[3rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${
-                    openSection === item.id ? "translate-y-0" : "-translate-y-4"
-                  }`}
+                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[3rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
+                    }`}
                 >
                   <div className="flex h-auto w-[10vw] items-center text-white lg:w-[18vw] lg:translate-x-[1.42rem]">
                     <img src={item.imageIcon} alt={item.title} />
@@ -232,12 +226,13 @@ const Competition = () => {
                         Daftar Sekarang
                       </button>
                       <button
-                        onClick={() =>
-                          window.open(
-                            "https://drive.google.com/drive/folders/1RZM1bc2-XpTd0RKb_DF_QOKdMLIhL43h",
-                            "_blank",
-                          )
-                        }
+                        onClick={() => {
+                          if (item.guideBookLink) {
+                            window.open(item.guideBookLink, "_blank");
+                          } else {
+                            alert("Link Guidebook belum tersedia untuk kompetisi ini.");
+                          }
+                        }}
                         className="w-[50%] rounded-[5px] border border-[#03CDFE] px-[2vw] py-[0.5vw] text-white transition-colors duration-300 hover:bg-white hover:text-[#0a1033] lg:w-[50%] lg:py-[0.8rem] lg:text-[1rem]"
                       >
                         GuideBook

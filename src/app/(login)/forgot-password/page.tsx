@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import "./forgotpass.css";
 
 const formSchema = z.object({
@@ -92,7 +92,7 @@ const ForgotPasswordPage = () => {
     checkUser();
   }, [router]);
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 10 },
     visible: { 
       opacity: 1, 
@@ -116,7 +116,7 @@ const ForgotPasswordPage = () => {
         style={{ backgroundImage: "url('/base_verification.svg')" }}
       >
         <motion.div 
-          className="flex flex-col items-center justify-center px-6 text-center z-10 space-y-6 sm:space-y-8 w-full max-w-md lg:max-w-xl -mt-4 sm:-mt-8"
+          className="flex flex-col items-center justify-center px-6 text-center z-10 space-y-6 sm:space-y-8 w-full max-w-md lg:max-w-xl"
           initial="hidden"
           animate="visible"
           variants={{

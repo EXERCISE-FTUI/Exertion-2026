@@ -78,7 +78,7 @@ const competitions = [
   },
   {
     id: "business",
-    name: "Business Case",
+    name: "Business Plan",
     buttonImg: "/register/business_button.svg",
     activeImg: "/register/select-business.svg",
     uuid: "9c200794-6ade-4817-b7ec-f039242705ef",

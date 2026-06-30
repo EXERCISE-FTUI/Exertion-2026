@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPassword } from "@/actions/auth/resetPassword";
+import { updatePassword } from "@/actions/auth/updatePassword";
 import { createClient } from "@/utils/supabase/client";
 import { passwordMatchSchema } from "@/utils/validation/passwordMatchSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import "./updatepass.css";
 
@@ -49,11 +49,11 @@ const UpdatePasswordPage = () => {
   const onSubmit = async (data: FormSchema) => {
     try {
       // Panggil server action
-      const response = await resetPassword(data);
+      const response = await updatePassword({ password: data.password });
 
       if (!response.success) {
         setErrorMessage(
-          response.error || "Gagal mengupdate password. Silakan coba lagi.",
+          response.message || "Gagal mengupdate password. Silakan coba lagi.",
         );
         return;
       }
@@ -116,7 +116,7 @@ const UpdatePasswordPage = () => {
     };
   }, []);
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
@@ -154,7 +154,7 @@ const UpdatePasswordPage = () => {
         style={{ backgroundImage: "url('/base_verification.svg')" }}
       >
         <motion.div
-          className="flex flex-col items-center justify-center px-6 text-center z-10 w-full max-w-md lg:max-w-xl -mt-24 sm:-mt-40"
+          className="flex flex-col items-center justify-center px-6 text-center z-10 w-full max-w-md lg:max-w-xl"
           initial="hidden"
           animate="visible"
           variants={{
@@ -176,7 +176,7 @@ const UpdatePasswordPage = () => {
                 transition: { staggerChildren: 0.08, delayChildren: 0.6 },
               },
             }}
-            className="font-robotech-gp mt-16 sm:mt-28 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wider text-white drop-shadow-[0_0_15px_rgba(68,213,234,0.8)]"
+            className="font-robotech-gp text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wider text-white drop-shadow-[0_0_15px_rgba(68,213,234,0.8)]"
           >
             {"NEW PASSWORD".split("").map((char, index) => (
               <motion.span

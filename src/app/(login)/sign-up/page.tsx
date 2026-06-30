@@ -13,7 +13,7 @@ import AuthInput from "@/components/ui/AuthInput";
 import ButtonGoogle from "@/components/ui/ButtonGoogle";
 
 import { User, Mail, Lock, CircleAlert } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, Variants } from "motion/react";
 
 const formSchema = z
   .object({
@@ -93,7 +93,7 @@ const SignupPage = () => {
     checkUser();
   }, [router]);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -104,12 +104,12 @@ const SignupPage = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
+      transition: { duration: 0.5, ease: "easeOut" as const }
     },
   };
 
@@ -124,8 +124,7 @@ const SignupPage = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="z-20 relative flex flex-col sm:block w-[90%] sm:w-full max-w-[903px] sm:aspect-[903/641] bg-center bg-no-repeat bg-cover sm:bg-contain drop-shadow-2xl rounded-3xl sm:rounded-none overflow-hidden sm:overflow-visible bg-[#042440] sm:bg-transparent"
-        style={{ backgroundImage: "url('/base_signup_new.svg')" }}
+        className="z-20 relative flex flex-col sm:block w-[90%] sm:w-full max-w-[903px] sm:aspect-[903/641] bg-[#042440] sm:bg-transparent bg-none sm:bg-[url('/base_signup_new.svg')] bg-center bg-no-repeat bg-cover sm:bg-contain drop-shadow-2xl rounded-3xl sm:rounded-none overflow-hidden sm:overflow-visible"
       >
         <div className="flex flex-col sm:flex-row w-full h-full sm:absolute sm:inset-0">
           {/* Left Side: Form */}
@@ -133,7 +132,7 @@ const SignupPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex w-full sm:w-[50%] flex-col justify-start pl-6 pr-12 sm:pl-14 sm:pr-20 lg:pl-24 lg:pr-32 py-10 sm:py-0 pt-[144px] sm:pt-[208px] lg:pt-[272px] overflow-y-auto no-scrollbar z-10"
+            className="flex w-full sm:w-[50%] flex-col justify-start pl-6 pr-12 sm:pl-14 sm:pr-20 lg:pl-24 lg:pr-32 py-10 sm:py-0 pt-10 sm:pt-[12%] lg:pt-[16%] z-10"
           >
             <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
               <h2 className="text-center sm:text-start font-orbitron text-2xl sm:text-3xl lg:text-4xl font-bold tracking-wider text-white drop-shadow-[0_0_10px_rgba(68,213,234,0.8)]">
