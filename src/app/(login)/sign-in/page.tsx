@@ -13,7 +13,7 @@ import { z } from "zod";
 import AuthInput from "@/components/ui/AuthInput";
 
 import { Mail, Lock, CircleAlert } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, Variants } from "motion/react";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -85,7 +85,7 @@ const SigninPage = () => {
     checkUser();
   }, [router]);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -96,12 +96,12 @@ const SigninPage = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      transition: { duration: 0.5, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.5, ease: "easeOut" as const }
     },
   };
 
@@ -116,16 +116,15 @@ const SigninPage = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="z-20 relative flex flex-col sm:block w-[90%] sm:w-full max-w-[903px] sm:aspect-[903/641] bg-center bg-no-repeat bg-cover sm:bg-contain drop-shadow-2xl rounded-3xl sm:rounded-none overflow-hidden sm:overflow-visible bg-[#042440] sm:bg-transparent"
-        style={{ backgroundImage: "url('/base_login_new.svg')" }}
+        className="z-20 relative flex flex-col sm:block w-[90%] sm:w-full max-w-[903px] sm:aspect-[903/641] bg-[#042440] sm:bg-transparent bg-none sm:bg-[url('/base_login_new.svg')] bg-center bg-no-repeat bg-cover sm:bg-contain drop-shadow-2xl rounded-3xl sm:rounded-none overflow-hidden sm:overflow-visible"
       >
         <div className="flex flex-col sm:flex-row w-full h-full sm:absolute sm:inset-0">
           {/* Left Side: Form */}
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex w-full sm:w-[50%] flex-col justify-start pl-4 pr-10 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-10 sm:py-0 pt-36 sm:pt-56 lg:pt-72 overflow-y-auto no-scrollbar z-10"
+            className="flex w-full sm:w-[50%] flex-col justify-start pl-4 pr-10 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-10 sm:py-0 pt-10 sm:pt-[15%] lg:pt-[20%] z-10"
           >
             <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
               <h2 className="text-center sm:text-start font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold tracking-wider text-white drop-shadow-[0_0_10px_rgba(68,213,234,0.8)]">
@@ -241,7 +240,7 @@ const SigninPage = () => {
           {/* Right Side: Mascot & Text */}
           <div className="hidden sm:block w-[50%] relative z-10 pointer-events-none">
             <div className="absolute top-[53%] left-[45%] -translate-x-1/2 -translate-y-1/2">
-              <motion.p 
+              <motion.p
                 initial="hidden"
                 animate="visible"
                 variants={{
@@ -269,15 +268,15 @@ const SigninPage = () => {
             <div className="absolute top-[68%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-32 lg:w-44">
               <motion.img
                 initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ 
-                  opacity: 1, 
+                animate={{
+                  opacity: 1,
                   scale: 1,
                   y: [0, -10, 0]
                 }}
-                transition={{ 
+                transition={{
                   opacity: { duration: 0.6, delay: 0.7 },
                   scale: { duration: 0.6, delay: 0.7, type: "spring", bounce: 0.4 },
-                  y: { repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1.3 } 
+                  y: { repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1.3 }
                 }}
                 src="/maskot_exertion.svg"
                 className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(68,213,234,0.3)]"

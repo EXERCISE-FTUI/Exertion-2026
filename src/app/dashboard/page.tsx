@@ -71,13 +71,15 @@ const DocumentDisplayBox: React.FC<DocumentDisplayProps> = ({ label, fileName, f
 export default function DashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [hasRegistered, setHasRegistered] = useState(true);
   const [dbData, setDbData] = useState<any>(null);
   const [whatsappLink, setWhatsappLink] = useState<string>("");
 
   const Competitions = {
-    "ExerMind": "https://chat.whatsapp.com/GN4QzCowtvc8VUepQv5sPd",
-    "UI/UX Design": "https://chat.whatsapp.com/I8nsHzZy7saA6VrTDuAQDw",
-    "Business Innovation": "https://chat.whatsapp.com/CaDWdhYB4zfCKfUBLX23bh",
+    "ExerMind": "https://chat.whatsapp.com/Ero62Bg40mM5AY77pnJuDk?s=cl&p=a&mlu=0",
+    "UI/UX Design": "https://chat.whatsapp.com/JydjCZX0nHa1L6nOIqE9bt?mode=gi_t",
+    "Business Plan": "", // Belum ada
+    "Infografis": "https://chat.whatsapp.com/LfPE8MEEi1O8ZEkVrs9n4c?s=cl&p=a&ilr=4",
   };
 
   useEffect(() => {
@@ -87,26 +89,7 @@ export default function DashboardPage() {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (!user) {
-          if (process.env.NODE_ENV === "development") {
-            setDbData({
-              groupName: "Cyber Exertion Team (Local Dev)",
-              leaderName: "Naufal",
-              leaderInstitute: "Universitas Indonesia",
-              leaderEmail: "naufal@ui.ac.id",
-              leaderWhatsappNumber: "081234567890",
-              memberCount: 1,
-              competitionName: "UI/UX Design",
-              studentIdCard: { name: "View ID Card", url: "#" },
-              twibbon: { name: "View Twibbon", url: "#" },
-              instagramStory: { name: "View IG Story", url: "#" },
-              submission: { name: "View Submission", url: "#" },
-              paymentProof: { name: "View Payment Proof", url: "#" },
-            });
-            setWhatsappLink("https://chat.whatsapp.com/GN4QzCowtvc8VUepQv5sPd");
-            setLoading(false);
-            return;
-          }
-          router.push("/register");
+          router.push("/sign-in");
           return;
         }
 
@@ -118,7 +101,8 @@ export default function DashboardPage() {
 
         if (error || !data) {
           console.error(error);
-          router.push("/register");
+          setHasRegistered(false);
+          setLoading(false);
           return;
         }
 
@@ -192,11 +176,47 @@ export default function DashboardPage() {
             <line x1="2" y1="12" x2="6" y2="12" />
             <line x1="18" y1="12" x2="22" y2="12" />
             <line x1="4.22" y1="4.22" x2="7.76" y2="7.76" />
-            <line x1="16.24" y1="16.24" x2="19.78" w2="19.78" />
+            <line x1="16.24" y1="16.24" x2="19.78" y2="19.78" />
             <line x1="4.22" y1="19.78" x2="7.76" y2="16.24" />
             <line x1="16.24" y1="7.76" x2="19.78" y2="4.22" />
           </svg>
           <h1 className="text-xl min-[480px]:text-2xl font-bold text-blue-500 font-orbitron tracking-wider">Loading...</h1>
+        </div>
+      </main>
+    );
+  }
+
+  if (!hasRegistered) {
+    return (
+      <main className="flex min-h-screen w-full relative z-10 flex-col justify-center items-center p-4 overflow-hidden bg-[#7BBDE8]">
+        <img
+          src="/register/bg-utama.svg"
+          alt=""
+          className="absolute inset-y-0 -left-6 w-[108%] max-w-none h-full object-cover z-0 pointer-events-none opacity-100 brightness-100 contrast-110"
+        />
+        
+        <div className="relative z-10 flex flex-col justify-center items-center gap-6 bg-[#001D39]/90 px-8 py-10 rounded-2xl border border-[#4E8EA2]/40 shadow-[0_0_30px_rgba(0,29,57,0.6)] max-w-md text-center">
+          <MessageSquare className="h-16 w-16 text-yellow-400 mb-2" />
+          <h1 className="text-xl min-[480px]:text-2xl font-bold text-white font-orbitron tracking-wider">Belum Terdaftar</h1>
+          <p className="text-gray-300 text-sm">
+            Sepertinya Anda belum mendaftar di perlombaan apa pun. Silakan mendaftar terlebih dahulu untuk melihat dashboard tim Anda.
+          </p>
+          <div className="flex gap-4 w-full mt-4">
+            <button
+              onClick={() => router.push("/home")}
+              type="button"
+              className="flex-1 flex justify-center items-center h-10 min-[480px]:h-12 rounded-xl font-orbitron text-[11px] min-[480px]:text-sm font-black tracking-wider transition-all bg-white/10 text-white hover:bg-white/20 border border-white/30"
+            >
+              KEMBALI
+            </button>
+            <button
+              onClick={() => router.push("/home#competitions")}
+              type="button"
+              className="flex-1 flex justify-center items-center h-10 min-[480px]:h-12 rounded-xl font-orbitron text-[11px] min-[480px]:text-sm font-black tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] bg-white text-[#001D39] hover:bg-gray-200"
+            >
+              DAFTAR
+            </button>
+          </div>
         </div>
       </main>
     );
@@ -266,11 +286,19 @@ export default function DashboardPage() {
 
           <div className="flex-1 overflow-y-auto custom-scrollbar-hidden z-10 p-4 min-[360px]:p-6 min-[480px]:p-8 md:p-10 pt-16 min-[480px]:pt-20 flex flex-col w-full items-center">
             
-            <div className="mt-10 max-[479px]:mt-22 max-[300px]:mt-18 md:mt-20 mb-6 min-[480px]:mb-8 w-full max-w-full rounded-xl border border-green-500/30 bg-green-500/5 p-3 min-[480px]:p-4 text-center shadow-[0_0_15px_rgba(34,197,94,0.1)] lg:max-w-4xl">
+            <h1 className="mt-10 max-[479px]:mt-22 max-[300px]:mt-18 md:mt-20 mb-2 min-[480px]:mb-4 w-full text-center font-orbitron text-base font-black tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] min-[340px]:text-xl min-[480px]:text-3xl md:text-4xl">
+              TEAM PROFILE DASHBOARD
+            </h1>
+
+            <h2 className="mb-6 min-[480px]:mb-8 font-orbitron text-xl md:text-3xl lg:text-4xl font-bold text-[#03CDFE] tracking-widest uppercase drop-shadow-[0_0_8px_rgba(3,205,254,0.6)] text-center w-full">
+              {dbData?.competitionName}
+            </h2>
+
+            <div className="mb-6 min-[480px]:mb-8 w-full max-w-full rounded-xl border border-green-500/30 bg-green-500/5 p-3 min-[480px]:p-4 text-center shadow-[0_0_15px_rgba(34,197,94,0.1)] lg:max-w-4xl">
               <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-3">
                 <CheckCircle className="h-5 w-5 min-[480px]:h-6 min-[480px]:w-6 text-green-400 shrink-0" />
                 <p className="text-[11px] min-[360px]:text-xs min-[480px]:text-sm font-semibold text-white tracking-wide">
-                  Pembayaran Terverifikasi! Silakan join grup WhatsApp di bawah ini:
+                  Tim anda telah terdaftar! Silakan join grup WhatsApp di bawah ini:
                 </p>
               </div>
               {/* Pastikan whatsappLink ada sebelum merender tombol */}
@@ -292,10 +320,6 @@ export default function DashboardPage() {
                 </div>
               )}
             </div>
-
-            <h1 className="mb-6 w-full text-center font-orbitron text-base font-black tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] min-[340px]:text-xl min-[480px]:text-3xl min-[480px]:mb-8 md:text-4xl">
-              TEAM PROFILE DASHBOARD
-            </h1>
 
             <div className="flex w-full flex-col gap-6 min-[480px]:gap-8 pb-8 w-full max-w-4xl">
               

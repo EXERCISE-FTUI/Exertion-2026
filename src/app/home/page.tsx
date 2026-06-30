@@ -76,19 +76,33 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-start gap-y-16 md:gap-y-24 overflow-hidden bg-[linear-gradient(180deg,#528CC0_0%,#7CBCE8_100%)] pt-12">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start overflow-hidden bg-[linear-gradient(180deg,#528CC0_0%,#7CBCE8_100%)] pt-12">
       <Header
         isSigned={isSigned}
         onSignOut={handleSignOutAndRefresh}
         displayName={displayName}
       />
-      <Judul />
-      <Timer />
-      <About />
-      <OurValue />
-      <Competition />
-      <Timeline />
-      <Footer />
+      <div className="w-full flex justify-center">
+        <Judul />
+      </div>
+      <div className="w-full flex justify-center mt-4 md:mt-8">
+        <Timer />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[9rem]">
+        <About />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[9.5rem]">
+        <OurValue />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[11.5rem]">
+        <Competition />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[4rem]">
+        <Timeline />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[8rem]">
+        <Footer />
+      </div>
     </div>
   );
 };

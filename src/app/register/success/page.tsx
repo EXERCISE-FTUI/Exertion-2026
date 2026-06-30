@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type CompetitionName = "ExerMind" | "UI/UX Design" | "Business Innovation";
+type CompetitionName = "ExerMind" | "UI/UX Design" | "Business Plan" | "Infografis";
 
 const page = () => {
   const [compName, setCompName] = useState<CompetitionName | "">("");
@@ -11,16 +11,19 @@ const page = () => {
 
   const router = useRouter();
 
-  {/* LINK GRUP INFOGRAFIS BLM ADA, NANTI KLO UDH ADA, JANLUP TAMBAHIN DI DASHBOARD JUGAA */}
+  {/* LINK GRUP INFOGRAFIS BLM ADA, NANTI KLO UDH ADA, JANLUP TAMBAHIN DI DASHBOARD JUGAA */ }
   const Competitions: Record<CompetitionName, { linkwa: string }> = {
     "ExerMind": {
-      linkwa: "https://chat.whatsapp.com/GN4QzCowtvc8VUepQv5sPd",
+      linkwa: "https://chat.whatsapp.com/Ero62Bg40mM5AY77pnJuDk?s=cl&p=a&mlu=0",
     },
     "UI/UX Design": {
-      linkwa: "https://chat.whatsapp.com/I8nsHzZy7saA6VrTDuAQDw",
+      linkwa: "https://chat.whatsapp.com/JydjCZX0nHa1L6nOIqE9bt?mode=gi_t",
     },
-    "Business Innovation": {
-      linkwa: "https://chat.whatsapp.com/CaDWdhYB4zfCKfUBLX23bh",
+    "Business Plan": {
+      linkwa: "", // Belum ada
+    },
+    "Infografis": {
+      linkwa: "https://chat.whatsapp.com/LfPE8MEEi1O8ZEkVrs9n4c?s=cl&p=a&ilr=4",
     },
   };
 
@@ -67,68 +70,103 @@ const page = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-2 sm:px-4">
-      {/* Overlay */}
-      <div className="bg-opacity-95 fixed inset-0 z-40 bg-[#0B1120]" />
-      {/* Modal Content */}
-      <div className="modal-diagonal-cut relative z-50 flex w-250 flex-col items-center rounded-2xl bg-gradient-to-tl from-[#1E3A8A] to-[#059669] py-19 text-center shadow-xl">
-        {/* Robot SVG */}
-        <img
-          src="/register/robot.svg"
-          alt="Robot"
-          className="mt-2 mb-2 h-32 w-32"
-        />
-        <h2 className="mb-2 font-orbitron text-3xl font-semibold tracking-wide text-white sm:text-3xl">
-          THANK YOU FOR REGISTERING
-        </h2>
-        <p className="mb-12 font-exo-2 text-sm text-white sm:text-sm">
-          Please join the group and stay tuned for the next steps!
-        </p>
-        <div className="mx-auto flex w-65 flex-col gap-4">
-          <ButtonRedirect
-            to="/dashboard"
-            className="text-md flex h-11 items-center justify-center border-2 bg-white font-semibold text-black transition-all hover:bg-gray-300"
+    <main className="flex h-screen w-screen relative z-10 flex-col justify-center items-center p-2 min-[360px]:p-4 md:p-8 lg:p-12 overflow-hidden bg-[#7BBDE8]">
+      <img
+        src="/register/bg-utama.svg"
+        alt=""
+        className="absolute inset-y-0 -left-6 w-[108%] max-w-none h-full object-cover z-0 pointer-events-none opacity-100 brightness-100 contrast-110"
+      />
+
+      <div className="w-full h-full max-w-4xl relative z-10 flex flex-col justify-center max-h-[80vh] md:max-h-[60vh]">
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden md:block"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <polygon
+            points="0 20, 12 10, 58 10, 65 0, 100 0, 100 100, 0 100"
+            fill="none"
+            stroke="#4E8EA2"
+            strokeWidth="8.5"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+            className="opacity-90 drop-shadow-[0_0_10px_rgba(78,142,162,0.7)]"
+          />
+        </svg>
+
+        <div
+          className="w-full h-full bg-[#001D39]/90 shadow-[0_0_40px_rgba(0,29,57,0.8)] border border-[#4E8EA2]/40 relative flex flex-col overflow-hidden items-center justify-center px-4 py-8 md:px-12 md:py-16"
+          style={{
+            clipPath: "polygon(0% 20%, 12% 10%, 58% 10%, 65% 0%, 100% 0%, 100% 100%, 0% 100%)"
+          }}
+        >
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none z-20 block"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
           >
-            <img src="/register/dashboard.svg" alt="Dashboard" className="mr-2 h-6 w-6" />
-            <p className="text-black">Dashboard</p>
-          </ButtonRedirect>
+            <polyline
+              points="61.3 9, 65.5 3, 96 3"
+              fill="none"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              className="block md:hidden drop-shadow-[0_0_3px_rgba(255,255,255,0.8)]"
+            />
+            <polyline
+              points="61.3 9, 65.5 3, 96 3"
+              fill="none"
+              stroke="white"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              className="hidden md:block drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]"
+            />
+          </svg>
 
-          {whatsappLink && (
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm max-[280px]:text-[10px] max-[280px]:h-9 max-[280px]:px-2 min-[480px]:text-md flex h-11 items-center justify-center rounded-lg bg-white font-semibold text-[#00CB24] shadow transition-all hover:bg-gray-300 px-5 min-[480px]:px-8 whitespace-nowrap"
-            >
-              <img
-                src="/register/whatsapp.svg"
-                alt="WhatsApp"
-                className="mt-1.5 max-[280px]:mt-0.5 mr-2 max-[280px]:mr-1 h-7 w-7 max-[280px]:h-5 max-[280px]:w-5 min-[480px]:h-8 min-[480px]:w-8 object-contain"
-              />
-            </button>
+          <div className="absolute left-1.5 min-[480px]:left-2 min-[620px]:max-[767px]:left-3.5 md:left-5 top-1/4 bottom-1/4 w-[2.5px] md:w-[3.5px] bg-white pointer-events-none z-10 block" />
 
-            {whatsappLink && (
+          {/* Inner Content */}
+          <div className="relative z-30 flex flex-col items-center justify-center text-center mt-6 md:mt-10">
+            <h2 className="font-orbitron text-2xl md:text-4xl lg:text-5xl font-bold tracking-[0.1em] text-[#C2D1D9] mb-2 drop-shadow-[0_0_2px_rgba(255,255,255,0.1)] uppercase">
+              THANKYOU FOR REGISTERING
+            </h2>
+            <p className="font-montserrat text-xs sm:text-sm md:text-base text-[#9BA8B0] font-medium tracking-wide mb-10 md:mb-14">
+              Please join the group and stay tuned for the next steps!
+            </p>
+
+            <div className="flex flex-col gap-4 w-full items-center">
               <button
-                onClick={() => window.open(whatsappLink, "_blank")}
-                className="transition-transform hover:scale-105 active:scale-95 focus:outline-none"
+                onClick={() => router.push("/home")}
+                className="transition-transform hover:scale-105 active:scale-95 focus:outline-none w-full flex justify-center"
               >
                 <img
-                  src="/register/whatsApp_button.svg"
-                  alt="Join WhatsApp Group"
-                  className="h-12 md:h-14 lg:h-16 w-auto object-contain"
+                  src="/register/home_button.svg"
+                  alt="Home"
+                  className="h-10 md:h-12 lg:h-14 w-auto object-contain"
                 />
               </button>
-            )}
+
+              {whatsappLink && (
+                <button
+                  onClick={() => window.open(whatsappLink, "_blank")}
+                  className="transition-transform hover:scale-105 active:scale-95 focus:outline-none w-full flex justify-center"
+                >
+                  <img
+                    src="/register/whatsApp_button.svg"
+                    alt="Join WhatsApp Group"
+                    className="h-10 md:h-12 lg:h-14 w-auto object-contain"
+                  />
+                </button>
+              )}
+            </div>
           </div>
         </div>
-
-        <img
-          src="/register/vector-corner-right.svg"
-          alt=""
-          className="absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
-        />
       </div>
-    </div>
+    </main>
   );
 };
 
