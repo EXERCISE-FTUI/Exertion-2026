@@ -12,9 +12,10 @@ const Footer = () => {
     <footer className="relative h-auto w-full max-w-[2200px] text-white"
       style={{
         backgroundImage: `url('/footer/Footer.svg'),url('/footer/frame.svg')`,
-        backgroundSize: '100% 100%, 100% 100%',
-        backgroundPosition: 'bottom, bottom',
-        backgroundRepeat: 'no-repeat'
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center bottom, center bottom',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#0a1033'
       }}>
       
       
