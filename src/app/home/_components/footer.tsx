@@ -2,33 +2,33 @@
 
 import { Mail as MailIcon, MapPin as MapPinIcon } from "lucide-react";
 import { Exo_2, Inter, Orbitron } from "next/font/google";
-import { SiInstagram } from "react-icons/si";
+import { SiInstagram, SiLinkedin } from "react-icons/si";
 
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["500"] });
-const exo2 = Exo_2({ subsets: ["latin"], weight: ["500"] });
-const inter = Inter({ subsets: ["latin"] });
+
 
 const Footer = () => {
   return (
-    <footer className="relative h-auto w-full max-w-[2200px] bg-[#28384A] text-white">
-      <img
-        className="absolute top-0 right-0 z-0 h-auto w-[15vw] object-cover md:w-[10rem]"
-        src="/footer/circle.png"
-      />
-      <img
-        className="h-auto w-[40vw] object-cover md:absolute md:top-[10%] md:bottom-[90%] md:left-0 lg:w-[22rem]"
-        src="/footer/Logo.png"
-      />
-      <img
-        className="absolute bottom-0 z-10 h-[15vw] w-full object-cover md:h-auto"
-        src="/footer/Wire.png"
-      />
+    <footer className="relative h-auto w-full max-w-[2200px] text-white"
+      style={{
+        backgroundImage: `url('/footer/Footer.svg'),url('/footer/frame.svg')`,
+        backgroundSize: '100% 100%, 100% 100%',
+        backgroundPosition: 'bottom, bottom',
+        backgroundRepeat: 'no-repeat'
+      }}>
+      
+      
 
-      <div className="items-cente relative z-10 grid grid-cols-1 justify-center px-[11%] pt-[20%] pb-[3.5%] md:grid-cols-2 md:px-0 md:pt-[3.5%]">
-        <div className="flex flex-col justify-end">
+      <div className="items-cente relative z-10 grid grid-cols-1 justify-center px-[11%] md:px-[5%] pt-[20%] pb-[3.5%] gap-[8vw] md:grid-cols-2 md:pt-[7%]">
+        <div className="flex flex-col justify-center items-start gap-[2vw] md:gap-[1vw] h-full">
+          <img
+            className="h-auto w-[50vw] md:w-[18rem] lg:w-[22rem] object-contain mb-[4vw] md:mb-0"
+            src="/footer/Exertion Logo Dark.svg"
+            alt="Exertion Logo"
+          />
           {/* reserved rights */}
           <div className="hidden pb-[2vw] pl-[5vw] text-[min(2vw,110%)] md:block lg:pb-0">
-            @2025 Exercise FTUI
+            © 2026 Exercise FTUI
           </div>
         </div>
 
@@ -69,13 +69,26 @@ const Footer = () => {
               @exertion.ui
             </p>
           </a>
+
+          <a
+            href="https://www.linkedin.com/company/exercise-ftui/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group z-0 inline-flex items-center gap-[2vw] text-[2.6vw] leading-snug font-normal text-[#FAFAFA] md:text-[min(2vw,110%)]"
+          >
+            <SiLinkedin className="h-auto w-[3.5vw] group-hover:text-[#d6fcff] md:w-[2rem]" />
+            <p className="text-[2.6vw] leading-snug font-normal text-[#FAFAFA] group-hover:text-[#d6fcff] md:text-[min(2vw,110%)]">
+              EXERCISE FTUI
+            </p>
+          </a>
+
           <div className="flex w-full items-center gap-[2vw]"></div>
         </div>
 
         <div className="flex flex-col items-center pt-[2vw] md:hidden">
           {/* reserved rights */}
           <div className="pb-[2vw] pl-[5vw] text-[2.6vw] lg:pb-0">
-            @2025 Exercise FTUI
+            © 2026 Exercise FTUI
           </div>
         </div>
       </div>
