@@ -1,5 +1,4 @@
 "use client";
-import ButtonRedirect from "@/components/ui/ButtonRedirect";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -67,11 +66,6 @@ const page = () => {
     fetchCompetitionName();
   }, []);
 
-  useEffect(() => {
-    // Payment status verification logic has been removed as per the requirement
-    // In a real application, you might want to verify the payment proof status here
-  }, [router]);
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-2 sm:px-4">
       {/* Overlay */}
@@ -111,10 +105,28 @@ const page = () => {
                 alt="WhatsApp"
                 className="mt-1.5 max-[280px]:mt-0.5 mr-2 max-[280px]:mr-1 h-7 w-7 max-[280px]:h-5 max-[280px]:w-5 min-[480px]:h-8 min-[480px]:w-8 object-contain"
               />
-              <span className="font-bold">Join WhatsApp Group</span>
-            </a>
-          )}
+            </button>
+
+            {whatsappLink && (
+              <button
+                onClick={() => window.open(whatsappLink, "_blank")}
+                className="transition-transform hover:scale-105 active:scale-95 focus:outline-none"
+              >
+                <img
+                  src="/register/whatsApp_button.svg"
+                  alt="Join WhatsApp Group"
+                  className="h-12 md:h-14 lg:h-16 w-auto object-contain"
+                />
+              </button>
+            )}
+          </div>
         </div>
+
+        <img
+          src="/register/vector-corner-right.svg"
+          alt=""
+          className="absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+        />
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export interface FormData {
   member3InstagramStory: File | null;
 
   submission: File | null;
-  payment: { amount: number }; 
+  payment: { amount: number };
   groupName: string;
   leaderName: string;
   leaderInstitute: string;
@@ -101,11 +101,11 @@ interface CompetitionButtonProps {
   onClick: () => void;
 }
 
-const CompetitionButton: React.FC<CompetitionButtonProps> = ({ 
-  buttonImg, 
+const CompetitionButton: React.FC<CompetitionButtonProps> = ({
+  buttonImg,
   activeImg,
-  isSelected, 
-  onClick 
+  isSelected,
+  onClick
 }) => {
   return (
     <button

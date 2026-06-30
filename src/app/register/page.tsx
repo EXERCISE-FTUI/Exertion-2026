@@ -477,13 +477,13 @@ export default function RegisterPage() {
         </div>
 
         <aside className="hidden md:flex w-24 lg:w-35 flex-shrink-0 flex-col items-center pt-0 pb-4 z-30 relative bg-[#001D39] text-white select-none">
-          <div 
+          <div
             className="absolute top-0 left-0 w-[135%] h-40 bg-[#001D39] z-0"
-            style={{ 
+            style={{
               clipPath: "polygon(0% 0%, 74% 0%, 74% 15%, 95% 30%, 95% 64%, 74% 79%, 74% 100%, 0% 100%)"
             }}
           />
-          
+
           <div className="absolute top-40 inset-x-0 bottom-0 bg-[#001D39] z-0" />
 
           <div className="relative z-10 w-full h-full flex flex-col items-center">
@@ -494,9 +494,9 @@ export default function RegisterPage() {
                 className="h-auto w-24 lg:w-[320px] -mt-3"
               />
             </div>
-          
+
             <div className="flex flex-col gap-2 w-full items-center mt-1 px-0">
-              <div 
+              <div
                 onClick={() => router.push("/home")}
                 className="w-full flex flex-col items-center justify-center py-2.5 cursor-pointer text-white/80 hover:bg-white/10 hover:text-white transition-all"
               >
@@ -541,7 +541,7 @@ export default function RegisterPage() {
           />
 
           <div className="w-full h-full max-w-5xl relative z-10 md:-translate-x-4 lg:-translate-x-3">
-            <svg 
+            <svg
               className="absolute inset-0 w-full h-full pointer-events-none z-0 hidden md:block"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
@@ -557,13 +557,13 @@ export default function RegisterPage() {
               />
             </svg>
 
-            <div 
-              className="w-full h-full bg-[#001D39]/90 shadow-[0_0_40px_rgba(0,29,57,0.8)] border border-[#4E8EA2]/40 relative flex flex-col overflow-hidden" 
-              style={{ 
-                clipPath: "polygon(0% 20%, 12% 10%, 58% 10%, 65% 0%, 100% 0%, 100% 100%, 0% 100%)" 
+            <div
+              className="w-full h-full bg-[#001D39]/90 shadow-[0_0_40px_rgba(0,29,57,0.8)] border border-[#4E8EA2]/40 relative flex flex-col overflow-hidden"
+              style={{
+                clipPath: "polygon(0% 20%, 12% 10%, 58% 10%, 65% 0%, 100% 0%, 100% 100%, 0% 100%)"
               }}
             >
-              <svg 
+              <svg
                 className="absolute inset-0 w-full h-full pointer-events-none z-20 block"
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
@@ -612,8 +612,8 @@ export default function RegisterPage() {
                   onClick={currentStep === 5 ? handlePayment : handleNext}
                   disabled={!canGoNext() || isSaving}
                   className={`h-9 min-[360px]:h-10 min-[480px]:h-11 md:h-14 rounded-xl md:rounded-2xl w-24 min-[360px]:w-28 min-[480px]:w-auto min-[480px]:px-12 md:px-16 font-orbitron text-[11px] min-[360px]:text-xs min-[480px]:text-sm md:text-base font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.4)] 
-                    ${canGoNext() && !isSaving 
-                      ? "bg-white text-[#001D39] hover:bg-gray-100 cursor-pointer" 
+                    ${canGoNext() && !isSaving
+                      ? "bg-white text-[#001D39] hover:bg-gray-100 cursor-pointer"
                       : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"
                     }`}
                 >
@@ -622,29 +622,37 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {(currentStep === 1 || currentStep === 2) && (
-              <img 
-                src="/register/hexagon.svg" 
-                alt="" 
+            {(currentStep === 1 || currentStep === 2 || currentStep === 5) && (
+              <img
+                src="/register/hexagon.svg"
+                alt=""
                 className={`absolute h-auto pointer-events-none z-0 opacity-80 drop-shadow-[0_0_10px_rgba(78,142,162,0.5)] transition-all duration-300
                   w-12 min-[360px]:w-16 min-[480px]:w-20 md:w-36 lg:w-40
-                  ${currentStep === 1 
-                    ? "top-12 right-4 md:top-18 md:right-8" 
+                  ${currentStep === 1 || currentStep === 5
+                    ? "top-12 right-4 md:top-18 md:right-8"
                     : "bottom-1 left-1 min-[360px]:bottom-2 min-[360px]:left-2 min-[480px]:bottom-4 min-[480px]:left-4 md:bottom-6 md:left-10"
                   }`}
               />
             )}
 
-            <img 
-              src="/register/vector-corner-right.svg" 
-              alt="" 
+            <img
+              src="/register/vector-corner-right.svg"
+              alt=""
               className="absolute -bottom-2 -right-2 md:-bottom-5 md:-right-3 w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
             />
 
+            {(currentStep === 5) && (
+              <img
+                src="/register/hexagon_2.svg"
+                alt=""
+                className="absolute bottom-8 left-6 min-[360px]:bottom-10 min-[360px]:left-8 min-[480px]:bottom-12 min-[480px]:left-10 md:bottom-14 md:left-12 w-20 min-[360px]:w-24 min-[480px]:w-28 md:w-32 lg:w-40 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
+              />
+            )}
+
             {(currentStep === 1 || currentStep === 3) && (
-              <img 
-                src="/register/vector-corner-left.svg" 
-                alt="" 
+              <img
+                src="/register/vector-corner-left.svg"
+                alt=""
                 className="absolute -bottom-1 -left-1 min-[360px]:-bottom-2 min-[360px]:-left-2 min-[480px]:-bottom-3 min-[480px]:-left-3 md:-bottom-5 md:-left-3 w-10 min-[360px]:w-14 min-[480px]:w-20 md:w-28 lg:w-32 h-auto pointer-events-none z-20 drop-shadow-[0_0_10px_rgba(78,142,162,0.6)]"
               />
             )}
