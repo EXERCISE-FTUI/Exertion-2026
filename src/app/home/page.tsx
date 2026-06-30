@@ -100,7 +100,7 @@ const HomePage = () => {
       <div className="w-full flex justify-center mt-4 lg:-mt-[4rem]">
         <Timeline />
       </div>
-      <div className="w-full flex justify-center mt-4 lg:-mt-[8rem]">
+      <div className="w-full flex justify-center mt-12 md:mt-24">
         <Footer />
       </div>
     </div>
