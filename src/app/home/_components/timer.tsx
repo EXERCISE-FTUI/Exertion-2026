@@ -79,6 +79,16 @@ const Timer = () => {
 
   return (
     <div className="flex max-w-[2200px] flex-col items-center pb-[4vw] md:pb-[2rem]">
+      <div 
+        // Menggunakan absolute biar melayang mandiri di kiri tanpa ngerusak center layout
+        className="absolute left-[2vw] md:left-[2vw] lg:left-[8vw] top-[80%] -translate-y-1/2 mt-[10vw] w-[35vw] md:w-[220px] lg:w-[280px] z-0 pointer-events-none"
+      >
+        <img 
+          src="/home/timer/mascuit.png" 
+          alt="Exertion Mascot" 
+          className="w-full h-auto object-contain drop-shadow-[0_0_25px_rgba(68,213,234,0.3)]"
+        />
+      </div>
       <div className="flex w-full items-center justify-center gap-[2vw] md:gap-[2rem] mt-[40px] md:mt-[80px]">
         {(
           [
