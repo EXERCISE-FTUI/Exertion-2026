@@ -170,19 +170,19 @@ const Competition = () => {
               key={item.id}
               className="flex flex-col items-center justify-center"
             >
-              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[7rem] overflow-visible">
+              <div
+                className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[5rem] cursor-pointer"
+                onClick={() => setOpenSection(openSection === item.id ? null : item.id)}
+              >
                 <img
                   src={item.imageBox}
                   alt={item.title}
-                  className={`absolute h-[12vw] transition-transform duration-500 ease-in-out lg:h-[7rem] ${translateClass}`}
+                  className={`absolute h-[12vw] transition-transform duration-500 ease-in-out lg:h-[7rem] pointer-events-none ${translateClass}`}
                 />
 
                 <div className="relative z-20 w-[70vw] lg:w-[36.5rem]">
                   <div
-                    onClick={() =>
-                      setOpenSection(openSection === item.id ? null : item.id)
-                    }
-                    className={`flex cursor-pointer justify-center`}
+                    className={`flex justify-center`}
                   >
                     <div
                       className={`transition-transform duration-500 ease-in-out ${translateClass} text-[3vw] font-normal text-white lg:text-[2rem] ${orbitron.className}`}
