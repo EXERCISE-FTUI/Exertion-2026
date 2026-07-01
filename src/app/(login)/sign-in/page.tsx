@@ -107,7 +107,7 @@ const SigninPage = () => {
 
   return (
     <div
-      className="relative flex min-h-screen w-full items-stretch justify-center py-20 bg-cover bg-center bg-no-repeat"
+      className="relative flex min-h-screen w-full items-center sm:items-stretch justify-center py-6 sm:py-20 px-4 sm:px-0 bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage: `url('/background_login.svg'), linear-gradient(180deg, #528CC0 0%, #7CBCE8 75%, #FFFFFF 100%)`
       }}
@@ -124,7 +124,7 @@ const SigninPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex w-full sm:w-[50%] flex-col justify-start pl-4 pr-10 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-10 sm:py-0 pt-10 sm:pt-[15%] lg:pt-[20%] z-10"
+            className="flex w-full sm:w-[50%] flex-col justify-center sm:justify-start px-6 sm:px-0 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-8 sm:py-0 sm:pt-[24.5%] lg:pt-[31.5%] z-10"
           >
             <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
               <h2 className="text-center sm:text-start font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold tracking-wider text-white drop-shadow-[0_0_10px_rgba(68,213,234,0.8)]">
