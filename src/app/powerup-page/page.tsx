@@ -1,14 +1,17 @@
-import PowerUpComponent from "../exermind/_components/powerup";
+"use client";
+import { useState } from "react";
+import PowerUpComponent, { PowerUpOption } from "../exermind/_components/powerup";
 import Link from "next/link";
 
 const PowerUpPage = () => {
+  const [selectedItems, setSelectedItems] = useState<PowerUpOption[]>([null, null, null]);
   return (
     <div className="relative flex min-h-screen flex-col justify-between overflow-hidden bg-linear-to-t from-[#0B8071] from-[-10%] via-[#38405F] via-40% to-[#111417] to-[120%] p-10">
       <div>
         <img src="/home/header/logo_exertion.svg" alt="" className="h-12" />
       </div>
 
-      <PowerUpComponent />
+      <PowerUpComponent selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
 
       {/* Button */}
       <div className="z-10 mx-10 mb-5 flex justify-end">

@@ -6,15 +6,16 @@ import type { User } from "@supabase/supabase-js";
 import { Exo_2, Inter, Orbitron } from "next/font/google";
 import { redirect, useRouter } from "next/navigation"; // Import useRouter
 import { useEffect, useState, useCallback } from "react"; // Import useCallback
-import About from "./_components/about";
-import Competition from "./_components/competition";
-import Footer from "./_components/footer";
+import dynamic from "next/dynamic";
 import Header from "./_components/header";
 import Judul from "./_components/judul";
-import OurValue from "./_components/ourvalue";
-import Timeline from "./_components/timeline";
 import Timer from "./_components/timer";
 
+const About = dynamic(() => import("./_components/about"));
+const Competition = dynamic(() => import("./_components/competition"));
+const Footer = dynamic(() => import("./_components/footer"));
+const OurValue = dynamic(() => import("./_components/ourvalue"));
+const Timeline = dynamic(() => import("./_components/timeline"));
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["500"] });
 const exo2 = Exo_2({ subsets: ["latin"], weight: ["500"] });
 const inter = Inter({ subsets: ["latin"] });
@@ -76,19 +77,33 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex h-auto max-w-screen flex-col items-center justify-start overflow-hidden bg-[linear-gradient(0deg,#3C6049_-16.87%,#38405F_59.19%,#111417_117.2%)] pt-12">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start overflow-hidden bg-[linear-gradient(180deg,#528CC0_28%,#509AD5_67%,#7CBCE8_100%)] pt-12">
       <Header
         isSigned={isSigned}
         onSignOut={handleSignOutAndRefresh}
         displayName={displayName}
       />
-      <Judul />
-      <Timer />
-      <About />
-      <OurValue />
-      <Competition />
-      <Timeline />
-      <Footer />
+      <div className="w-full flex justify-center">
+        <Judul />
+      </div>
+      <div className="w-full flex justify-center mt-4 md:mt-8">
+        <Timer />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[9rem]">
+        <About />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[9.5rem]">
+        <OurValue />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[11.5rem]">
+        <Competition />
+      </div>
+      <div className="w-full flex justify-center mt-4 lg:-mt-[4rem]">
+        <Timeline />
+      </div>
+      <div className="w-full flex justify-center mt-12 md:mt-24">
+        <Footer />
+      </div>
     </div>
   );
 };

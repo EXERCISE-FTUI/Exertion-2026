@@ -3,3 +3,6 @@
 // useeffect buat check time
 
 // return page desuai time
+export default function ExermindStartPage() {
+  return <div>Exermind Start Page</div>;
+}

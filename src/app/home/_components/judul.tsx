@@ -15,26 +15,31 @@ const inter = Inter({ subsets: ["latin"] });
 
 const Judul = () => {
   return (
-    <>
+    <div className="pt-[270px] md:pt-[320px] w-full flex flex-col items-center relative z-10">
+      <div className="relative flex items-center justify-center">
+
+        <img 
+          src="/home/timer/background.svg" 
+          alt="Hexagon Background" 
+          className="absolute top-1/2 left-1/2 -z-10 w-[150vw] md:w-[100vw] max-w-none -translate-x-1/2 -translate-y-1/2 pointer-events-none object-contain" 
+        />
       <div
         id="home"
-        className={`animate-pulse-slow z-10 max-w-[2200px] pt-10 text-[min(8vw,5.2rem)] font-bold text-white ${orbitron.className}`}
-        style={{ textShadow: "0px 0px 25px #44D5EA" }}
+        className={`text-[min(8vw,5.2rem)] font-bold text-[#094174] drop-shadow-md  ${orbitron.className}`}
+        style={{ textShadow: "0px 0px 10px #03cdfe"}}
       >
-        EXERTION 2025
+        EXERTION 2026
       </div>
+    </div>
       <div
-        className={`z-10 -mt-2 text-[min(2vw,1.5rem)] font-bold text-white ${orbitron.className}`}
-        style={{ textShadow: "0px 0px 10px #000000" }}
+        className={`-mt-5 text-[min(1.5vw,2rem)] font-bold text-[#094174] drop-shadow-md text-center scale-x-155 scale-y-140 ${orbitron.className}`}
+        style={{ textShadow: "0px 0px 10px #03cdfe" }}
       >
-        Bridging Possibilities: From Human Insight to Digital Impact
+        Beyond Idea : Designing Impact for Tomorrow 
       </div>
-      <img
-        src="/home/timer/arrowdown.png"
-        alt="Timeline"
-        className="-mt-[12%] h-auto w-full pb-[4vw]"
-      />
-    </>
+      
+      
+    </div>
   );
 };
 

@@ -387,7 +387,7 @@ const Submission = forwardRef<SubmissionRef, Props>(
 
     useEffect(() => {
       // Countdown logic remains the same
-      const endDate = new Date("2025-07-30T23:59:59").getTime();
+      const endDate = new Date("2026-08-02T23:59:59").getTime();
       const updateCountdown = () => {
         const now = new Date().getTime();
         const difference = endDate - now;
@@ -545,7 +545,7 @@ const Submission = forwardRef<SubmissionRef, Props>(
             />
             <StatusRow
               label="Due date"
-              value="Wednesday, 30 July 2025, 11:59 PM"
+              value="Sunday, 2 August 2026, 11:59 PM"
             />
             <StatusRow
               label="Time remaining"
@@ -562,7 +562,7 @@ const Submission = forwardRef<SubmissionRef, Props>(
                   currentFile={formData.submission}
                   onFileUpload={handleFileUpload}
                   onRemoveFile={removeDocument}
-                  supportedFormats=".zip,.rar,.7z" // Tambahkan .7z jika diizinkan
+                  supportedFormats=".pdf"
                   maxSizeMB={25}
                 />
                 {/* {submissionProgress > 0 && submissionProgress <= 100 && (

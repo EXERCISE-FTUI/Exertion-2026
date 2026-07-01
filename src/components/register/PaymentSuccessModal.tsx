@@ -1,7 +1,7 @@
 import React from "react";
 import ButtonRedirect from "@/components/ui/ButtonRedirect";
 
-type CompetitionName = "ExerMind" | "UI/UX Design" | "Business Innovation";
+type CompetitionName = "ExerMind" | "UI/UX Design" | "Business Plan";
 
 interface PaymentSuccessModalProps {
   open: boolean;
@@ -16,7 +16,7 @@ const Competitions: Record<CompetitionName, { linkwa: string }> = {
   "UI/UX Design": {
     linkwa: "https://chat.whatsapp.com/I8nsHzZy7saA6VrTDuAQDw?mode=ac_c",
   },
-  "Business Innovation": {
+  "Business Plan": {
     linkwa: "https://chat.whatsapp.com/CaDWdhYB4zfCKfUBLX23bh",
   },
 };
