@@ -40,18 +40,18 @@ const OurValue = () => {
       <img
         src="/home/ourvalue/kawat.svg"
         alt="kawat"
-        className="pointer-events-none absolute top-[2vw] right-0 z-0 h-[12vw] animate-pulse md:top-8 md:h-[10rem] md:max-lg:top-[2vw] md:max-lg:h-[12vw] lg:-top-6 lg:h-[8rem]"
+        className="pointer-events-none absolute top-[2vw] right-0 z-0 h-[12vw] animate-pulse md:top-8 md:h-[10rem] md:max-lg:top-[2vw] md:max-lg:h-[12vw] lg:top-[5rem] lg:h-[8rem]"
       />
 
       <img
-        src="/home/ourvalue/robot.svg"
+        src="/home/ourvalue/Kawat1.svg"
         alt="robot"
-        className="absolute -top-[6vw] left-0 z-0 h-[30vw] md:top-8 md:h-[10rem] md:max-lg:-top-[6vw] md:max-lg:h-[30vw] lg:-top-[9.5rem] lg:h-[20rem]"
+        className="pointer-events-none absolute top-[2vw] left-0 z-0 h-[12vw] animate-pulse md:top-8 md:h-[10rem] md:max-lg:top-[2vw] md:max-lg:h-[12vw] lg:top-[5rem] lg:h-[8rem]"
       />
 
       {/* judul */}
       <div
-        className={`${orbitron.className} flex gap-[1vw] pb-[4vw] text-center text-[6vw] font-medium text-white lg:pb-[10vw] md:gap-2 md:pb-12 md:text-[3.5rem] md:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] md:[paint-order:stroke_fill] md:[text-shadow:0_0_12px_rgba(82,151,193,0.9),0_0_25px_rgba(82,151,193,0.5)] md:max-lg:gap-[1vw] md:max-lg:pb-[6vw] md:max-lg:text-[6vw] lg1:pb-0`}
+        className={`${orbitron.className} flex gap-[1vw] pb-[4vw] text-center text-[6vw] font-medium text-[#FFFFFF] lg:pb-[10vw] md:gap-2 md:pb-12 md:text-[3.5rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] md:max-lg:gap-[1vw] md:max-lg:pb-[6vw] md:max-lg:text-[6vw] lg1:pb-0`}
       >
         <h1>Our Value</h1>
       </div>
@@ -70,7 +70,7 @@ const OurValue = () => {
             />
 
             <h2
-              className={`${orbitron.className} home-value-title z-20 w-full pl-4 text-left text-[3.5vw] font-semibold text-sky-300 md:pt-8 md:pb-3 md:text-[1.5rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 md:max-lg:text-[3.5vw] lg2:text-[1.9rem] lg1:text-[1.8rem] lg:px-[2.2rem] lg2:mt-[10vw] lg1:-mt-[2vw]`}
+              className={`${orbitron.className} home-value-title z-20 w-full pl-4 text-left text-[3.5vw] font-semibold text-sky-300 md:pt-8 md:pb-3 md:text-[1.5rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 md:max-lg:text-[3.5vw] lg2:text-[1.9rem] lg1:text-[1.8rem] lg:px-[2.2rem] lg2:mt-[10vw] lg1:-mt-[1.95vw]`}
             >
               {value.title}
             </h2>
@@ -79,7 +79,7 @@ const OurValue = () => {
             >
               {value.description}
             </p>
-            
+
           </div>
         ))}
       </div>

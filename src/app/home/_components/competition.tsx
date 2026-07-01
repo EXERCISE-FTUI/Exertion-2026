@@ -98,14 +98,19 @@ const Competition = () => {
       <Image
         src="/home/competition/SegiEnam.svg"
         alt="segienam"
+<<<<<<< Updated upstream
         width={300}
         height={300}
         className="animate-pulse-slow absolute top-0 right-0 h-[20vw] lg:h-[16rem]"
+=======
+        className="animate-pulse-slow absolute -top-15 right-0 h-[20vw] lg:h-[16rem] lg:-top-[11rem]"
+>>>>>>> Stashed changes
       />
 
       <Image
         src="/home/competition/Bulet.svg"
         alt="segienam"
+<<<<<<< Updated upstream
         width={200}
         height={200}
         className="animate-pulse-slow absolute -top-8 right-18 h-[12vw] lg:-top-[5rem] lg:right-[10vw] lg:h-[8rem]"
@@ -117,22 +122,39 @@ const Competition = () => {
         width={300}
         height={100}
         className="absolute -top-[8vw] left-0 z-10 h-[8vw] animate-pulse lg:h-[8rem]"
+=======
+        className="animate-pulse-slow absolute top-1 right-13 h-[12vw] lg:top-[1rem] lg:right-[10vw] lg:h-[8rem]"
+      />
+
+      <img
+        src="/home/competition/maskot_mata.svg"
+        alt="kawat"
+        className="absolute -top-[8vw] left-0 z-10 h-[30vw] animate-pulse lg:h-[20rem]"
+>>>>>>> Stashed changes
       />
 
       <Image
         src="/home/competition/SegiEnam2.svg"
         alt="gambar mascot"
+<<<<<<< Updated upstream
         width={300}
         height={300}
         className="animate-pulse-slow absolute bottom-[20vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[12rem]"
+=======
+        className="animate-pulse-slow absolute bottom-[4vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[1rem]"
+>>>>>>> Stashed changes
       />
 
       <Image
         src="/home/competition/Kawat2.svg"
         alt="kawat"
+<<<<<<< Updated upstream
         width={300}
         height={100}
         className="absolute right-0 bottom-[4vw] h-[12vw] animate-pulse lg:bottom-[5rem] lg:h-[8rem]"
+=======
+        className="absolute right-0 bottom-[8vw] h-[12vw] animate-pulse lg:bottom-[13rem] lg:h-[8rem]"
+>>>>>>> Stashed changes
       />
 
       <div className="flex h-auto w-[80vw] flex-col items-center justify-center lg:w-[55vw] lg:gap-[3rem]">
@@ -146,7 +168,7 @@ const Competition = () => {
           />
 
           <div
-            className={`relative z-20 text-center text-[6vw] font-medium text-white lg:text-[3rem] lg:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] lg:[paint-order:stroke_fill] lg:[text-shadow:0_0_12px_rgba(82,151,193,0.9),0_0_25px_rgba(82,151,193,0.5)] ${orbitron.className}`}
+            className={`relative z-20 text-center text-[6vw] font-medium text-[#FFFFFF] lg:text-[3rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] ${orbitron.className}`}
           >
             Competition
           </div>
