@@ -96,7 +96,7 @@ const Timeline = () => {
         Timeline
         <div className="z-20 flex h-auto w-full items-center justify-center">
           <img
-            src="/home/timeline/TimelineBaru.svg"
+            src="/home/timeline/TimelineFix.svg"
             alt="Timeline"
             className="mt-[4%] h-auto w-[80%] pl-3 md:w-[50rem] md:pl-10 pb-10 md:pb-[3rem] lg:pb-[15rem]"
           />

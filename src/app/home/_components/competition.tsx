@@ -56,7 +56,7 @@ dua babak, yaitu babak penyisihan dan babak 10 besar.`,
   },
   {
     id: 4,
-    title: "Infographic",
+    title: "Infografis",
     imageBox: "/home/competition/boxempat.svg",
     imageIcon: "/home/competition/paper.png",
     guideBookLink: "https://drive.google.com/file/d/1WiBdBdHqAP-FlP-xSfMU6-ha47MbyjrB/view?usp=sharing",
@@ -170,7 +170,7 @@ const Competition = () => {
               key={item.id}
               className="flex flex-col items-center justify-center"
             >
-              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[7rem] overflow-visible">
+              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[8rem] overflow-visible">
                 <img
                   src={item.imageBox}
                   alt={item.title}
