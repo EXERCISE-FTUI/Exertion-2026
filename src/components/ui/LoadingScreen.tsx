@@ -22,7 +22,7 @@ export default function LoadingScreen({ open }: LoadingScreenProps) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col gap-4 items-center justify-center bg-black/20 backdrop-blur-sm">
       <div className="relative h-14 w-14">
-        <div className="absolute inset-0 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+        <div className="absolute inset-0 animate-spin rounded-full border-4 border-white border-t-transparent" style={{ animationDuration: '0.5s' }}></div>
         <div className="absolute inset-3 rounded-full bg-white/10 blur-xl"></div>
       </div>
       <h1 className="text-lg text-white">please wait{dots}</h1>
