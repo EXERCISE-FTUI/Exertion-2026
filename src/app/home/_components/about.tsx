@@ -28,7 +28,7 @@ const About = () => {
         className="home-about-robot absolute -top-[6vw] right-8 z-30 h-[21vw] lg:top-[40%] lg:h-[14rem] lg:-translate-y-[22rem] md:right-[10vw] lg:right-[8rem]"
       />
       <img
-        src="/home/about/segiEnam.svg"
+        src="/home/about/SegiEnam.svg"
         alt="segi enam"
         className="home-about-hex animate-pulse-slow absolute z-10 top-[8vw] right-[25vw] h-[20vw] lg:top-[40%] lg:h-[12rem] lg:right-[22rem] lg:-translate-y-[12.5rem]"
       />
