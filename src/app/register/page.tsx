@@ -617,7 +617,7 @@ export default function RegisterPage() {
                       : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"
                     }`}
                 >
-                  {isSaving ? "SAVING..." : currentStep === 5 ? "PAY" : "NEXT"}
+                  {isSaving ? "SAVING..." : currentStep === 5 ? "SUBMIT" : "NEXT"}
                 </button>
               </div>
             </div>
