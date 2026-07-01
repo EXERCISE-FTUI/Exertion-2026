@@ -40,14 +40,7 @@ const Timer = () => {
     seconds: 0,
   });
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data?.user ?? null);
-    };
 
-    fetchUser();
-  }, []);
 
   // Countdown timer effect
   useEffect(() => {
