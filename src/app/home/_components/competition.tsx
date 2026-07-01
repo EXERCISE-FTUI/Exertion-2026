@@ -100,39 +100,39 @@ const Competition = () => {
         alt="segienam"
         width={300}
         height={300}
-        className="animate-pulse-slow absolute top-0 right-0 h-[20vw] lg:h-[16rem]"
+        className="animate-pulse-slow absolute -top-15 right-0 h-[20vw] lg:h-[16rem] lg:-top-[11rem]"
       />
 
       <Image
         src="/home/competition/Bulet.svg"
         alt="segienam"
-        width={200}
-        height={200}
-        className="animate-pulse-slow absolute -top-8 right-18 h-[12vw] lg:-top-[5rem] lg:right-[10vw] lg:h-[8rem]"
+        width={300}
+        height={300}
+        className="animate-pulse-slow absolute top-1 right-13 h-[12vw] lg:top-[1rem] lg:right-[10vw] lg:h-[8rem]"
       />
 
       <Image
-        src="/home/competition/Kawat1.svg"
+        src="/home/competition/maskot_mata.svg"
         alt="kawat"
         width={300}
-        height={100}
-        className="absolute -top-[8vw] left-0 z-10 h-[8vw] animate-pulse lg:h-[8rem]"
+        height={300}
+        className="absolute -top-[8vw] left-0 z-10 h-[30vw] animate-pulse lg:h-[20rem]"
       />
 
       <Image
         src="/home/competition/SegiEnam2.svg"
-        alt="gambar mascot"
+        alt="gambar segi enam"
         width={300}
         height={300}
-        className="animate-pulse-slow absolute bottom-[20vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[12rem]"
+        className="animate-pulse-slow absolute bottom-[4vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[1rem]"
       />
 
       <Image
         src="/home/competition/Kawat2.svg"
         alt="kawat"
         width={300}
-        height={100}
-        className="absolute right-0 bottom-[4vw] h-[12vw] animate-pulse lg:bottom-[5rem] lg:h-[8rem]"
+        height={300}
+        className="absolute right-0 bottom-[8vw] h-[12vw] animate-pulse lg:bottom-[13rem] lg:h-[8rem]"
       />
 
       <div className="flex h-auto w-[80vw] flex-col items-center justify-center lg:w-[55vw] lg:gap-[3rem]">
@@ -146,7 +146,7 @@ const Competition = () => {
           />
 
           <div
-            className={`relative z-20 text-center text-[6vw] font-medium text-white lg:text-[3rem] lg:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] lg:[paint-order:stroke_fill] lg:[text-shadow:0_0_12px_rgba(82,151,193,0.9),0_0_25px_rgba(82,151,193,0.5)] ${orbitron.className}`}
+            className={`relative z-20 text-center text-[6vw] font-medium text-[#FFFFFF] lg:text-[3rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] ${orbitron.className}`}
           >
             Competition
           </div>
@@ -212,7 +212,7 @@ const Competition = () => {
                   ref={(el) => {
                     contentRefs.current[item.id] = el;
                   }}
-                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[3rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
+                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[4rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
                     }`}
                 >
                   <div className="flex h-auto w-[10vw] items-center text-white lg:w-[18vw] lg:translate-x-[1.42rem]">
