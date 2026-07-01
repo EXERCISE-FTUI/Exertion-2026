@@ -32,7 +32,7 @@ const Judul = () => {
       </div>
     </div>
       <div
-        className={`-mt-5 text-[min(1.5vw,2rem)] font-bold text-[#094174] drop-shadow-md text-center scale-x-155 scale-y-140 ${orbitron.className}`}
+        className={`mt-1/2 md:-mt-5 text-[7px] md:text-[min(1.5vw,2rem)] font-bold text-[#094174] drop-shadow-md text-center scale-x-155 scale-y-140 ${orbitron.className}`}
         style={{ textShadow: "0px 0px 10px #03cdfe" }}
       >
         Beyond Idea : Designing Impact for Tomorrow 
