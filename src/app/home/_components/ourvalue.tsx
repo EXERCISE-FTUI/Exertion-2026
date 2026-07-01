@@ -36,7 +36,7 @@ const Values = [
 
 const OurValue = () => {
   return (
-    <section className="relative flex h-full w-full max-w-[2200px] flex-col items-center justify-center pt-[5vw] pb-[15vw] md:pt-8 md:pb-[6rem] md:max-lg:pt-[5vw] md:max-lg:pb-[15vw] lg:pt-[6rem] lg:pb-[2rem]">
+    <section className="relative flex h-full w-full max-w-[2200px] flex-col items-center justify-center pt-[8vw] pb-[2vw] md:pt-8 md:mb-[5vw] md:max-lg:pt-[5vw] lg:pt-[6rem] lg:pb-[13rem]">
       <img
         src="/home/ourvalue/kawat.svg"
         alt="kawat"
@@ -70,12 +70,12 @@ const OurValue = () => {
             />
 
             <h2
-              className={`${orbitron.className} home-value-title z-20 w-full pl-4 text-left text-[3.5vw] font-semibold text-sky-300 md:pt-8 md:pb-3 md:text-[1.5rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 md:max-lg:text-[3.5vw] lg2:text-[1.9rem] lg1:text-[1.8rem] lg:px-[2.2rem] lg2:mt-[10vw] lg1:-mt-[1.95vw]`}
+              className={`${orbitron.className} home-value-title z-20 w-full pl-4 text-left text-[3.5vw] font-semibold text-sky-300 md:-mt-[2rem] md:ml-[2.6rem] md:pt-8 md:pb-3 md:text-[1.5rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 md:max-lg:text-[3.5vw] lg2:text-[1.9rem] lg1:text-[1.8rem] lg2:mt-[10vw] lg1:-mt-[1.95vw]`}
             >
               {value.title}
             </h2>
             <p
-              className={`${exo2.className} home-value-desc z-20 pr-4 pl-4 text-left text-[1.5vw] font-medium text-white md:px-3 md:text-[0.7rem] md:max-lg:px-4 md:max-lg:text-[1.5vw] md:max-lg:leading-[1.08] lg2:text-[0.75rem] lg1:text-[0.76rem] lg:px-[2.2rem]`}
+              className={`${exo2.className} home-value-desc z-20 pr-4 pl-4 text-left text-[1.5vw] font-medium text-white md:w-[16rem] md:text-[0.85rem] md:max-lg:px-4 md:max-lg:leading-[1.08] lg2:text-[0.75rem] lg1:text-[0.76rem] lg:w-[16rem]`}
             >
               {value.description}
             </p>

@@ -100,7 +100,7 @@ const Competition = () => {
         alt="segienam"
         width={300}
         height={300}
-        className="animate-pulse-slow absolute -top-15 right-0 h-[20vw] lg:h-[16rem] lg:-top-[11rem]"
+        className="animate-pulse-slow absolute -top-15 -right-[7.2rem] h-[20vw] md:-right-[5.5rem] lg:-right-[3rem] lg:h-[16rem] lg:-top-[11rem]"
       />
 
       <Image
@@ -108,7 +108,7 @@ const Competition = () => {
         alt="segienam"
         width={300}
         height={300}
-        className="animate-pulse-slow absolute top-1 right-13 h-[12vw] lg:top-[1rem] lg:right-[10vw] lg:h-[8rem]"
+        className="animate-pulse-slow absolute top-1 -right-[3rem] h-[12vw] md:right-[2.5rem] lg:top-[1rem] lg:right-[8vw] lg:h-[8rem]"
       />
 
       <Image
@@ -116,7 +116,7 @@ const Competition = () => {
         alt="kawat"
         width={300}
         height={300}
-        className="absolute -top-[8vw] left-0 z-10 h-[30vw] animate-pulse lg:h-[20rem]"
+        className="absolute -top-[8vw] -left-[7.2rem] z-10 h-[25vw] animate-pulse md:-left-[5.5rem] lg:-left-[3.3rem] lg:h-[18rem]"
       />
 
       <Image
@@ -124,7 +124,7 @@ const Competition = () => {
         alt="gambar segi enam"
         width={300}
         height={300}
-        className="animate-pulse-slow absolute bottom-[4vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[1rem]"
+        className="animate-pulse-slow absolute -bottom-[2vw] -left-[7.2rem] z-10 h-[25vw] md:-left-[5.6rem] lg:h-[12rem] lg:-translate-y-[2rem]"
       />
 
       <Image
@@ -132,7 +132,7 @@ const Competition = () => {
         alt="kawat"
         width={300}
         height={300}
-        className="absolute right-0 bottom-[8vw] h-[12vw] animate-pulse lg:bottom-[13rem] lg:h-[8rem]"
+        className="absolute -right-[7.5rem] bottom-[15vw] h-[12vw] animate-pulse lg:bottom-[13rem] lg:h-[8rem]"
       />
 
       <div className="flex h-auto w-[80vw] flex-col items-center justify-center lg:w-[55vw] lg:gap-[3rem]">
@@ -170,19 +170,19 @@ const Competition = () => {
               key={item.id}
               className="flex flex-col items-center justify-center"
             >
-              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[8rem] overflow-visible">
+              <div
+                className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[8rem] cursor-pointer"
+                onClick={() => setOpenSection(openSection === item.id ? null : item.id)}
+              >
                 <img
                   src={item.imageBox}
                   alt={item.title}
-                  className={`absolute h-[12vw] transition-transform duration-500 ease-in-out lg:h-[7rem] ${translateClass}`}
+                  className={`absolute h-[12vw] transition-transform duration-500 ease-in-out lg:h-[7rem] pointer-events-none ${translateClass}`}
                 />
 
                 <div className="relative z-20 w-[70vw] lg:w-[36.5rem]">
                   <div
-                    onClick={() =>
-                      setOpenSection(openSection === item.id ? null : item.id)
-                    }
-                    className={`flex cursor-pointer justify-center`}
+                    className={`flex justify-center`}
                   >
                     <div
                       className={`transition-transform duration-500 ease-in-out ${translateClass} text-[3vw] font-normal text-white lg:text-[2rem] ${orbitron.className}`}

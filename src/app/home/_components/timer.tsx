@@ -131,48 +131,46 @@ const Timer = () => {
 
       <div className="mb-[2vw] h-[0.2vw] w-[50vw] rounded-full bg-gradient-to-r from-[#A7E9DF] via-[#55b2df] to-[#99bed0] md:h-[0.2rem] md:w-[36rem]" />
 
-      <div className="z-20 flex flex-col items-center justify-center gap-4 text-white">
-        {/* Top Row: Register Now & Read Our Guidebook */}
-        <div className="flex flex-col md:flex-row gap-4 w-full items-center justify-center">
-          <button
-            onClick={() => {
-              if (user) router.push("/register");
-              else router.push("/sign-in");
+      <div className="z-20 grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-[15vw] md:px-0 md:max-w-4xl justify-items-center">
+        {/* Register Now */}
+        <button
+          onClick={() => {
+            if (user) router.push("/register");
+            else router.push("/sign-in");
+          }}
+          className="relative flex items-center justify-center h-[12vw] w-full md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 hover:scale-105 backdrop-blur-md cursor-pointer"
+        >
+          <span className="z-10">REGISTER NOW</span>
+          <div 
+            className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
+            style={{
+              WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+              WebkitMaskComposite: "xor",
+              maskComposite: "exclude"
             }}
-            className="relative flex items-center justify-center h-[12vw] w-[70vw] md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
-          >
-            <span className="z-10">REGISTER NOW</span>
-            <div 
-              className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
-              style={{
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude"
-              }}
-            />
-          </button>
+          />
+        </button>
 
-          <button
-            onClick={() => router.push("/home#competitions")}
-            className="relative flex items-center justify-center h-[12vw] w-[70vw] md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
-          >
-            <span className="z-10">READ OUR GUIDEBOOK</span>
-            <div 
-              className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
-              style={{
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude"
-              }}
-            />
-          </button>
-        </div>
+        {/* Read Our Guidebook */}
+        <button
+          onClick={() => router.push("/home#competitions")}
+          className="relative flex items-center justify-center h-[12vw] w-full md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 hover:scale-105 backdrop-blur-md cursor-pointer"
+        >
+          <span className="z-10">READ OUR GUIDEBOOK</span>
+          <div 
+            className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
+            style={{
+              WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+              WebkitMaskComposite: "xor",
+              maskComposite: "exclude"
+            }}
+          />
+        </button>
 
-        {/* Bottom Row: Announcements & Dashboard */}
-        <div className="flex flex-col md:flex-row gap-4 w-full items-center justify-center">
+        {/* Announcements */}
         <button
           onClick={() => setShowAnnouncement(true)}
-          className="relative flex items-center justify-center h-[12vw] w-[70vw] md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
+          className="relative flex items-center justify-center h-[12vw] w-full md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 hover:scale-105 backdrop-blur-md cursor-pointer"
         >
           <span className="z-10">ANNOUNCEMENTS</span>
           <div 
@@ -184,21 +182,25 @@ const Timer = () => {
             }}
           />
         </button>
+
+        {/* Dashboard */}
         <button
-            onClick={() => router.push("/dashboard")}
-            className="relative flex items-center justify-center h-[12vw] w-[70vw] md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
-          >
-            <span className="z-10">DASHBOARD</span>
-            <div 
-              className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
-              style={{
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude"
-              }}
-            />
-          </button>
-        </div>
+          onClick={() => {
+            if (user) router.push("/dashboard");
+            else router.push("/sign-in");
+          }}
+          className="relative flex items-center justify-center h-[12vw] w-full md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 hover:scale-105 backdrop-blur-md cursor-pointer"
+        >
+          <span className="z-10">DASHBOARD</span>
+          <div 
+            className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
+            style={{
+              WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+              WebkitMaskComposite: "xor",
+              maskComposite: "exclude"
+            }}
+          />
+        </button>
       </div>
     {showAnnouncement && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-xl z-50 flex items-center justify-center p-4 transition-all duration-300">
