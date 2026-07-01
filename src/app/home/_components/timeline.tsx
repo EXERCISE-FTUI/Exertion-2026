@@ -22,7 +22,7 @@ const Timeline = () => {
         alt="poly"
         width={300}
         height={300}
-        className="absolute bottom-[44vw] left-0 h-[20vw] md:top-[45%] md:h-[9rem] lg:h-[16rem]"
+        className="absolute bottom-[44vw] left-0 h-[20vw] md:top-[45%] md:h-[9rem] lg:h-[16rem] lg:-left-22"
       />
 
       <Image
@@ -46,7 +46,7 @@ const Timeline = () => {
         alt="wire"
         width={400}
         height={100}
-        className="animate-pulse absolute top-[34vw] left-0 h-[6vw] md:top-[25%] md:translate-y-[4.8rem] lg:translate-y-[2.8rem] md:h-[3rem] lg:h-[4rem]"
+        className="animate-pulse absolute top-[34vw] left-0 h-[6vw] md:top-[25%] md:translate-y-[4.8rem] lg:translate-y-[2.8rem] md:h-[3rem] lg:h-[4rem] lg:-left-[5rem]"
       />
 
       <Image
@@ -54,7 +54,7 @@ const Timeline = () => {
         alt="wire"
         width={400}
         height={100}
-        className="animate-pulse absolute top-[42vw] right-0 h-[6vw] md:top-[40%] md:translate-y-[1.1rem] lg:translate-y-[0.6rem] md:h-[3rem] lg:h-[4rem]"
+        className="animate-pulse absolute top-[42vw] right-0 h-[6vw] md:top-[40%] md:translate-y-[1.1rem] lg:translate-y-[0.6rem] md:h-[3rem] lg:h-[4rem] lg:-right-[5rem]"
       />
 
       <Image
@@ -73,15 +73,19 @@ const Timeline = () => {
         className="z-10 animate-pulse-slow absolute bottom-[12vw] -left-0.95 h-[16vw] md:bottom-[10%] md:-translate-y-[3.5rem] lg:translate-y-[1rem] lg:left-[1rem] md:h-[8rem] lg:h-[12rem]"
       />
 
-      <img
+      <Image
         src="/home/timeline/maskot_kuas.svg"
         alt="segi enam"
+        width={300}
+        height={300}
         className="z-10 animate-pulse-slow absolute -bottom-[12vw] right-[18vw] h-[30vw] md:-bottom-[25] md:translate-y-[0rem] lg:-translate-y-[8rem] lg:right-[26rem] md:h-[16rem] lg:h-[20rem]"
       />
 
-      <img
+      <Image
         src="/home/timeline/maskot_lampu.svg"
         alt="segi enam"
+        width={300}
+        height={300}
         className="z-10 animate-pulse-slow absolute -top-[12vw] right-0 h-[38vw] md:-top-[5vw] lg:-translate-y-[2rem] md:h-[20rem] lg:h-[25rem]"
       />
 

@@ -170,7 +170,7 @@ const Competition = () => {
               key={item.id}
               className="flex flex-col items-center justify-center"
             >
-              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[5rem]">
+              <div className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[7rem] overflow-visible">
                 <img
                   src={item.imageBox}
                   alt={item.title}
@@ -212,7 +212,7 @@ const Competition = () => {
                   ref={(el) => {
                     contentRefs.current[item.id] = el;
                   }}
-                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[3rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
+                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[4rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
                     }`}
                 >
                   <div className="flex h-auto w-[10vw] items-center text-white lg:w-[18vw] lg:translate-x-[1.42rem]">
