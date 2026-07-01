@@ -86,6 +86,16 @@ const Timer = () => {
 
   return (
     <div className="flex max-w-[2200px] flex-col items-center pb-[4vw] md:pb-[2rem]">
+      <div 
+        // Menggunakan absolute biar melayang mandiri di kiri tanpa ngerusak center layout
+        className="absolute left-[2vw] md:left-[2vw] lg:left-[8vw] top-[80%] -translate-y-1/2 mt-[10vw] w-[35vw] md:w-[220px] lg:w-[280px] z-0 pointer-events-none"
+      >
+        <img 
+          src="/home/timer/mascuit.png" 
+          alt="Exertion Mascot" 
+          className="w-full h-auto object-contain drop-shadow-[0_0_25px_rgba(68,213,234,0.3)]"
+        />
+      </div>
       <div className="flex w-full items-center justify-center gap-[2vw] md:gap-[2rem] mt-[40px] md:mt-[80px]">
         {(
           [
@@ -165,7 +175,8 @@ const Timer = () => {
           </button>
         </div>
 
-        {/* Bottom Row: Announcement */}
+        {/* Bottom Row: Announcements & Dashboard */}
+        <div className="flex flex-col md:flex-row gap-4 w-full items-center justify-center">
         <button
           onClick={() => setShowAnnouncement(true)}
           className="relative flex items-center justify-center h-[12vw] w-[70vw] md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
@@ -180,6 +191,21 @@ const Timer = () => {
             }}
           />
         </button>
+        <button
+            onClick={() => router.push("/dashboard")}
+            className="relative flex items-center justify-center h-[12vw] w-[70vw] md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
+          >
+            <span className="z-10">DASHBOARD</span>
+            <div 
+              className="pointer-events-none absolute inset-0 rounded-lg p-[2px] bg-gradient-to-b from-[#55b2df] to-[#8bc6e8]" 
+              style={{
+                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude"
+              }}
+            />
+          </button>
+        </div>
       </div>
     {showAnnouncement && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-xl z-50 flex items-center justify-center p-4 transition-all duration-300">
