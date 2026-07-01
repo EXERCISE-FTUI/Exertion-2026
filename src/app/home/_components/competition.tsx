@@ -170,34 +170,29 @@ const Competition = () => {
               key={item.id}
               className="flex flex-col items-center justify-center"
             >
-              <div 
-                className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[5rem] cursor-pointer"
-                onClick={() => setOpenSection(openSection === item.id ? null : item.id)}
-              >
-                <img
-                  src={item.imageBox}
-                  alt={item.title}
-                  className={`absolute h-[12vw] transition-transform duration-500 ease-in-out lg:h-[7rem] pointer-events-none ${translateClass}`}
-                />
-
-                <div className="relative z-20 w-[70vw] lg:w-[36.5rem]">
+              <div className="z-20 flex h-[12vw] w-full max-w-[2200px] flex-col items-center justify-center lg:h-[5rem]">
+                <div
+                  className={`relative flex items-center justify-center cursor-pointer transition-transform duration-500 ease-in-out ${translateClass} h-[12vw] w-[85vw] lg:h-[7rem] lg:w-[42rem]`}
+                  onClick={() => setOpenSection(openSection === item.id ? null : item.id)}
+                >
+                  <img
+                    src={item.imageBox}
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                  />
                   <div
-                    className={`flex justify-center`}
+                    className={`relative z-10 flex w-full items-center justify-center px-[10vw] lg:px-[5rem]`}
                   >
-                    <div
-                      className={`transition-transform duration-500 ease-in-out ${translateClass} text-[3vw] font-normal text-white lg:text-[2rem] ${orbitron.className}`}
-                    >
+                    <span className={`text-[3vw] font-normal text-white lg:text-[2rem] ${orbitron.className}`}>
                       {item.title}
-                    </div>
-
-                    <div
-                      className={`absolute top-1/2 -translate-y-1/2 fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-500 ease-in-out ${arrowTranslateClass} ${item.id % 2 !== 0 ? "right-[9vw] lg:right-[3rem]" : "left-[9vw] lg:left-[3rem]"}`}
-                    >
-                      <ChevronDownArrow
-                        className={`h-[5vw] w-[5vw] origin-center transform-gpu fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-300 ease-in-out lg:h-[3rem] lg:w-[3rem] ${openSection === item.id ? "rotate-180" : "rotate-0"
-                          }`}
-                      />
-                    </div>
+                    </span>
+                  </div>
+                  <div
+                    className={`absolute top-1/2 -translate-y-1/2 fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-500 ease-in-out ${item.id % 2 !== 0 ? "right-[12vw] lg:right-[4.5rem]" : "left-[12vw] lg:left-[4.5rem]"}`}
+                  >
+                    <ChevronDownArrow
+                      className={`h-[5vw] w-[5vw] origin-center transform-gpu fill-none stroke-[#03CDFE] stroke-[2] transition-transform duration-300 ease-in-out lg:h-[3rem] lg:w-[3rem] ${openSection === item.id ? "rotate-180" : "rotate-0"}`}
+                    />
                   </div>
                 </div>
               </div>
