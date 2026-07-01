@@ -562,7 +562,7 @@ const Submission = forwardRef<SubmissionRef, Props>(
                   currentFile={formData.submission}
                   onFileUpload={handleFileUpload}
                   onRemoveFile={removeDocument}
-                  supportedFormats=".zip,.rar,.7z" // Tambahkan .7z jika diizinkan
+                  supportedFormats=".pdf"
                   maxSizeMB={25}
                 />
                 {/* {submissionProgress > 0 && submissionProgress <= 100 && (

@@ -252,13 +252,13 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
 };
 
 const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, removeDocument, updateFormData }, ref) => {
-  let price: number = 55001;
+  let price: number = 55000;
   const now = new Date();
   const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
   const currentDate = new Date(utcTime + 7 * 60 * 60 * 1000); // GMT+7
-  const targetDate = new Date("2025-07-15T00:00:00+07:00");
+  const targetDate = new Date("2026-07-15T00:00:00+07:00");
   if (currentDate >= targetDate) {
-    price = 65001;
+    price = 65000;
   }
 
   const uploadSingleFile = useCallback(async (file: File, fileNameInDrive: string, teamFolderId: string): Promise<string> => {

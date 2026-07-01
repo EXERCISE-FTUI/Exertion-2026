@@ -294,32 +294,33 @@ export default function DashboardPage() {
               {dbData?.competitionName}
             </h2>
 
-            <div className="mb-6 min-[480px]:mb-8 w-full max-w-full rounded-xl border border-green-500/30 bg-green-500/5 p-3 min-[480px]:p-4 text-center shadow-[0_0_15px_rgba(34,197,94,0.1)] lg:max-w-4xl">
-              <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-3">
-                <CheckCircle className="h-5 w-5 min-[480px]:h-6 min-[480px]:w-6 text-green-400 shrink-0" />
-                <p className="text-[11px] min-[360px]:text-xs min-[480px]:text-sm font-semibold text-white tracking-wide">
-                  Tim anda telah terdaftar! Silakan join grup WhatsApp di bawah ini:
-                </p>
-              </div>
-              {/* Pastikan whatsappLink ada sebelum merender tombol */}
-              {whatsappLink && (
-                <div className="mt-3 min-[480px]:mt-4 flex w-full justify-center">
-                  <a
-                    href={whatsappLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm max-[280px]:text-[10px] max-[280px]:h-9 max-[280px]:px-2 min-[480px]:text-md flex h-11 items-center justify-center rounded-lg bg-white font-semibold text-[#00CB24] shadow transition-all hover:bg-gray-300 px-5 min-[480px]:px-8 whitespace-nowrap"
-                  >
-                    <img
-                      src="/register/whatsapp.svg"
-                      alt="WhatsApp"
-                      className="mt-1.5 max-[280px]:mt-0.5 mr-2 max-[280px]:mr-1 h-7 w-7 max-[280px]:h-5 max-[280px]:w-5 min-[480px]:h-8 min-[480px]:w-8 object-contain"
-                    />
-                    <span className="font-bold">Join WhatsApp Group</span>
-                  </a>
+            {dbData?.paymentProof && (
+              <div className="mb-6 min-[480px]:mb-8 w-full max-w-full rounded-xl border border-green-500/30 bg-green-500/5 p-3 min-[480px]:p-4 text-center shadow-[0_0_15px_rgba(34,197,94,0.1)] lg:max-w-4xl">
+                <div className="flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-3">
+                  <CheckCircle className="h-5 w-5 min-[480px]:h-6 min-[480px]:w-6 text-green-400 shrink-0" />
+                  <p className="text-[11px] min-[360px]:text-xs min-[480px]:text-sm font-semibold text-white tracking-wide">
+                    Tim anda telah terdaftar! Silakan join grup WhatsApp di bawah ini:
+                  </p>
                 </div>
-              )}
-            </div>
+                {whatsappLink && (
+                  <div className="mt-3 min-[480px]:mt-4 flex w-full justify-center">
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm max-[280px]:text-[10px] max-[280px]:h-9 max-[280px]:px-2 min-[480px]:text-md flex h-11 items-center justify-center rounded-lg bg-white font-semibold text-[#00CB24] shadow transition-all hover:bg-gray-300 px-5 min-[480px]:px-8 whitespace-nowrap"
+                    >
+                      <img
+                        src="/register/whatsapp.svg"
+                        alt="WhatsApp"
+                        className="mt-1.5 max-[280px]:mt-0.5 mr-2 max-[280px]:mr-1 h-7 w-7 max-[280px]:h-5 max-[280px]:w-5 min-[480px]:h-8 min-[480px]:w-8 object-contain"
+                      />
+                      <span className="font-bold">Join WhatsApp Group</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="flex w-full flex-col gap-6 min-[480px]:gap-8 pb-8 w-full max-w-4xl">
               
