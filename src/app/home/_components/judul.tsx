@@ -25,15 +25,15 @@ const Judul = () => {
         />
       <div
         id="home"
-        className={`text-[min(8vw,5.2rem)] font-bold text-white/75 drop-shadow-md  ${orbitron.className}`}
-        style={{ textShadow: "0px 0px 10px #000000"}}
+        className={`text-[min(8vw,5.2rem)] font-bold text-[#094174] drop-shadow-md  ${orbitron.className}`}
+        style={{ textShadow: "0px 0px 10px #03cdfe"}}
       >
         EXERTION 2026
       </div>
     </div>
       <div
-        className={`-mt-5 text-[min(1.5vw,2rem)] font-bold text-white/75 drop-shadow-md text-center scale-x-155 scale-y-140 ${orbitron.className}`}
-        style={{ textShadow: "0px 0px 10px #000000" }}
+        className={`-mt-5 text-[min(1.5vw,2rem)] font-bold text-[#094174] drop-shadow-md text-center scale-x-155 scale-y-140 ${orbitron.className}`}
+        style={{ textShadow: "0px 0px 10px #03cdfe" }}
       >
         Beyond Idea : Designing Impact for Tomorrow 
       </div>
