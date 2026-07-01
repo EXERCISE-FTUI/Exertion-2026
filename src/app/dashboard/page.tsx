@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
         const { data, error } = await supabase
           .from("teams")
-          .select("*, submission_documents(*)")
+          .select("team_name, leader_name, leader_institute, leader_email, leader_whatsapp_number, member_count, competition_name, member2_name, member2_institute, member3_name, member3_institute, submission_documents(student_id_card_link, twibbon_upload_link, instagram_story_link, task_link, payment_proof, member2_student_id_card_link, member2_twibbon_upload_link, member2_instagram_story_link, member3_student_id_card_link, member3_twibbon_upload_link, member3_instagram_story_link)")
           .eq("leader_user_id", user.id)
           .single();
 

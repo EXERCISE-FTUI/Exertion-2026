@@ -17,19 +17,25 @@ const inter = Inter({ subsets: ["latin"] });
 const About = () => {
   return (
     <section className="home-about-section relative flex h-[60vw] w-[120vw] flex-col items-center justify-center gap-[5vw] pt-[10vw] pl-3 xs:pl-2 lg:-mt-10 lg:h-[55rem] lg:max-w-[1200px] lg:items-start lg:justify-start lg:gap-[0.67rem] lg:p-0 lg:pb-13 lg2:gap-[1.3rem] lg1300:max-w-[2200px]">
-      <img
+      <Image
         src="/home/about/poly.svg"
         alt="poly"
+        width={300}
+        height={300}
         className="home-about-poly absolute top-[4vw] left-[18vw] z-30 h-[15vw] lg:left-[7rem] lg:top-[40%] lg:h-[11rem] lg:-translate-y-[16vw]"
       />
-      <img
+      <Image
         src="/home/about/robot.svg"
         alt="tangan robot"
+        width={800}
+        height={800}
         className="home-about-robot absolute -top-[6vw] right-8 z-30 h-[21vw] lg:top-[40%] lg:h-[14rem] lg:-translate-y-[22rem] md:right-[10vw] lg:right-[8rem]"
       />
-      <img
+      <Image
         src="/home/about/SegiEnam.svg"
         alt="segi enam"
+        width={500}
+        height={500}
         className="home-about-hex animate-pulse-slow absolute z-10 top-[8vw] right-[25vw] h-[20vw] lg:top-[40%] lg:h-[12rem] lg:right-[22rem] lg:-translate-y-[12.5rem]"
       />
       <div
@@ -40,9 +46,11 @@ const About = () => {
       <div className="home-about-copy absolute lg:left-1/2 lg:-translate-x-1/2 z-20 -mb-[6.5vw] max-h-[13rem] w-[70vw] max-w-[46rem] px-[9vw] text-left text-[1.6vw] leading-[3.2vw] text-white md:text-[1.6vw] xs:-mt-[0vw] lg:top-[25.5rem] lg:w-[80vw] lg:px-10 lg:text-[1.5rem] lg:leading-[2.3rem] lg1300:w-[50rem] lg1300:text-[1.2rem]">
         EXERTION UI adalah sebuah event yang diselenggarakan oleh EXERCISE FTUI. EXERTION UI 2026 hadir menjadi wadah bagi mahasiswa dan siswa di Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi, dan kreativitas umum. Serangkaian kegiatan yang dilaksanakan mencakup webinar, awarding, serta kompetisi utama.
       </div>
-      <img
+      <Image
         src="/home/about/FrameAbout.svg"
         alt="frame about"
+        width={1200}
+        height={600}
         className="z-10 home-about-frame absolute w-[70%] pt-9 lg:top-1/2 lg:left-1/2 lg:w-[70rem] lg:-translate-x-[50%] lg:-translate-y-[40%]"
       />
     </section>

@@ -6,15 +6,16 @@ import type { User } from "@supabase/supabase-js";
 import { Exo_2, Inter, Orbitron } from "next/font/google";
 import { redirect, useRouter } from "next/navigation"; // Import useRouter
 import { useEffect, useState, useCallback } from "react"; // Import useCallback
-import About from "./_components/about";
-import Competition from "./_components/competition";
-import Footer from "./_components/footer";
+import dynamic from "next/dynamic";
 import Header from "./_components/header";
 import Judul from "./_components/judul";
-import OurValue from "./_components/ourvalue";
-import Timeline from "./_components/timeline";
 import Timer from "./_components/timer";
 
+const About = dynamic(() => import("./_components/about"));
+const Competition = dynamic(() => import("./_components/competition"));
+const Footer = dynamic(() => import("./_components/footer"));
+const OurValue = dynamic(() => import("./_components/ourvalue"));
+const Timeline = dynamic(() => import("./_components/timeline"));
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["500"] });
 const exo2 = Exo_2({ subsets: ["latin"], weight: ["500"] });
 const inter = Inter({ subsets: ["latin"] });

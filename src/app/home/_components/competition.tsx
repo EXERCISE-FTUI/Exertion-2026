@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState, useRef } from "react";
 import type { User } from "@supabase/supabase-js";
 import { Orbitron, Exo_2, Inter } from "next/font/google";
+import Image from "next/image";
 import { ChevronDown as ChevronDownArrow } from "lucide-react";
 import { ChevronUp as ChevronUpArrow } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -94,41 +95,53 @@ const Competition = () => {
       id="competitions"
       className="relative mb-[1vw] flex h-full w-full max-w-[2200px] flex-col items-center justify-center pt-[3vw]"
     >
-      <img
+      <Image
         src="/home/competition/SegiEnam.svg"
         alt="segienam"
+        width={300}
+        height={300}
         className="animate-pulse-slow absolute top-0 right-0 h-[20vw] lg:h-[16rem]"
       />
 
-      <img
+      <Image
         src="/home/competition/Bulet.svg"
         alt="segienam"
+        width={200}
+        height={200}
         className="animate-pulse-slow absolute -top-8 right-18 h-[12vw] lg:-top-[5rem] lg:right-[10vw] lg:h-[8rem]"
       />
 
-      <img
+      <Image
         src="/home/competition/Kawat1.svg"
         alt="kawat"
+        width={300}
+        height={100}
         className="absolute -top-[8vw] left-0 z-10 h-[8vw] animate-pulse lg:h-[8rem]"
       />
 
-      <img
+      <Image
         src="/home/competition/SegiEnam2.svg"
         alt="gambar mascot"
+        width={300}
+        height={300}
         className="animate-pulse-slow absolute bottom-[20vw] left-0 z-10 h-[16vw] lg:h-[12rem] lg:translate-y-[12rem]"
       />
 
-      <img
+      <Image
         src="/home/competition/Kawat2.svg"
         alt="kawat"
+        width={300}
+        height={100}
         className="absolute right-0 bottom-[4vw] h-[12vw] animate-pulse lg:bottom-[5rem] lg:h-[8rem]"
       />
 
       <div className="flex h-auto w-[80vw] flex-col items-center justify-center lg:w-[55vw] lg:gap-[3rem]">
         <div className="relative flex flex-col items-center justify-center">
-          <img
+          <Image
             src="/home/timeline/wire3.svg"
             alt="kawat tipis"
+            width={300}
+            height={100}
             className="absolute top-[-0.3rem] left-1/2 z-10 h-[10vw] -translate-x-1/2 animate-pulse md:max-lg:top-[-0.5rem] lg:top-[-2.55rem] lg:h-[9rem]"
           />
 

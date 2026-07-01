@@ -3,6 +3,7 @@
 import { Mail as MailIcon, MapPin as MapPinIcon } from "lucide-react";
 import { Exo_2, Inter, Orbitron } from "next/font/google";
 import { SiInstagram, SiLinkedin } from "react-icons/si";
+import Image from "next/image";
 
 const orbitron = Orbitron({ subsets: ["latin"], weight: ["500"] });
 
@@ -22,10 +23,12 @@ const Footer = () => {
 
       <div className="items-cente relative z-10 grid grid-cols-1 justify-center px-[11%] md:px-[5%] pt-[20%] pb-[3.5%] gap-[8vw] md:grid-cols-2 md:pt-[7%]">
         <div className="flex flex-col justify-center items-start gap-[2vw] md:gap-[1vw] h-full">
-          <img
+          <Image
             className="h-auto w-[50vw] md:w-[18rem] lg:w-[22rem] object-contain mb-[4vw] md:mb-0"
             src="/footer/Exertion Logo Dark.svg"
             alt="Exertion Logo"
+            width={300}
+            height={100}
           />
           {/* reserved rights */}
           <div className="hidden pb-[2vw] pl-[5vw] text-[min(2vw,110%)] md:block lg:pb-0">
