@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     template: "%s | EXERTION UI 2026",
     default: "EXERTION UI 2026",
   },
-  description: "EXERTION UI BY EXERCISE FTUI",
+  description: "EXERTION UI adalah sebuah event. EXERTION UI 2026 hadir menjadi wadah bagi mahasiswa dan siswa di Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi, dan kreativitas umum.",
 };
 
 export default function RootLayout({
