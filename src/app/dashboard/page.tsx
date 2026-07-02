@@ -78,7 +78,7 @@ export default function DashboardPage() {
   const Competitions = {
     "ExerMind": "https://chat.whatsapp.com/Ero62Bg40mM5AY77pnJuDk?s=cl&p=a&mlu=0",
     "UI/UX Design": "https://chat.whatsapp.com/JydjCZX0nHa1L6nOIqE9bt?mode=gi_t",
-    "Business Plan": "", // Belum ada
+    "Business Plan": "https://chat.whatsapp.com/Capg9IPidoRB2YyhJibKUM?mode=gi_t",
     "Infografis": "https://chat.whatsapp.com/LfPE8MEEi1O8ZEkVrs9n4c?s=cl&p=a&ilr=4",
   };
 
