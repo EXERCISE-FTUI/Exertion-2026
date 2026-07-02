@@ -16,42 +16,35 @@ const inter = Inter({ subsets: ["latin"] });
 
 const About = () => {
   return (
-    <section className="home-about-section relative flex h-[60vw] w-[120vw] flex-col items-center justify-center gap-[5vw] pt-[10vw] pl-3 xs:pl-2 lg:-mt-10 lg:h-[55rem] lg:max-w-[1200px] lg:items-start lg:justify-start lg:gap-[0.67rem] lg:p-0 lg:pb-13 lg2:gap-[1.3rem] lg1300:max-w-[2200px]">
+    <section className="home-about-section relative flex h-[60vw] w-[120vw] flex-col items-center justify-center gap-[5vw] pt-[3vw] pl-3 xs:pl-2 lg:-mt-10 lg:h-[55rem] lg:max-w-[1200px] lg:items-start lg:justify-start lg:gap-[0.67rem] lg:p-0 lg:pb-13 lg2:gap-[1.3rem] lg1300:max-w-[2200px]">
       <Image
         src="/home/about/poly.svg"
-        alt="poly"
+        alt="tangan robot"
         width={300}
         height={300}
-        className="home-about-poly absolute top-[4vw] left-[18vw] z-30 h-[15vw] lg:left-[7rem] lg:top-[40%] lg:h-[11rem] lg:-translate-y-[16vw]"
-      />
-      <Image
-        src="/home/about/robot.svg"
-        alt="tangan robot"
-        width={800}
-        height={800}
-        className="home-about-robot absolute -top-[6vw] right-8 z-30 h-[21vw] lg:top-[40%] lg:h-[14rem] lg:-translate-y-[22rem] md:right-[10vw] lg:right-[8rem]"
+        className="home-about-poly absolute top-[24vw] -right-[7.5rem] z-30 h-[14vw] md:-right-[5.2rem] lg:top-[25rem] lg:h-[9.2rem]"
       />
       <Image
         src="/home/about/SegiEnam.svg"
         alt="segi enam"
-        width={500}
-        height={500}
-        className="home-about-hex animate-pulse-slow absolute z-10 top-[8vw] right-[25vw] h-[20vw] lg:top-[40%] lg:h-[12rem] lg:right-[22rem] lg:-translate-y-[12.5rem]"
+        width={300}
+        height={300}
+        className="home-about-hex animate-pulse-slow absolute z-10 top-[1vw] -right-[6rem] h-[20vw] md:h-[16vw] md:-right-[3rem] lg:right-[1rem] lg:top-[10rem] lg:h-[12rem]"
       />
       <div
-        className={`z-10 home-about-title ${orbitron.className} absolute lg:translate-x-[60%] lg:translate-y-[3%] lg1300:right-1/2 z-20 -mt-[26vw] w-[64vw] max-w-[46rem] gap-[1.8vw] text-right text-[5.8vw] font-bold text-white xs:-mt-3 xs:pt-[7vw] lg:top-[16rem] lg:right-[38rem] lg:mt-0 lg:w-auto lg:pt-0 lg:pb-4 lg:pl-0 lg:text-[3.5rem] lg:font-medium lg:[-webkit-text-stroke:1px_rgba(82,151,193,0.8)] lg:[paint-order:stroke_fill] lg:[text-shadow:0_0_25px_rgba(255,255,255,0.25)] lg1300:pb-9`}
+        className={`z-10 home-about-title ${orbitron.className} absolute lg:mt-[0.6vw] md:-mt-[14rem] lg1300:right-1/2 z-20 -mt-[26vw] w-[64vw] max-w-[46rem] gap-[1.8vw] text-right text-[5.8vw] font-bold text-[#FFFFFF] xs:-mt-3 xs:pt-[7vw] lg1:top-[17.2rem] lg:top-[18.5rem] lg:translate-x-[80%] lg1:translate-x-[100%] lg:w-auto lg:pt-0 lg:pb-0 lg:pl-0 lg:text-[3.5rem] lg:font-medium [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] lg1300:pb-9`}
       >
         <h1>About Exertion</h1>
       </div>
-      <div className="home-about-copy absolute lg:left-1/2 lg:-translate-x-1/2 z-20 -mb-[6.5vw] max-h-[13rem] w-[70vw] max-w-[46rem] px-[9vw] text-left text-[1.6vw] leading-[3.2vw] text-white md:text-[1.6vw] xs:-mt-[0vw] lg:top-[25.5rem] lg:w-[80vw] lg:px-10 lg:text-[1.5rem] lg:leading-[2.3rem] lg1300:w-[50rem] lg1300:text-[1.2rem]">
+      <div className="home-about-copy absolute lg:left-1/2 lg:-translate-x-1/2 z-20 -mb-[6.5vw] max-h-[13rem] w-[70vw] max-w-[46rem] px-[9vw] text-left text-[1.6vw] leading-[3.2vw] text-white md:text-[1.6vw] lg:w-[60%] lg1:w-[44rem] md:top-[24vw] lg:top-[25.5rem] lg:px-10 lg1:text-[1.35rem] lg:leading-[2rem]">
         EXERTION UI adalah sebuah event yang diselenggarakan oleh EXERCISE FTUI. EXERTION UI 2026 hadir menjadi wadah bagi mahasiswa dan siswa di Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi, dan kreativitas umum. Serangkaian kegiatan yang dilaksanakan mencakup webinar, awarding, serta kompetisi utama.
       </div>
       <Image
         src="/home/about/FrameAbout.svg"
         alt="frame about"
-        width={1200}
-        height={600}
-        className="z-10 home-about-frame absolute w-[70%] pt-9 lg:top-1/2 lg:left-1/2 lg:w-[70rem] lg:-translate-x-[50%] lg:-translate-y-[40%]"
+        width={300}
+        height={300}
+        className="z-10 home-about-frame absolute w-[90%] sm:w-[80%] pt-9 lg:top-1/2 lg:left-1/2 lg:w-[70rem] lg:-translate-x-[50%] lg:-translate-y-[40%]"
       />
     </section>
   );

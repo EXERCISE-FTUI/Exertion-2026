@@ -6,10 +6,11 @@
 @theme {
   --breakpoint-md: 768px;
   --breakpoint-md1: 760px;
-  --breakpoint-lg2: 832px;
-  --breakpoint-lg1: 933px;
   --breakpoint-lg: 1024px;
-  --breakpoint-lg1300: 1300px;
+  --breakpoint-lg1: 1440px;
+  --breakpoint-lg2: 1280px;
+
+  --animate-bounce: bounce 3s infinite;
 }
 
 @theme inline {

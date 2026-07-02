@@ -77,7 +77,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-start overflow-hidden bg-[linear-gradient(180deg,#528CC0_0%,#7CBCE8_100%)] pt-12">
+    <div className="flex min-h-screen w-full flex-col items-center justify-start overflow-hidden bg-[linear-gradient(180deg,#528CC0_28%,#509AD5_67%,#7CBCE8_100%)] pt-12">
       <Header
         isSigned={isSigned}
         onSignOut={handleSignOutAndRefresh}
