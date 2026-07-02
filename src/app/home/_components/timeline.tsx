@@ -22,7 +22,7 @@ const Timeline = () => {
         alt="poly"
         width={300}
         height={300}
-        className="absolute bottom-[35vw] -left-[8rem] h-[6rem] md:top-[50%] md:-left-[7rem] md:h-[9rem] lg:h-[16rem] lg:-left-22"
+        className="absolute bottom-[35vw] -left-[8rem] h-[6rem] md:top-[50%] md:-left-[7rem] md:h-[9rem] lg:top-[41%] lg:h-[16rem] lg:-left-22"
       />
 
       <Image
@@ -38,7 +38,7 @@ const Timeline = () => {
         alt="poly"
         width={300}
         height={300}
-        className="absolute top-[1vw] -left-[6rem] h-[14vw] md:top-[4rem] md:-left-[5rem] md:h-[7rem] lg:left-8 lg:top-[3.5rem] lg:h-[8rem]"
+        className="absolute top-[1vw] -left-[6rem] h-[14vw] md:top-[4rem] md:-left-[5rem] md:h-[7rem] lg:-left-[1rem] lg:top-[3.5rem] lg:h-[10rem]"
       />
 
       <Image
@@ -46,7 +46,7 @@ const Timeline = () => {
         alt="wire"
         width={300}
         height={300}
-        className="z-10 animate-pulse absolute top-[34vw] -left-[8rem] h-[6vw] md:h-[3rem] md:top-[35%] md:-left-[5rem] lg:top-[24rem] lg:-left-[3rem] lg:h-[4rem]"
+        className="z-10 animate-pulse absolute top-[34vw] -left-[8rem] h-[6vw] md:h-[3rem] md:top-[34%] md:-left-[5rem] lg:top-[24rem] lg:-left-[3rem] lg:h-[4rem]"
       />
 
       <Image
@@ -54,15 +54,7 @@ const Timeline = () => {
         alt="wire"
         width={300}
         height={300}
-        className="z-10 animate-pulse absolute top-[50vw] -right-[8rem] h-[6vw] md:h-[3rem] md:top-[46%] md:-right-[5rem] lg:top-[33rem] lg:-right-[3rem] lg:h-[4rem]"
-      />
-
-      <Image
-        src="/home/timeline/wire3.svg"
-        alt="wire"
-        width={300}
-        height={300}
-        className="z-10 animate-pulse absolute mt-[8%] h-[10vw] left-1/2 -translate-x-1/2 md:mt-[16vw] lg:mt-[11vw] xl:mt-[8vw] lg:h-[5.5rem]"
+        className="z-10 animate-pulse absolute top-[42vw] -right-[8rem] h-[6vw] md:h-[3rem] md:top-[46%] md:-right-[5rem] lg:top-[33rem] lg:-right-[3rem] lg:h-[4rem]"
       />
 
       <Image
@@ -78,7 +70,7 @@ const Timeline = () => {
         alt="segi enam"
         width={300}
         height={300}
-        className="z-10 animate-pulse-slow absolute -bottom-[12vw] right-0 h-[30vw] md:right-[8rem] md:h-[15rem] lg:-translate-y-[8rem] lg:right-[20vw] lg:h-[20rem]"
+        className="z-10 animate-bounce absolute -bottom-[12vw] right-0 h-[30vw] md:right-[6rem] md:h-[15rem] lg:-translate-y-[8rem] lg:right-[20vw] lg:h-[20rem]"
       />
 
       <Image
@@ -86,14 +78,24 @@ const Timeline = () => {
         alt="segi enam"
         width={300}
         height={300}
-        className="z-10 animate-pulse-slow absolute -top-[12vw] -right-[7.2rem] h-[38vw] md:h-[20rem] md:-right-[4rem] md:-top-[5vw] lg:h-[25rem]"
+        className="z-10 animate-bounce absolute -top-[12vw] -right-[7.2rem] h-[38vw] md:h-[20rem] md:-right-[4rem] md:-top-[5vw] lg:h-[25rem]"
       />
 
       <div
         id="timeline_content"
-        className={`${orbitron.className} relative z-20 flex w-full max-w-[2200px] flex-col items-center pt-[10vw] pb-[5vw] text-[6vw] font-medium text-[#FFFFFF] md:pt-[8rem] md:pb-[5rem] md:text-[3rem] lg:text-[3rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff]`}
+        className={`${orbitron.className} relative z-20 flex w-full max-w-[2200px] flex-col items-center pt-[10vw] pb-[5vw] text-[6vw] font-medium text-[#FFFFFF] md:pt-[8rem] md:pb-[5rem] md:text-[3rem] lg:text-[3.8rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff]`}
       >
-        Timeline
+        <div className="relative flex w-max flex-col items-center justify-center">
+          Timeline
+          <Image
+            src="/home/timeline/wire3.svg"
+            alt="wire"
+            width={300}
+            height={300}
+            className="absolute z-10 h-[9vw] animate-pulse left-1/2 -translate-x-1/2 max-w-none lg:h-[5.8rem]"
+          />
+        </div>
+
         <div className="z-20 flex h-auto w-full items-center justify-center">
           <img
             src="/home/timeline/TimelineFix.svg"

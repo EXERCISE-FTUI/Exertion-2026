@@ -51,31 +51,31 @@ const OurValue = () => {
 
       {/* judul */}
       <div
-        className={`${orbitron.className} flex gap-[1vw] pb-[4vw] text-center text-[6vw] font-medium text-[#FFFFFF] lg:pb-[10vw] md:gap-2 md:pb-12 md:text-[3.5rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] md:max-lg:gap-[1vw] md:max-lg:pb-[6vw] md:max-lg:text-[6vw] lg1:pb-0`}
+        className={`${orbitron.className} flex md:max-lg:gap-[1vw] md:pb-[10vw] md:max-lg:text-[6vw] gap-[1vw] pb-[4vw] text-center text-[6vw] font-medium text-[#FFFFFF] lg:pb-[10vw] md:gap-2 md:text-[3.5rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff]`}
       >
         <h1>Our Value</h1>
       </div>
 
       {/* cards for values */}
-      <div className="relative flex max-w-full max-h-[700px] flex-wrap justify-center gap-[1vw] md:gap-0 md:max-lg:gap-[1vw] lg1:-mt-12">
+      <div className="relative flex max-w-full max-h-[700px] flex-wrap justify-center gap-[1vw] md:gap-0 md:max-w-[50rem] lg:max-w-full lg:mb-[4rem] md:max-lg:gap-[1vw] lg1:-mt-12 lg1:-mb-[5rem]">
         {Values.map((value) => (
           <div
             key={value.id}
-            className={`relative flex h-[40vw] w-[45%] flex-col items-center p-[3vw] md:w-[16rem] md:p-6 md:max-lg:h-[40vw] md:max-lg:w-[45%] md:max-lg:p-[3vw] lg:w-[21rem] lg2:w-[28rem] lg1:w-[23rem] ${value.id % 2 !== 0 ? "translate-y-[0vw] md:translate-y-10 md:max-lg:translate-y-[0vw]" : ""} `}
+            className={`relative flex h-[40vw] w-[45%] flex-col items-center p-[3vw] md:w-[20rem] md:h-[20rem] md:p-6 md:max-lg:p-[3vw] lg:w-[21rem] ${value.id % 2 !== 0 ? "translate-y-[0vw] md:translate-y-10 md:max-lg:translate-y-[0vw]" : ""} `}
           >
             <img
               src={`/home/ourvalue/FrameOurValue.svg`}
               alt="frame our value"
-              className="absolute z-20 h-full w-full -mt-[6vw] md:-mt-[8vw] xl:-translate-y-[10%] lg1:-translate-y-[0%] lg1300:-translate-y-[60%]"
+              className="absolute z-20 h-full w-full -mt-[6vw] md:-mt-[4rem] xl:-translate-y-[10%] lg1:-translate-y-[0%] lg1300:-translate-y-[60%]"
             />
 
             <h2
-              className={`${orbitron.className} home-value-title z-20 w-full pl-4 text-left text-[3.5vw] font-semibold text-sky-300 md:-mt-[2rem] md:ml-[2.6rem] md:pt-8 md:pb-3 md:text-[1.5rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 md:max-lg:text-[3.5vw] lg2:text-[1.9rem] lg1:text-[1.8rem] lg2:mt-[10vw] lg1:-mt-[1.95vw]`}
+              className={`${orbitron.className} home-value-title z-20 w-full translate-x-[10%] text-left text-[3.5vw] font-semibold text-sky-300 md:-mt-[2rem] md:pt-8 md:pb-3 md:text-[1.7rem] md:max-lg:pt-[3vw] md:max-lg:pb-0 lg:-mt-[3rem] lg:-mb-[0.5rem] lg2:-mt-[5rem]`}
             >
               {value.title}
             </h2>
             <p
-              className={`${exo2.className} home-value-desc z-20 pr-4 pl-4 text-left text-[1.5vw] font-medium text-white md:w-[16rem] md:text-[0.85rem] md:max-lg:px-4 md:max-lg:leading-[1.08] lg2:text-[0.75rem] lg1:text-[0.76rem] lg:w-[16rem]`}
+              className={`${exo2.className} home-value-desc z-20 w-[80%] text-left text-[1.5vw] font-medium text-white md:w-[16rem] md:text-[0.86rem] md:max-lg:px-4 md:max-lg:leading-[1.08] lg:w-[14rem] lg:text-[0.8rem]`}
             >
               {value.description}
             </p>
