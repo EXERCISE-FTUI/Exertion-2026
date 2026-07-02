@@ -325,7 +325,7 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
   useImperativeHandle(ref, () => ({ handleSave }));
 
   return (
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-start px-2 py-4 min-[480px]:p-4 min-[480px]:pt-12 md:px-10 lg:pt-20">
+    <div className="relative z-10 mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-start px-2 py-4 min-[480px]:p-4 min-[480px]:pt-12 md:px-10 lg:pt-20">
       <h1 className="mt-8 min-[480px]:mt-0 mb-6 w-full text-center font-orbitron text-xl font-black tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] min-[340px]:text-2xl min-[340px]:tracking-[0.15em] min-[480px]:mb-10 min-[480px]:text-3xl md:mb-14 md:text-5xl">
         PAYMENT
       </h1>
@@ -339,7 +339,7 @@ const Payment = forwardRef<PaymentRef, Props>(({ formData, handleFileUpload, rem
 
         <div className="mb-6 rounded-lg bg-[#1E293B] p-4 text-center shadow-md w-full">
           <div className="text-sm font-semibold mb-2 text-white">Transfer to:</div>
-          <div className="text-xl font-bold text-[#44EAB0]">000-302-263-458 (BCA)</div>
+          <div className="text-xl font-bold text-[#44EAB0]">000-302-263-458 (BLU BY BCA DIGITAL)</div>
           <div className="text-sm text-white">a/n Muhammad Faqih Mahardhika Digdaya</div>
           <div className="mt-4 w-full flex justify-center">
             <img

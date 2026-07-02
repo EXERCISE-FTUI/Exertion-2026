@@ -63,7 +63,7 @@ const Header = ({ isSigned, onSignOut, displayName }: HeaderProps) => {
 
   return (
     <div
-      className={`fixed top-0 flex h-[160px] w-full max-w-[2200px] items-center justify-between px-4 md:justify-around ${orbitron.className} z-50 ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300 ease-in-out bg-top bg-no-repeat`}
+      className={`fixed top-0 flex h-[160px] w-full max-w-[2200px] items-center justify-between px-4 md:justify-around ${orbitron.className} z-50 ${visible ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-full pointer-events-none"} transition-all duration-300 ease-in-out bg-top bg-no-repeat`}
       style={{
         backgroundImage: `url('/home/header/Header2.svg'),url('/home/header/Frame1.svg')`,
         backgroundSize: '100% 77.64%, 100% 100%',
