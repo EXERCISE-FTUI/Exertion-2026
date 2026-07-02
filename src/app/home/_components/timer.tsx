@@ -154,7 +154,7 @@ const Timer = () => {
         {/* Read Our Guidebook */}
         <button
           onClick={() => router.push("/home#competitions")}
-          className="relative flex items-center justify-center h-[12vw] w-full md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 hover:scale-105 backdrop-blur-md cursor-pointer"
+          className="relative flex items-center justify-center h-[12vw] w-full md:h-[4.5rem] md:w-[17rem] rounded-lg bg-black/15 text-[10px] md:text-[min(3.5vw,1rem)] font-normal tracking-wide transition-all duration-300 hover:bg-white/20 hover:scale-105 backdrop-blur-md cursor-pointer"
         >
           <span className="z-10">READ OUR GUIDEBOOK</span>
           <div 
