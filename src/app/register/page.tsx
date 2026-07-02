@@ -489,7 +489,7 @@ export default function RegisterPage() {
           <div className="relative z-10 w-full h-full flex flex-col items-center">
             <div className="h-40 w-full flex items-center justify-start pl-4 lg:pl-6 pr-2 shrink-0">
               <img
-                src="/register/exertion.svg"
+                src="/register/Exertion Logo Dark.svg"
                 alt="Exertion Logo"
                 className="h-auto w-24 lg:w-[320px] -mt-3"
               />
