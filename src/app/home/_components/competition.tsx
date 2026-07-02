@@ -100,7 +100,7 @@ const Competition = () => {
         alt="segienam"
         width={300}
         height={300}
-        className="animate-pulse-slow absolute -top-15 -right-[7.2rem] h-[20vw] md:-right-[5.5rem] lg:-right-[3rem] lg:h-[16rem] lg:-top-[11rem]"
+        className="animate-pulse-slow absolute -top-15 -right-[7.2rem] h-[20vw] md:-right-[5.5rem] md:-top-[8rem] lg:-right-[3rem] lg:h-[16rem] lg:-top-[11rem]"
       />
 
       <Image
@@ -116,7 +116,7 @@ const Competition = () => {
         alt="kawat"
         width={300}
         height={300}
-        className="absolute -top-[8vw] -left-[7.2rem] z-10 h-[25vw] animate-pulse md:-left-[5.5rem] lg:-left-[3.3rem] lg:h-[18rem]"
+        className="absolute -top-[8vw] -left-[7.2rem] z-10 h-[25vw] animate-bounce md:h-[15rem] md:-left-[5.5rem] lg:-left-[3.3rem] lg:h-[18rem]"
       />
 
       <Image
@@ -142,11 +142,11 @@ const Competition = () => {
             alt="kawat tipis"
             width={300}
             height={100}
-            className="absolute top-[-0.3rem] left-1/2 z-10 h-[10vw] -translate-x-1/2 animate-pulse md:max-lg:top-[-0.5rem] lg:top-[-2.55rem] lg:h-[9rem]"
+            className="absolute top-[-0.3rem] left-1/2 z-10 h-[10vw] -translate-x-1/2 animate-pulse md:max-lg:top-[-0.5rem] lg:top-[-1.5rem] lg:h-[9rem]"
           />
 
           <div
-            className={`relative z-20 text-center text-[6vw] font-medium text-[#FFFFFF] lg:text-[3rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] ${orbitron.className}`}
+            className={`relative z-20 text-center text-[6vw] font-medium text-[#FFFFFF] lg:text-[3.8rem] lg:mb-[2rem] [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] ${orbitron.className}`}
           >
             Competition
           </div>
@@ -168,7 +168,7 @@ const Competition = () => {
           return (
             <div
               key={item.id}
-              className="flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center lg:-mt-[2.8rem]"
             >
               <div
                 className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[8rem] cursor-pointer"
@@ -212,20 +212,20 @@ const Competition = () => {
                   ref={(el) => {
                     contentRefs.current[item.id] = el;
                   }}
-                  className={`-mt-1 mb-[1rem] lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[4rem] lg:mr-[2.5vw] lg:ml-[8vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
+                  className={`-mt-1.5 mb-[1rem] md:-mt-3 lg:mb-[3rem] flex w-4/5 transform gap-[2vw] bg-[#1C1010]/50 px-[4vw] py-[3vw] shadow-[0_0_5px_#03CDFE] transition-all duration-500 ease-in-out lg:-mt-[4.5rem] lg:ml-[15vw] lg:mr-[10vw] lg1:ml-[9vw] lg1:mr-[3.6vw] lg:w-full lg:translate-y-[3.2rem] lg:gap-[1.5vw] lg:px-[2vw] lg:py-[2vw] ${openSection === item.id ? "translate-y-0" : "-translate-y-4"
                     }`}
                 >
-                  <div className="flex h-auto w-[10vw] items-center text-white lg:w-[18vw] lg:translate-x-[1.42rem]">
+                  <div className="flex h-auto w-[10vw] items-center text-white lg:pr-[4vw] lg:w-[18vw] lg:translate-x-[1.42rem]">
                     <img src={item.imageIcon} alt={item.title} />
                   </div>
                   <div className="flex w-[80%] flex-col items-center">
                     <p
-                      className={`text-justify text-[1.9vw] text-white lg:text-[1vw] ${exo2.className}`}
+                      className={`text-justify text-[1.9vw] text-white lg:text-[1.4vw] lg1:text-[1.2vw] ${exo2.className}`}
                     >
                       {item.description}
                     </p>
 
-                    <div className="flex w-full justify-center gap-5 pt-[2vw] text-center text-[2vw] lg:pt-[1vw] lg:text-[0.8vw]">
+                    <div className="flex w-full justify-center gap-5 pt-[2vw] text-center text-[2vw] lg:pt-[3vw] lg:text-[0.8vw]">
                       <button
                         onClick={() => {
                           if (user) {

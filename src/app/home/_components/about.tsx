@@ -29,14 +29,14 @@ const About = () => {
         alt="segi enam"
         width={300}
         height={300}
-        className="home-about-hex animate-pulse-slow absolute z-10 top-[1vw] -right-[6rem] h-[20vw] md:h-[16vw] md:-right-[2rem] lg:right-[1rem] lg:top-[10rem] lg:h-[12rem]"
+        className="home-about-hex animate-pulse-slow absolute z-10 top-[1vw] -right-[6rem] h-[20vw] md:h-[16vw] md:-right-[3rem] lg:right-[1rem] lg:top-[10rem] lg:h-[12rem]"
       />
       <div
-        className={`z-10 home-about-title ${orbitron.className} absolute lg:translate-x-[60%] lg:mt-[0.6vw] md:-mt-[14rem] lg1300:right-1/2 z-20 -mt-[26vw] w-[64vw] max-w-[46rem] gap-[1.8vw] text-right text-[5.8vw] font-bold text-[#FFFFFF] xs:-mt-3 xs:pt-[7vw] lg:top-[16rem] lg:right-[30rem] lg:w-auto lg:pt-0 lg:pb-4 lg:pl-0 lg:text-[3.5rem] lg:font-medium [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] lg1300:pb-9`}
+        className={`z-10 home-about-title ${orbitron.className} absolute lg:mt-[0.6vw] md:-mt-[14rem] lg1300:right-1/2 z-20 -mt-[26vw] w-[64vw] max-w-[46rem] gap-[1.8vw] text-right text-[5.8vw] font-bold text-[#FFFFFF] xs:-mt-3 xs:pt-[7vw] lg1:top-[17.2rem] lg:top-[18.5rem] lg:translate-x-[80%] lg1:translate-x-[100%] lg:w-auto lg:pt-0 lg:pb-0 lg:pl-0 lg:text-[3.5rem] lg:font-medium [-webkit-text-stroke:1px_#5297C1CC] [paint-order:stroke_fill] [text-shadow:0_0_1px_#fff,0_0_1px_#fff] lg1300:pb-9`}
       >
         <h1>About Exertion</h1>
       </div>
-      <div className="home-about-copy absolute lg:left-1/2 lg:-translate-x-1/2 z-20 -mb-[6.5vw] max-h-[13rem] w-[70vw] max-w-[46rem] px-[9vw] text-left text-[1.6vw] leading-[3.2vw] text-white md:text-[1.6vw] lg:w-[50vw] xs:-mt-[0vw] lg:top-[25.5rem] lg:w-[60vw] lg:px-10 lg:text-[1.5vw] lg:leading-[2rem] lg1300:w-[50rem] lg1300:text-[1.2rem]">
+      <div className="home-about-copy absolute lg:left-1/2 lg:-translate-x-1/2 z-20 -mb-[6.5vw] max-h-[13rem] w-[70vw] max-w-[46rem] px-[9vw] text-left text-[1.6vw] leading-[3.2vw] text-white md:text-[1.6vw] lg:w-[60%] lg1:w-[44rem] md:top-[24vw] lg:top-[25.5rem] lg:px-10 lg1:text-[1.35rem] lg:leading-[2rem]">
         EXERTION UI adalah sebuah event yang diselenggarakan oleh EXERCISE FTUI. EXERTION UI 2026 hadir menjadi wadah bagi mahasiswa dan siswa di Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi, dan kreativitas umum. Serangkaian kegiatan yang dilaksanakan mencakup webinar, awarding, serta kompetisi utama.
       </div>
       <Image
