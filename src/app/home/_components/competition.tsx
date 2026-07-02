@@ -168,7 +168,8 @@ const Competition = () => {
           return (
             <div
               key={item.id}
-              className="flex flex-col items-center justify-center lg:-mt-[2.8rem]"
+              className={`flex flex-col items-center justify-center lg:-mt-[2.8rem] relative ${openSection === item.id ? "z-30" : "z-10"}`}
+
             >
               <div
                 className="z-20 flex h-[12vw] w-[90vw] max-w-[2200px] flex-col items-center justify-center lg:h-[8rem] cursor-pointer"
@@ -203,9 +204,9 @@ const Competition = () => {
               </div>
 
               <div
-                className={`flex w-full max-w-[57.5rem] items-center justify-center transition-all duration-500 ease-in-out ${openSection === item.id
-                  ? "max-h-screen opacity-100"
-                  : "max-h-0 opacity-0"
+                className={`flex w-full max-w-[57.5rem] items-center justify-center transition-all duration-500 ease-in-out overflow-hidden ${openSection === item.id
+                  ? "max-h-[1000px] opacity-100 pointer-events-auto"
+                  : "max-h-0 opacity-0 pointer-events-none"
                   }`}
               >
                 <div
