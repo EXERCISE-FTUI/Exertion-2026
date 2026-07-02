@@ -20,7 +20,7 @@ const page = () => {
       linkwa: "https://chat.whatsapp.com/JydjCZX0nHa1L6nOIqE9bt?mode=gi_t",
     },
     "Business Plan": {
-      linkwa: "", // Belum ada
+      linkwa: "https://chat.whatsapp.com/Capg9IPidoRB2YyhJibKUM?mode=gi_t",
     },
     "Infografis": {
       linkwa: "https://chat.whatsapp.com/LfPE8MEEi1O8ZEkVrs9n4c?s=cl&p=a&ilr=4",

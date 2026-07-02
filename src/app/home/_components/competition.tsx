@@ -51,7 +51,7 @@ dua babak, yaitu babak penyisihan dan babak 10 besar.`,
     title: "Business Plan",
     imageBox: "/home/competition/boxtiga.svg",
     imageIcon: "/home/competition/lightbulb.png",
-    guideBookLink: "",
+    guideBookLink: "https://drive.google.com/file/d/1e4gW-ajONJY_gXnsLGWPmPZ-FEkhIoak/view?usp=sharing",
     description: `Business Plan Competition adalah kompetisi bagi mahasiswa/i untuk mengembangkan ide bisnis yang inovatif menjadi rencana bisnis yang terstruktur dan kompetitif. Peserta akan menyusun model bisnis, strategi, dan peluang pengembangan untuk menghasilkan business plan yang berkualitas. Tujuh tim terbaik (Top 7) akan melaju ke babak final untuk mempresentasikan rencana bisnis mereka di hadapan dewan juri. Setiap tim terdiri dari 1–3 orang.`,
   },
   {

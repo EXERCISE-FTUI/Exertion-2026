@@ -17,7 +17,7 @@ const Competitions: Record<CompetitionName, { linkwa: string }> = {
     linkwa: "https://chat.whatsapp.com/I8nsHzZy7saA6VrTDuAQDw?mode=ac_c",
   },
   "Business Plan": {
-    linkwa: "https://chat.whatsapp.com/CaDWdhYB4zfCKfUBLX23bh",
+    linkwa: "https://chat.whatsapp.com/Capg9IPidoRB2YyhJibKUM?mode=gi_t",
   },
 };
 
