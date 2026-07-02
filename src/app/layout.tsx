@@ -47,6 +47,10 @@ export const metadata: Metadata = {
     default: "EXERTION UI 2026",
   },
   description: "EXERTION UI adalah sebuah event. EXERTION UI 2026 hadir menjadi wadah bagi mahasiswa dan siswa di Indonesia untuk mengembangkan keterampilan di bidang teknik, teknologi, dan kreativitas umum.",
+  applicationName: "EXERTION UI 2026",
+  openGraph: {
+    siteName: "EXERTION UI 2026",
+  },
 };
 
 export default function RootLayout({
