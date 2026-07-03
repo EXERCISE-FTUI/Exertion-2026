@@ -442,7 +442,7 @@ export default function RegisterPage() {
         <div className="flex w-full flex-col overflow-x-hidden md:hidden z-10 shrink-0 bg-[#001D39]">
           <div className="flex items-center justify-between p-4 border-b border-[#4E8EA2]/30">
             <img
-              src="/register/exertion.svg"
+              src="/register/Exertion Logo Dark.svg"
               alt="Exertion Logo"
               className="h-auto w-24"
             />
@@ -489,7 +489,7 @@ export default function RegisterPage() {
           <div className="relative z-10 w-full h-full flex flex-col items-center">
             <div className="h-40 w-full flex items-center justify-start pl-4 lg:pl-6 pr-2 shrink-0">
               <img
-                src="/register/exertion.svg"
+                src="/register/Exertion Logo Dark.svg"
                 alt="Exertion Logo"
                 className="h-auto w-24 lg:w-[320px] -mt-3"
               />
@@ -617,7 +617,7 @@ export default function RegisterPage() {
                       : "cursor-not-allowed bg-white/30 text-white/50 shadow-none"
                     }`}
                 >
-                  {isSaving ? "SAVING..." : currentStep === 5 ? "PAY" : "NEXT"}
+                  {isSaving ? "SAVING..." : currentStep === 5 ? "KIRIM" : "NEXT"}
                 </button>
               </div>
             </div>
