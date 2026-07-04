@@ -37,7 +37,7 @@ tim.`,
     title: "ExerMind",
     imageBox: "/home/competition/boxdua.svg",
     imageIcon: "/home/competition/brain.png",
-    guideBookLink: "https://drive.google.com/file/d/1myWCG9rkP6FEG_kMdGFxnlDvl7VuxFKX/view?usp=sharing",
+    guideBookLink: "https://drive.google.com/file/d/1WlS_HhwKDJ8tTSv6gnrFRLGHUGzBs7vg/view?usp=sharing",
     description: `ExerMind merupakan kompetisi bagi siswa/i SMA/SMK
 sederajat untuk mengasah kemampuan logika dan matematika
 melalui berbagai soal dan permainan. Peserta diharapkan
