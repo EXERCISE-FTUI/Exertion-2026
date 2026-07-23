@@ -1,76 +1,72 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import "./entry.css";
+import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import Final from "./_components/Final";
+import { getActiveSession } from "@/actions/exermind/getActiveSession";
 
-export default function WelcomeToExermind() {
-  const [isMdOrLarger, setIsMdOrLarger] = useState(false);
-  const [teamName, setTeamName] = useState("Loading...");
-  const [competitionName, setCompetitionName] = useState("");
+export default function ExermindRouteGate() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Function to fetch team and competition data
-  const fetchTeamData = async () => {
-    try {
+  useEffect(() => {
+    const routeSession = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-      const supabase = await createClient();
+        if (!user) {
+          router.push("/sign-in");
+          return;
+        }
 
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-        // Fetch team data based on user
-        const { data, error } = await supabase
+        // Fetch team ID
+        const { data: team, error: teamError } = await supabase
           .from("teams")
-          .select("team_name, competition_name")
+          .select("id")
           .eq("leader_user_id", user.id)
           .single();
-          console.log("Competition name: ", data?.competition_name);
-        if (error && error.code !== "PGRST116") throw error;
 
-        if (data) {
-          setTeamName(data.team_name || "");
-          setCompetitionName(data.competition_name || "");
-        } else {
+        if (teamError || !team) {
           router.push("/home");
+          return;
         }
-      } else {
-        setTeamName("Please Login");
-        setCompetitionName("");
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error("Error fetching team data:", err.message);
-      } else {
-        console.error("Error fetching team data:", err);
-      }
-      setTeamName("Error Loading Team");
-      setCompetitionName("");
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMdOrLarger(window.innerWidth >= 768);
+        // Fetch active session status
+        const sessionRes = await getActiveSession(team.id);
+        const session = sessionRes.session;
+
+        if (!session || session.status === "NOT_STARTED") {
+          router.push("/exermind/start");
+        } else if (session.status === "IN_PROGRESS") {
+          router.push("/exermind/exam");
+        } else if (
+          session.status === "SUBMITTED" ||
+          session.status === "COMPLETED"
+        ) {
+          router.push("/exermind/finish");
+        } else {
+          router.push("/exermind/start");
+        }
+      } catch (err) {
+        console.error("Route gate error:", err);
+        router.push("/exermind/start");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-
-    // Fetch team data when component mounts
-    fetchTeamData();
-
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
+    routeSession();
+  }, [router]);
 
   return (
-    <div className="h-screen bg-[linear-gradient(0deg,#0B8071_-42.99%,#38405F_47.89%,#111417_117.2%)] ">
-      <Final />
+    <div className="flex h-screen w-full items-center justify-center bg-[#111417] text-white">
+      <div className="flex flex-col items-center space-y-4 font-orbitron">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#88D6FA] border-t-transparent"></div>
+        <p>Routing to ExerMind Session...</p>
+      </div>
     </div>
   );
-};
+}
