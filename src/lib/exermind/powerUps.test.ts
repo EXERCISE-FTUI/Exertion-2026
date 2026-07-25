@@ -5,6 +5,7 @@ import {
   calculateFreezeExtensionMs,
   calculateQuestionScore,
   calculateRemainingSeconds,
+  canReviewUsedHint,
   extendExpiryForFreeze,
   getDoublePointsMultiplier,
   normalizeAnswerKey,
@@ -41,6 +42,47 @@ describe("power-up selection", () => {
     expect(normalizePowerUpType("double-points")).toBe("DOUBLE_POINTS");
     expect(normalizePowerUpType("add-time")).toBe("TIME_FREEZE");
     expect(normalizePowerUpType("unknown")).toBeNull();
+  });
+});
+
+describe("used hint availability", () => {
+  const usedHint = {
+    type: "HINT" as const,
+    used: true,
+    hint: "Review the circuit law.",
+    activatedQuestionId: "question-a",
+  };
+
+  it("allows reviewing a used hint only on its original question", () => {
+    expect(
+      canReviewUsedHint({
+        ...usedHint,
+        currentQuestionId: "question-a",
+      }),
+    ).toBe(true);
+    expect(
+      canReviewUsedHint({
+        ...usedHint,
+        currentQuestionId: "question-b",
+      }),
+    ).toBe(false);
+  });
+
+  it("does not make unused or empty hints reviewable", () => {
+    expect(
+      canReviewUsedHint({
+        ...usedHint,
+        used: false,
+        currentQuestionId: "question-a",
+      }),
+    ).toBe(false);
+    expect(
+      canReviewUsedHint({
+        ...usedHint,
+        hint: null,
+        currentQuestionId: "question-a",
+      }),
+    ).toBe(false);
   });
 });
 

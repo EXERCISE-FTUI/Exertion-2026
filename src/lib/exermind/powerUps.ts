@@ -33,6 +33,28 @@ export function validatePowerUpSelection(input: unknown): PowerUpType[] {
   });
 }
 
+export function canReviewUsedHint({
+  type,
+  used,
+  hint,
+  activatedQuestionId,
+  currentQuestionId,
+}: {
+  type: PowerUpType;
+  used: boolean;
+  hint?: string | null;
+  activatedQuestionId?: string | null;
+  currentQuestionId?: string | null;
+}): boolean {
+  return Boolean(
+    type === "HINT" &&
+      used &&
+      hint &&
+      currentQuestionId &&
+      activatedQuestionId === currentQuestionId,
+  );
+}
+
 export function sanitizeQuestionContent(
   content: unknown,
 ): Record<string, JsonValue> {

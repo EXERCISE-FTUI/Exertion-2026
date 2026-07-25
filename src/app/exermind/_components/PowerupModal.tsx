@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { canReviewUsedHint } from "@/lib/exermind/powerUps";
 import { POWER_UP_META, type PowerUpType } from "./powerup";
 
 export interface PowerUpView {
   id: string;
   type: PowerUpType;
   used: boolean;
+  questionId?: string;
   hint?: string;
 }
 
@@ -22,6 +24,7 @@ export interface PowerupModalProps {
   powerUps: PowerUpView[];
   activeMultiplier: number;
   isTimeFrozen: boolean;
+  currentQuestionId?: string;
   disabled?: boolean;
   onActivate: (powerUpId: string) => Promise<PowerUpActivationFeedback>;
 }
@@ -30,6 +33,7 @@ export default function PowerupModal({
   powerUps,
   activeMultiplier,
   isTimeFrozen,
+  currentQuestionId,
   disabled = false,
   onActivate,
 }: PowerupModalProps) {
@@ -41,7 +45,15 @@ export default function PowerupModal({
   } | null>(null);
 
   const activate = async (powerUp: PowerUpView) => {
-    if (powerUp.used && powerUp.type === "HINT" && powerUp.hint) {
+    const canReviewHint = canReviewUsedHint({
+      type: powerUp.type,
+      used: powerUp.used,
+      hint: powerUp.hint,
+      activatedQuestionId: powerUp.questionId,
+      currentQuestionId,
+    });
+
+    if (canReviewHint && powerUp.hint) {
       setFeedback({
         type: "HINT",
         title: "Question hint",
@@ -119,6 +131,13 @@ export default function PowerupModal({
               const isActivating = activatingId === powerUp.id;
               const isDuplicateFreeze =
                 isTimeFrozen && powerUp.type === "TIME_FREEZE" && !powerUp.used;
+              const canReviewHint = canReviewUsedHint({
+                type: powerUp.type,
+                used: powerUp.used,
+                hint: powerUp.hint,
+                activatedQuestionId: powerUp.questionId,
+                currentQuestionId,
+              });
 
               return (
                 <button
@@ -128,14 +147,13 @@ export default function PowerupModal({
                   disabled={
                     disabled ||
                     isDuplicateFreeze ||
-                    (powerUp.used &&
-                      !(powerUp.type === "HINT" && powerUp.hint)) ||
+                    (powerUp.used && !canReviewHint) ||
                     Boolean(activatingId)
                   }
                   className="group flex min-w-28 items-center gap-2 rounded-lg border border-[#7287b7] bg-[#283553] px-3 py-2 text-left text-white transition hover:border-[#88D6FA] hover:bg-[#314163] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#88D6FA] disabled:cursor-not-allowed disabled:opacity-40"
                   aria-label={`Power-up slot ${index + 1}: ${label}${
                     powerUp.used
-                      ? powerUp.type === "HINT" && powerUp.hint
+                      ? canReviewHint
                         ? ", show hint again"
                         : ", used"
                       : isDuplicateFreeze

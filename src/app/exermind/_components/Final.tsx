@@ -902,6 +902,7 @@ export default function Final({
         powerUps={examState.powerUps}
         activeMultiplier={currentMultiplier}
         isTimeFrozen={examState.isTimeFrozen}
+        currentQuestionId={currentQuestion?.id}
         disabled={
           isCurrentCompleted ||
           isNavigating ||
