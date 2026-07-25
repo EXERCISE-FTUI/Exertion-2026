@@ -12,6 +12,9 @@ type ActivatePowerUpResult = ActionResult<ExamState> & {
   hint?: string;
 };
 
+const DOUBLE_POINTS_UNIQUE_INDEX =
+  "session_powerups_one_active_double_points_per_question_idx";
+
 export async function activatePowerUp({
   powerUpId,
   questionId,
@@ -33,6 +36,16 @@ export async function activatePowerUp({
     });
 
     if (error || !data) {
+      if (
+        error?.code === "23505" &&
+        error.message.includes(DOUBLE_POINTS_UNIQUE_INDEX)
+      ) {
+        return invalidInput(
+          "EXERMIND_DOUBLE_POINTS_DUPLICATE",
+          "Double Points is already active for this question.",
+        );
+      }
+
       return rpcFailure(error, "Failed to activate the power-up.");
     }
 

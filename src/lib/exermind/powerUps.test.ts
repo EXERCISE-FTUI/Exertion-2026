@@ -8,6 +8,7 @@ import {
   canReviewUsedHint,
   extendExpiryForFreeze,
   getDoublePointsMultiplier,
+  isDoublePointsAlreadyActive,
   normalizeAnswerKey,
   normalizePowerUpType,
   sanitizeQuestionContent,
@@ -119,16 +120,33 @@ describe("double points and score separation", () => {
   it.each([
     [0, 1],
     [1, 2],
-    [2, 4],
-    [3, 8],
+    [2, 2],
+    [3, 2],
   ])("maps %i activations to a %ix multiplier", (uses, multiplier) => {
     expect(getDoublePointsMultiplier(uses)).toBe(multiplier);
   });
 
-  it("keeps the multiplier within the available 1x to 8x range", () => {
+  it("caps the multiplier at 2x even if legacy data contains extra uses", () => {
     expect(getDoublePointsMultiplier(-3)).toBe(1);
     expect(getDoublePointsMultiplier(Number.POSITIVE_INFINITY)).toBe(1);
-    expect(getDoublePointsMultiplier(99)).toBe(8);
+    expect(getDoublePointsMultiplier(99)).toBe(2);
+  });
+
+  it("blocks another unused Double Points while one is active", () => {
+    expect(
+      isDoublePointsAlreadyActive({
+        type: "DOUBLE_POINTS",
+        used: false,
+        activeMultiplier: 2,
+      }),
+    ).toBe(true);
+    expect(
+      isDoublePointsAlreadyActive({
+        type: "DOUBLE_POINTS",
+        used: false,
+        activeMultiplier: 1,
+      }),
+    ).toBe(false);
   });
 
   it("keeps accuracy points unmultiplied while multiplying game points", () => {
@@ -141,8 +159,8 @@ describe("double points and score separation", () => {
     ).toEqual({
       earnedPoints: 5,
       totalPoints: 5,
-      multiplier: 4,
-      gamePoints: 20,
+      multiplier: 2,
+      gamePoints: 10,
     });
     expect(calculateAccuracyScore(5, 10)).toBe(50);
   });
@@ -157,7 +175,7 @@ describe("double points and score separation", () => {
     ).toEqual({
       earnedPoints: 0,
       totalPoints: 5,
-      multiplier: 8,
+      multiplier: 2,
       gamePoints: 0,
     });
   });

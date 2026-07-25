@@ -36,7 +36,8 @@ export const POWER_UP_META: Record<PowerUpType, PowerUpMeta> = {
   },
   DOUBLE_POINTS: {
     label: "Double Points",
-    description: "Double this question's value. Stack uses for 4x or 8x.",
+    description:
+      "Double this question's value. Only one use is allowed per question.",
     Icon: BadgePlus,
   },
 };

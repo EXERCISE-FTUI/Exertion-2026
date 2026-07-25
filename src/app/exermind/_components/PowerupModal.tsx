@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { canReviewUsedHint } from "@/lib/exermind/powerUps";
+import {
+  canReviewUsedHint,
+  isDoublePointsAlreadyActive,
+} from "@/lib/exermind/powerUps";
 import { POWER_UP_META, type PowerUpType } from "./powerup";
 
 export interface PowerUpView {
@@ -52,6 +55,11 @@ export default function PowerupModal({
       activatedQuestionId: powerUp.questionId,
       currentQuestionId,
     });
+    const isDuplicateDoublePoints = isDoublePointsAlreadyActive({
+      type: powerUp.type,
+      used: powerUp.used,
+      activeMultiplier,
+    });
 
     if (canReviewHint && powerUp.hint) {
       setFeedback({
@@ -66,7 +74,8 @@ export default function PowerupModal({
       disabled ||
       powerUp.used ||
       activatingId ||
-      (isTimeFrozen && powerUp.type === "TIME_FREEZE")
+      (isTimeFrozen && powerUp.type === "TIME_FREEZE") ||
+      isDuplicateDoublePoints
     ) {
       return;
     }
@@ -138,6 +147,11 @@ export default function PowerupModal({
                 activatedQuestionId: powerUp.questionId,
                 currentQuestionId,
               });
+              const isDuplicateDoublePoints = isDoublePointsAlreadyActive({
+                type: powerUp.type,
+                used: powerUp.used,
+                activeMultiplier,
+              });
 
               return (
                 <button
@@ -147,6 +161,7 @@ export default function PowerupModal({
                   disabled={
                     disabled ||
                     isDuplicateFreeze ||
+                    isDuplicateDoublePoints ||
                     (powerUp.used && !canReviewHint) ||
                     Boolean(activatingId)
                   }
@@ -158,7 +173,9 @@ export default function PowerupModal({
                         : ", used"
                       : isDuplicateFreeze
                         ? ", unavailable while time is frozen"
-                        : ""
+                        : isDuplicateDoublePoints
+                          ? ", unavailable while Double Points is active"
+                          : ""
                   }`}
                 >
                   <Icon

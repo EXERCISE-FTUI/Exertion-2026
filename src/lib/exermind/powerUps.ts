@@ -55,6 +55,18 @@ export function canReviewUsedHint({
   );
 }
 
+export function isDoublePointsAlreadyActive({
+  type,
+  used,
+  activeMultiplier,
+}: {
+  type: PowerUpType;
+  used: boolean;
+  activeMultiplier: number;
+}): boolean {
+  return type === "DOUBLE_POINTS" && !used && activeMultiplier > 1;
+}
+
 export function sanitizeQuestionContent(
   content: unknown,
 ): Record<string, JsonValue> {
@@ -111,10 +123,9 @@ export function answersMatch(answer: unknown, solution: unknown): boolean {
 export function getDoublePointsMultiplier(
   activatedDoublePoints: number,
 ): number {
-  const count = Number.isFinite(activatedDoublePoints)
-    ? Math.min(3, Math.max(0, Math.trunc(activatedDoublePoints)))
-    : 0;
-  return 2 ** count;
+  return Number.isFinite(activatedDoublePoints) && activatedDoublePoints > 0
+    ? 2
+    : 1;
 }
 
 export function calculateQuestionScore({

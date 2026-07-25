@@ -39,8 +39,8 @@ const examState = {
       isCorrect: true,
       earnedPoints: 5,
       totalPoints: 5,
-      gamePoints: 20,
-      multiplier: 4,
+      gamePoints: 10,
+      multiplier: 2,
     },
     "question-2": {
       answer: "B",
@@ -85,7 +85,7 @@ const examState = {
   score: {
     earnedPoints: 5,
     totalPoints: 8,
-    gameScore: 20,
+    gameScore: 10,
     multiplier: 1,
   },
 } as const;
@@ -104,7 +104,7 @@ describe("exam state adapter", () => {
       },
       completedQuestionIds: ["question-1"],
       questionMultipliers: {
-        "question-1": 4,
+        "question-1": 2,
       },
       currentQuestionId: "question-2",
       isTimeFrozen: true,
@@ -113,7 +113,7 @@ describe("exam state adapter", () => {
       score: {
         earnedPoints: 5,
         totalPoints: 8,
-        gameScore: 20,
+        gameScore: 10,
       },
     });
   });
@@ -132,7 +132,7 @@ describe("exam state adapter", () => {
         },
         result: {
           score: 62.5,
-          gameScore: 20,
+          gameScore: 10,
         },
       },
     };
