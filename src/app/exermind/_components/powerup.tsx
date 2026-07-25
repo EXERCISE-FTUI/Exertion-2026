@@ -1,162 +1,170 @@
 "use client";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import clsx from "clsx";
+
+import type { Dispatch, SetStateAction } from "react";
+import {
+  BadgePlus,
+  Lightbulb,
+  Plus,
+  Snowflake,
+  type LucideIcon,
+} from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { POWER_UP_TYPES, type PowerUpType } from "@/lib/exermind/types";
 import "./powerup.css";
 
-export type PowerUpOption = 'hint' | 'add-time' | null;
+export { POWER_UP_TYPES };
+export type { PowerUpType };
+export type PowerUpOption = PowerUpType | null;
+export type PowerUpSelection = [PowerUpOption, PowerUpOption, PowerUpOption];
+
+export interface PowerUpMeta {
+  label: string;
+  description: string;
+  Icon: LucideIcon;
+}
+
+export const POWER_UP_META: Record<PowerUpType, PowerUpMeta> = {
+  TIME_FREEZE: {
+    label: "Time Freeze",
+    description: "Pause the timer until the current question is completed.",
+    Icon: Snowflake,
+  },
+  HINT: {
+    label: "Hint",
+    description: "Reveal a clue written for the current question.",
+    Icon: Lightbulb,
+  },
+  DOUBLE_POINTS: {
+    label: "Double Points",
+    description: "Double this question's value. Stack uses for 4x or 8x.",
+    Icon: BadgePlus,
+  },
+};
 
 interface PowerUpComponentProps {
   selectedItems: PowerUpOption[];
-  setSelectedItems: React.Dispatch<React.SetStateAction<PowerUpOption[]>>;
+  setSelectedItems: Dispatch<SetStateAction<PowerUpOption[]>>;
+  disabled?: boolean;
 }
 
-interface powerUpItemBtnInt {
-  index: number;
-  currentItem: number | null;
-  currentSelectedItem: PowerUpOption;
-  handleSelect: () => any;
-  className?: string;
-}
+const toThreeSlots = (items: PowerUpOption[]): PowerUpSelection => [
+  items[0] ?? null,
+  items[1] ?? null,
+  items[2] ?? null,
+];
 
-interface powerUpOptionInt {
-  index: number;
-  onClick: () => any;
-}
+export default function PowerUpComponent({
+  selectedItems,
+  setSelectedItems,
+  disabled = false,
+}: PowerUpComponentProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const slots = toThreeSlots(selectedItems);
+  const firstEmptySlot = slots.findIndex((item) => item === null);
+  const activeSlot = firstEmptySlot === -1 ? null : firstEmptySlot;
 
-const PowerUpOptionsBtn = ({ index, onClick }: powerUpOptionInt) => {
-  return (
-    <div className="highlight">
-      <motion.div
-        initial={{ y: 0 }}
-        whileHover={{ scale: 1.05, y: -10 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={onClick}
-        className={clsx(
-          `flex flex-col items-center gap-2 rounded-md bg-blackish-blue p-5 select-none`,
-          { "first-opt": index === 0, "second-opt": index === 1 },
-        )}
-      >
-        <img
-          src={`/powerup/${index == 0 ? "clock" : "bulb"}.svg`}
-          alt=""
-          className="h-24"
-        />
-        <p className="font-orbitron text-xs text-white">
-          {index == 0 ? "Additional Time" : "Hint Question"}
-        </p>
-      </motion.div>
-    </div>
-  );
-};
+  const choosePowerUp = (powerUp: PowerUpType) => {
+    if (disabled || activeSlot === null) return;
 
-const PowerUpItemBtn = ({
-  index,
-  currentItem,
-  currentSelectedItem,
-  handleSelect,
-  className,
-}: powerUpItemBtnInt) => {
-  return (
-    <motion.div
-      initial={{ y: 0 }}
-      animate={
-        currentItem === index ? { y: -10, scale: 1.05 } : { y: 0, scale: 1 }
-      }
-      onClick={handleSelect}
-      className={`${className} z-10 flex min-h-32 min-w-30 justify-center rounded-md bg-skyblue select-none`}
-    >
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={currentSelectedItem}
-          initial={{ scale: 0.5, opacity: currentSelectedItem ? 1 : 0 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0.5, opacity: 0 }}
-          src={`/powerup/${currentSelectedItem == "hint" ? "bulb" : "clock"}-alt.svg`}
-          alt=""
-          className="w-20 select-none"
-        />
-      </AnimatePresence>
-    </motion.div>
-  );
-};
-
-const PowerUpComponent = ({ selectedItems, setSelectedItems }: PowerUpComponentProps) => {
-  const [currentItem, setCurrentItem] = useState<number | null>(0);
-
-  const handleChoosingItem = (option: PowerUpOption) => {
-    if (currentItem == null) return;
-    const newSelectedItems = [...selectedItems];
-    newSelectedItems[currentItem] = option;
-
-    setSelectedItems(newSelectedItems);
-    const next = newSelectedItems.findIndex((e) => e === null);
-    setCurrentItem(next !== -1 ? next : null);
+    const next = [...slots] as PowerUpSelection;
+    next[activeSlot] = powerUp;
+    setSelectedItems(next);
   };
 
-  const removeSelectedItem = (index: number) => {
-    const newSelectedItems = [...selectedItems];
-    newSelectedItems[index] = null;
-    setSelectedItems(newSelectedItems);
+  const clearSlot = (index: number) => {
+    if (disabled) return;
+
+    const next = [...slots] as PowerUpSelection;
+    next[index] = null;
+    setSelectedItems(next);
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-10">
-      <div className="flex flex-row gap-10">
-        <PowerUpOptionsBtn
-          index={0}
-          onClick={() => handleChoosingItem("add-time")}
-        />
+    <div className="flex w-full flex-col items-center gap-8">
+      <div className="grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
+        {POWER_UP_TYPES.map((powerUp) => {
+          const { label, description, Icon } = POWER_UP_META[powerUp];
 
-        <PowerUpOptionsBtn
-          index={1}
-          onClick={() => handleChoosingItem("hint")}
-        />
+          return (
+            <motion.button
+              key={powerUp}
+              type="button"
+              whileHover={
+                disabled || activeSlot === null || shouldReduceMotion
+                  ? undefined
+                  : { y: -4 }
+              }
+              whileTap={
+                disabled || activeSlot === null || shouldReduceMotion
+                  ? undefined
+                  : { scale: 0.98 }
+              }
+              onClick={() => choosePowerUp(powerUp)}
+              disabled={disabled || activeSlot === null}
+              className="highlight flex min-h-40 flex-col items-center justify-center gap-3 rounded-lg bg-blackish-blue p-5 text-center text-white transition-opacity focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#88D6FA] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label={`Add ${label} to slot ${
+                activeSlot === null ? "" : activeSlot + 1
+              }`}
+            >
+              <Icon className="h-12 w-12 text-[#88D6FA]" aria-hidden="true" />
+              <span className="font-orbitron text-sm font-bold">{label}</span>
+              <span className="font-montserrat text-xs leading-relaxed text-gray-300">
+                {description}
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
 
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-col items-center gap-2 text-center">
         <p className="font-exo-2 text-xl font-bold text-white">
-          Choose your power-up
+          Choose exactly three power-ups
         </p>
-        <img src="/powerup/mascot tunjuk kiri.svg" alt="" />
+        <p className="font-montserrat text-xs text-gray-300">
+          You may choose the same power-up more than once.
+        </p>
       </div>
 
-      <div className="flex flex-row gap-5">
-        <PowerUpItemBtn
-          index={0}
-          currentSelectedItem={selectedItems[0]}
-          currentItem={currentItem}
-          handleSelect={() => {
-            removeSelectedItem(0);
-            setCurrentItem(0);
-          }}
-          className="first-item"
-        />
+      <div className="grid w-full max-w-lg grid-cols-3 gap-3">
+        {slots.map((powerUp, index) => {
+          const meta = powerUp ? POWER_UP_META[powerUp] : null;
+          const Icon = meta?.Icon ?? Plus;
 
-        <PowerUpItemBtn
-          index={1}
-          currentSelectedItem={selectedItems[1]}
-          currentItem={currentItem}
-          handleSelect={() => {
-            removeSelectedItem(1);
-            setCurrentItem(1);
-          }}
-          className="second-item"
-        />
-
-        <PowerUpItemBtn
-          index={2}
-          currentSelectedItem={selectedItems[2]}
-          currentItem={currentItem}
-          handleSelect={() => {
-            removeSelectedItem(2);
-            setCurrentItem(2);
-          }}
-          className="third-item"
-        />
+          return (
+            <motion.button
+              key={index}
+              type="button"
+              initial={false}
+              animate={
+                !shouldReduceMotion && activeSlot === index
+                  ? { y: -5, scale: 1.02 }
+                  : { y: 0, scale: 1 }
+              }
+              onClick={() => clearSlot(index)}
+              disabled={disabled || !powerUp}
+              className={`min-h-28 rounded-md border p-3 text-white transition focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#88D6FA] ${
+                powerUp
+                  ? "border-[#88D6FA]/70 bg-[#283553] hover:border-white"
+                  : activeSlot === index
+                    ? "border-dashed border-white bg-skyblue/60"
+                    : "border-dashed border-gray-600 bg-[#283553]/50"
+              } disabled:cursor-default`}
+              aria-label={
+                powerUp
+                  ? `Clear slot ${index + 1}: ${meta?.label}`
+                  : `Empty power-up slot ${index + 1}`
+              }
+            >
+              <span className="flex flex-col items-center gap-2">
+                <Icon className="h-8 w-8" aria-hidden="true" />
+                <span className="font-orbitron text-[10px] font-semibold sm:text-xs">
+                  {meta?.label ?? `Slot ${index + 1}`}
+                </span>
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
     </div>
   );
-};
-
-export default PowerUpComponent;
+}
