@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getActiveSession } from "@/actions/exermind/getActiveSession";
+import { getExamState } from "@/actions/exermind/getExamState";
+import { normalizeExamState } from "./_components/examState";
 
 export default function ExermindRouteGate() {
   const [loading, setLoading] = useState(true);
@@ -34,21 +35,20 @@ export default function ExermindRouteGate() {
           return;
         }
 
-        // Fetch active session status
-        const sessionRes = await getActiveSession(team.id);
-        const session = sessionRes.session;
+        const stateResult = await getExamState();
+        const state = normalizeExamState(stateResult);
+        const status = state?.session?.status;
 
-        if (!session || session.status === "NOT_STARTED") {
-          router.push("/exermind/start");
-        } else if (session.status === "IN_PROGRESS") {
-          router.push("/exermind/exam");
-        } else if (
-          session.status === "SUBMITTED" ||
-          session.status === "COMPLETED"
-        ) {
-          router.push("/exermind/finish");
+        if (!status || status === "NOT_STARTED") {
+          router.replace("/exermind/start");
+        } else if (status === "IN_PROGRESS") {
+          router.replace(
+            state?.powerUps.length === 3 ? "/exermind/exam" : "/exermind/start",
+          );
+        } else if (status === "SUBMITTED" || status === "COMPLETED") {
+          router.replace("/exermind/finish");
         } else {
-          router.push("/exermind/start");
+          router.replace("/exermind/start");
         }
       } catch (err) {
         console.error("Route gate error:", err);

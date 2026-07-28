@@ -1,38 +1,38 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { getExamState } from "@/actions/exermind/getExamState";
 
-export const getExamQuestions = async (questionIds: string[]) => {
-  try {
-    if (!questionIds || questionIds.length === 0) {
-      return { success: true, questions: [] };
-    }
-
-    const supabase = await createClient();
-
-    const { data: questions, error } = await supabase
-      .schema("exermind_exam")
-      .from("questions")
-      .select("id, prompt, content, type")
-      .in("id", questionIds);
-
-    if (error) {
-      console.error("Error fetching questions:", error);
-      return { error: true, message: "Failed to fetch exam questions." };
-    }
-
-    // Sort questions according to the randomized sequence in questionIds
-    const questionMap = new Map((questions || []).map((q) => [q.id, q]));
-    const orderedQuestions = questionIds
-      .map((id) => questionMap.get(id))
-      .filter((q): q is NonNullable<typeof q> => Boolean(q));
-
-    return {
-      success: true,
-      questions: orderedQuestions,
-    };
-  } catch (error: any) {
-    console.error("Unexpected error fetching questions:", error);
-    return { error: true, message: error?.message || "Failed to load questions." };
+/**
+ * Compatibility wrapper for older callers. Questions now come exclusively
+ * from the authenticated session state, which strips content.hint and prevents
+ * callers from probing arbitrary question IDs.
+ */
+export async function getExamQuestions(questionIds: string[]) {
+  if (!Array.isArray(questionIds) || questionIds.length === 0) {
+    return { success: true as const, questions: [] };
   }
-};
+
+  const result = await getExamState();
+  if (!result.success) return result;
+  if (!result.data) {
+    return {
+      success: false as const,
+      error: true as const,
+      code: "EXERMIND_SESSION_NOT_FOUND",
+      message: "No owned exam session exists.",
+    };
+  }
+
+  const questionMap = new Map(
+    result.data.questions.map((question) => [question.id, question]),
+  );
+  const questions = questionIds.flatMap((questionId) => {
+    const question = questionMap.get(questionId);
+    return question ? [question] : [];
+  });
+
+  return {
+    success: true as const,
+    questions,
+  };
+}

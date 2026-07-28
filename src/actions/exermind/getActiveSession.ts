@@ -1,43 +1,45 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import { getExamState } from "@/actions/exermind/getExamState";
 
-export const getActiveSession = async (teamId: string) => {
-  try {
-    const supabase = await createClient();
-
-    const { data: activeSession, error } = await supabase
-      .schema("exermind_exam")
-      .from("sessions")
-      .select("*")
-      .eq("team_id", teamId)
-      .maybeSingle();
-
-    let submission = null;
-    if (
-      activeSession &&
-      (activeSession.status === "SUBMITTED" || activeSession.status === "COMPLETED")
-    ) {
-      const { data: subData } = await supabase
-        .schema("exermind_exam")
-        .from("submissions")
-        .select("*")
-        .eq("session_id", activeSession.id)
-        .maybeSingle();
-
-      submission = subData;
-    }
-
+/**
+ * Compatibility wrapper for the pre-power-up screens. The optional team ID is
+ * only a consistency check; ownership is always derived from auth.uid() by the
+ * database RPC.
+ */
+export async function getActiveSession(teamId?: string) {
+  const result = await getExamState();
+  if (!result.success) return result;
+  if (!result.data) {
     return {
-      success: true,
-      session: activeSession,
-      submission,
-    };
-  } catch (err: any) {
-    console.error("Unexpected error getting active session:", err);
-    return {
-      error: true,
-      message: err?.message || "Failed to fetch session status.",
+      success: true as const,
+      session: null,
+      submission: null,
     };
   }
-};
+
+  const { session, questions } = result.data;
+  if (teamId && teamId !== session.teamId) {
+    return {
+      success: false as const,
+      error: true as const,
+      code: "EXERMIND_SESSION_FORBIDDEN",
+      message: "The requested session does not belong to this team.",
+    };
+  }
+
+  return {
+    success: true as const,
+    session: {
+      id: session.id,
+      team_id: session.teamId,
+      status: session.status,
+      started_at: session.startedAt,
+      expires_at: session.expiresAt,
+      submitted_at: session.submittedAt,
+      freeze_started_at: session.freezeStartedAt,
+      question_order: questions.map((question) => question.id),
+    },
+    submission: null,
+  };
+}

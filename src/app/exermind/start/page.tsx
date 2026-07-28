@@ -4,20 +4,18 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import ChoosePower from "../_components/ChoosePower";
-import type { PowerUpOption } from "../_components/powerup";
+import type { PowerUpType } from "../_components/powerup";
 import { startSession } from "@/actions/exermind/startSession";
-import { getActiveSession } from "@/actions/exermind/getActiveSession";
+import { getExamState } from "@/actions/exermind/getExamState";
+import { normalizeExamState } from "../_components/examState";
 
 export default function ExermindStartPage() {
   const [userName, setUserName] = useState<string>("Contestant");
   const [teamName, setTeamName] = useState<string>("Loading...");
-  const [teamId, setTeamId] = useState<string | null>(null);
-  const [competitionId, setCompetitionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hasClickedStart, setHasClickedStart] = useState(false);
-  const [sessionBlocked, setSessionBlocked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -52,7 +50,7 @@ export default function ExermindStartPage() {
         // Fetch user's team details
         const { data: team, error: teamError } = await supabase
           .from("teams")
-          .select("id, team_name, competition_id")
+          .select("team_name")
           .eq("leader_user_id", user.id)
           .single();
 
@@ -63,22 +61,19 @@ export default function ExermindStartPage() {
         }
 
         setTeamName(team.team_name || "Team");
-        setTeamId(team.id);
-        setCompetitionId(team.competition_id);
 
-        // Check if session status is IN_PROGRESS or SUBMITTED
-        const sessionRes = await getActiveSession(team.id);
-        if (sessionRes.session) {
-          const status = sessionRes.session.status;
-          if (status === "IN_PROGRESS") {
-            setErrorMessage(
-              "Your team's exam is currently IN_PROGRESS. You cannot initiate a new attempt from this start page.",
-            );
-            setSessionBlocked(true);
-          } else if (status === "SUBMITTED" || status === "COMPLETED") {
-            router.push("/exermind/finish");
-            return;
-          }
+        const stateResult = await getExamState();
+        const state = normalizeExamState(stateResult);
+        const status = state?.session?.status;
+
+        if (status === "IN_PROGRESS" && state?.powerUps.length === 3) {
+          router.replace("/exermind/exam");
+          return;
+        }
+
+        if (status === "SUBMITTED" || status === "COMPLETED") {
+          router.replace("/exermind/finish");
+          return;
         }
       } catch (err: any) {
         console.error("Error initializing start page:", err);
@@ -91,34 +86,16 @@ export default function ExermindStartPage() {
     initStartData();
   }, [router]);
 
-  const handleStartExam = async (selectedPowerups: PowerUpOption[]) => {
-    if (!teamId || !competitionId) {
-      setErrorMessage("Missing team or competition configuration.");
-      return;
-    }
-
-    if (sessionBlocked) {
-      return;
-    }
-
+  const handleStartExam = async (selectedPowerups: PowerUpType[]) => {
     setIsStarting(true);
     setErrorMessage(null);
 
     try {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(`exermind_active_tab_${teamId}`);
-        localStorage.setItem(
-          `exermind_powerups_${teamId}`,
-          JSON.stringify(selectedPowerups),
-        );
-      }
-
       const result = await startSession({
-        teamId,
-        competitionId,
+        powerUps: selectedPowerups,
       });
 
-      if (result.error || !result.success) {
+      if (!result.success) {
         setErrorMessage(result.message || "Failed to start exam session.");
         setIsStarting(false);
         return;
@@ -145,7 +122,7 @@ export default function ExermindStartPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#111417] text-white flex flex-col justify-between">
+    <div className="relative flex min-h-screen flex-col justify-between bg-[#111417] text-white">
       {/* Header bar displaying user & team info */}
       <div className="flex w-full items-center justify-between border-b border-gray-800 bg-[#161a1f] px-6 py-4">
         <div>
@@ -181,25 +158,24 @@ export default function ExermindStartPage() {
             <p className="font-montserrat text-lg text-gray-300">
               Team: <span className="font-semibold text-white">{teamName}</span>
             </p>
-            <p className="font-montserrat text-xs text-gray-400 pt-2">
-              Press the button below to prepare your power-ups and start the exam attempt.
+            <p className="font-montserrat pt-2 text-xs text-gray-400">
+              Press the button below to prepare your power-ups and start the
+              exam attempt.
             </p>
           </div>
 
           <button
-            disabled={sessionBlocked}
-            onClick={() => {
-              if (!sessionBlocked) setHasClickedStart(true);
-            }}
-            className="rounded-full bg-[#88D6FA] border-2 border-white px-10 py-3.5 font-orbitron font-bold text-black hover:bg-sky-400 active:scale-95 transition-all shadow-xl text-base tracking-wide disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => setHasClickedStart(true)}
+            className="rounded-full border-2 border-white bg-[#88D6FA] px-10 py-3.5 font-orbitron text-base font-bold tracking-wide text-black shadow-xl transition-all hover:bg-sky-400 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {sessionBlocked ? "Exam Currently In Progress" : "Start Attempt"}
+            Start Attempt
           </button>
         </div>
       ) : (
         /* Screen 2: Power-up Selection and Start Trigger */
         <ChoosePower
-          onComplete={(powers: PowerUpOption[]) => {
+          disabled={isStarting}
+          onComplete={(powers: PowerUpType[]) => {
             handleStartExam(powers);
           }}
         />

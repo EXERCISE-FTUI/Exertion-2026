@@ -1,137 +1,233 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ClockPlus, Lightbulb } from "lucide-react";
+import { useState } from "react";
+import { X } from "lucide-react";
+import {
+  canReviewUsedHint,
+  isDoublePointsAlreadyActive,
+} from "@/lib/exermind/powerUps";
+import { POWER_UP_META, type PowerUpType } from "./powerup";
+
+export interface PowerUpView {
+  id: string;
+  type: PowerUpType;
+  used: boolean;
+  questionId?: string;
+  hint?: string;
+}
+
+export interface PowerUpActivationFeedback {
+  success: boolean;
+  message?: string;
+  hint?: string;
+  multiplier?: number;
+}
 
 export interface PowerupModalProps {
-  timeLeft: number;
-  setTimeLeft: React.Dispatch<React.SetStateAction<number>>;
-  onIncrement: (minutes: number) => void;
-  initialSelection: string[];
+  powerUps: PowerUpView[];
+  activeMultiplier: number;
+  isTimeFrozen: boolean;
+  currentQuestionId?: string;
+  disabled?: boolean;
+  onActivate: (powerUpId: string) => Promise<PowerUpActivationFeedback>;
 }
 
 export default function PowerupModal({
-  timeLeft,
-  setTimeLeft,
-  onIncrement,
-  initialSelection,
+  powerUps,
+  activeMultiplier,
+  isTimeFrozen,
+  currentQuestionId,
+  disabled = false,
+  onActivate,
 }: PowerupModalProps) {
-  // Use chosen power-ups or default set
-  const initialPowerups =
-    initialSelection.length > 0
-      ? initialSelection
-      : ["hint", "hint", "add-time"];
-  const hints = [
-    "Use the first letter of each word",
-    "Remember the pattern starts with 'Depannya Exer'",
-  ];
+  const [activatingId, setActivatingId] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<{
+    type: PowerUpType;
+    title: string;
+    body: string;
+  } | null>(null);
 
-  const [usedPowerups, setUsedPowerups] = useState<number[]>([]);
-  const [popupMessage, setPopupMessage] = useState<string | null>(null);
-  const [popupIconType, setPopupIconType] = useState<string | null>(null);
-  const [popupClosable, setPopupClosable] = useState<boolean>(false);
+  const activate = async (powerUp: PowerUpView) => {
+    const canReviewHint = canReviewUsedHint({
+      type: powerUp.type,
+      used: powerUp.used,
+      hint: powerUp.hint,
+      activatedQuestionId: powerUp.questionId,
+      currentQuestionId,
+    });
+    const isDuplicateDoublePoints = isDoublePointsAlreadyActive({
+      type: powerUp.type,
+      used: powerUp.used,
+      activeMultiplier,
+    });
 
-  // Enable closing: immediately for add_time, delay for hints
-  useEffect(() => {
-    if (!popupMessage) return;
-    if (popupIconType === "add-time") {
-      setPopupClosable(true);
+    if (canReviewHint && powerUp.hint) {
+      setFeedback({
+        type: "HINT",
+        title: "Question hint",
+        body: powerUp.hint,
+      });
       return;
     }
-    setPopupClosable(false);
-    const timeout = setTimeout(() => setPopupClosable(true), 2000);
-    return () => clearTimeout(timeout);
-  }, [popupMessage, popupIconType]);
 
-  const handleAddTime = () => {
-    const increment = 60; // seconds to add
-    const duration = 1000; // animation duration in ms
-    const steps = increment;
-    const intervalTime = duration / steps;
-    const startTime = timeLeft;
-    let count = 0;
-    const anim = setInterval(() => {
-      count++;
-      setTimeLeft(startTime + count);
-      if (count >= steps) clearInterval(anim);
-    }, intervalTime);
+    if (
+      disabled ||
+      powerUp.used ||
+      activatingId ||
+      (isTimeFrozen && powerUp.type === "TIME_FREEZE") ||
+      isDuplicateDoublePoints
+    ) {
+      return;
+    }
 
-    const minutes = increment / 60;
-    onIncrement(minutes);
-    setPopupIconType("add-time");
-    setPopupMessage(`Additional ${minutes} minute has been added!`);
-  };
+    setActivatingId(powerUp.id);
+    try {
+      const result = await onActivate(powerUp.id);
+      if (!result.success) {
+        setFeedback({
+          type: powerUp.type,
+          title: "Power-up unavailable",
+          body: result.message || "This power-up could not be activated.",
+        });
+        return;
+      }
 
-  const handleShowHint = () => {
-    const hintCount = usedPowerups.filter(
-      (i) => initialPowerups[i] === "hint",
-    ).length;
-    const hintText = hints[hintCount] || "No more hints";
-    setPopupIconType("hint");
-    setPopupMessage(hintText);
-  };
+      const label = POWER_UP_META[powerUp.type].label;
+      const body =
+        powerUp.type === "HINT"
+          ? result.hint || result.message || "No hint was returned."
+          : powerUp.type === "DOUBLE_POINTS"
+            ? result.message ||
+              `This question is now worth ${result.multiplier ?? activeMultiplier}x points.`
+            : result.message || "The timer is frozen for this question.";
 
-  const handleUsePowerup = (index: number) => {
-    if (usedPowerups.includes(index)) return;
-    const type = initialPowerups[index];
-    if (type === "add-time") handleAddTime();
-    else if (type === "hint") handleShowHint();
-
-    setUsedPowerups((prev) => [...prev, index]);
+      setFeedback({
+        type: powerUp.type,
+        title: `${label} activated`,
+        body,
+      });
+    } finally {
+      setActivatingId(null);
+    }
   };
 
   return (
     <>
-      {/* Power-up buttons */}
-      <div className="flex items-center justify-center gap-4">
-        <p className="text-white [font-family:Montserrat] text-[19.365px] font-normal leading-[48.411px] pr-10">User power up</p>
-        {initialPowerups.map((type, index) => {
-          const isUsed = usedPowerups.includes(index);
-          return (
-            <button
-              key={index}
-              onClick={() => handleUsePowerup(index)}
-              disabled={isUsed}
-              className={`flex h-18 w-18 items-center justify-center rounded-full border-[3px] border-[#7287b7] bg-[#283553] text-white transition-opacity duration-200 ${
-                isUsed
-                  ? "cursor-not-allowed opacity-40"
-                  : "cursor-pointer hover:scale-105"
-              }`}
-              style={{
-                filter:
-                  "drop-shadow(0 0 2.975px rgba(255,255,255,0.25)) drop-shadow(0 0 2.975px rgba(255,255,255,0.25))",
-              }}
-            >
-              {type === "add-time" ? (
-                <ClockPlus className="h-6 w-6" />
-              ) : (
-                <Lightbulb className="h-6 w-6" />
-              )}
-            </button>
-          );
-        })}
-      </div>
+      <aside
+        className="border-t border-gray-800 bg-[#161a1f] px-6 py-4"
+        aria-label="Available power-ups"
+      >
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <p className="font-orbitron text-xs font-semibold tracking-wider text-gray-300 uppercase">
+              Power-ups
+            </p>
+            {isTimeFrozen && (
+              <span className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-3 py-1 font-orbitron text-[10px] font-bold text-cyan-200 uppercase">
+                Timer frozen
+              </span>
+            )}
+            {activeMultiplier > 1 && (
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/10 px-3 py-1 font-orbitron text-xs font-extrabold text-amber-200">
+                {activeMultiplier}x
+              </span>
+            )}
+          </div>
 
-      {/* Popup Overlay */}
-      {popupMessage && (
+          <div className="flex flex-wrap gap-2">
+            {powerUps.map((powerUp, index) => {
+              const { label, Icon } = POWER_UP_META[powerUp.type];
+              const isActivating = activatingId === powerUp.id;
+              const isDuplicateFreeze =
+                isTimeFrozen && powerUp.type === "TIME_FREEZE" && !powerUp.used;
+              const canReviewHint = canReviewUsedHint({
+                type: powerUp.type,
+                used: powerUp.used,
+                hint: powerUp.hint,
+                activatedQuestionId: powerUp.questionId,
+                currentQuestionId,
+              });
+              const isDuplicateDoublePoints = isDoublePointsAlreadyActive({
+                type: powerUp.type,
+                used: powerUp.used,
+                activeMultiplier,
+              });
+
+              return (
+                <button
+                  key={powerUp.id}
+                  type="button"
+                  onClick={() => activate(powerUp)}
+                  disabled={
+                    disabled ||
+                    isDuplicateFreeze ||
+                    isDuplicateDoublePoints ||
+                    (powerUp.used && !canReviewHint) ||
+                    Boolean(activatingId)
+                  }
+                  className="group flex min-w-28 items-center gap-2 rounded-lg border border-[#7287b7] bg-[#283553] px-3 py-2 text-left text-white transition hover:border-[#88D6FA] hover:bg-[#314163] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#88D6FA] disabled:cursor-not-allowed disabled:opacity-40"
+                  aria-label={`Power-up slot ${index + 1}: ${label}${
+                    powerUp.used
+                      ? canReviewHint
+                        ? ", show hint again"
+                        : ", used"
+                      : isDuplicateFreeze
+                        ? ", unavailable while time is frozen"
+                        : isDuplicateDoublePoints
+                          ? ", unavailable while Double Points is active"
+                          : ""
+                  }`}
+                >
+                  <Icon
+                    className="h-5 w-5 shrink-0 text-[#88D6FA]"
+                    aria-hidden="true"
+                  />
+                  <span className="font-orbitron text-[10px] font-semibold">
+                    {isActivating ? "Activating..." : label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
+
+      {feedback && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px]"
-          onClick={() =>
-            popupClosable && (setPopupMessage(null), setPopupIconType(null))
-          }
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="power-up-feedback-title"
         >
-          <div
-            className="w-[30rem] bg-[#283553] p-6 text-center shadow-lg rounded-[20px]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-center gap-5">
-              {popupIconType === "add-time" && (
-                <ClockPlus className="h-8 w-8 text-white" />
-              )}
-              {popupIconType === "hint" && (
-                <Lightbulb className="h-8 w-8 text-white" />
-              )}
-              <p className="text-lg font-semibold text-white">{popupMessage}</p>
+          <div className="w-full max-w-md rounded-2xl border border-[#7287b7] bg-[#283553] p-6 text-white shadow-2xl">
+            <div className="flex items-start gap-4">
+              {(() => {
+                const Icon = POWER_UP_META[feedback.type].Icon;
+                return (
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#88D6FA]/15 text-[#88D6FA]">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </div>
+                );
+              })()}
+              <div className="min-w-0 flex-1 space-y-2">
+                <h2
+                  id="power-up-feedback-title"
+                  className="font-orbitron text-base font-bold"
+                >
+                  {feedback.title}
+                </h2>
+                <p className="font-montserrat text-sm leading-relaxed text-gray-200">
+                  {feedback.body}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFeedback(null)}
+                className="rounded-md p-1 text-gray-300 transition hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#88D6FA]"
+                aria-label="Close power-up message"
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
             </div>
           </div>
         </div>
