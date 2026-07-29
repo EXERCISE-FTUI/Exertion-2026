@@ -657,151 +657,104 @@ export default function Final({
           void sendTelemetry("CONTEXT_MENU_ATTEMPT");
         }
       }}
-      className={`flex min-h-screen flex-col bg-[#111417] text-white ${
+      // BG Biru utama, ganti url('/bg-cyber.png') dengan path gambar grid hex/cyber aslimu
+      className={`relative flex min-h-screen flex-col bg-gradient-to-b from-[#528CC0] via-[#528FC5] to-[#7CBCE8] text-white ${
         EXERMIND_CONFIG.ANTICHEAT_ACTIVE ? "select-none" : ""
       }`}
     >
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 bg-[#161a1f] px-6 py-4">
-        <div className="flex items-center space-x-4">
+      {/* 1. KIRI ATAS: Logo Exertion Ala Cyber */}
+      <div className="fixed left-0 top-0 z-50">
           <img
-            src="/home/header/logo_exertion.svg"
+            src="/logo-exermind.svg"
             alt="Exertion"
-            className="h-8"
+            className="h-20 w-auto md:h-16 lg:h-20"
           />
-          <div>
-            <h1 className="font-orbitron text-sm font-bold text-[#88D6FA] md:text-base">
-              EXERMIND EXAM RUNNER
-            </h1>
-            <p className="font-montserrat text-xs text-gray-400">
-              Team: <span className="text-white">{teamName}</span> | User:{" "}
-              <span className="text-white">{userName}</span>
-            </p>
-          </div>
-        </div>
+      </div>
 
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg border border-gray-800 bg-[#111417] px-3 py-2 text-center">
-            <span className="block font-orbitron text-[9px] tracking-wider text-gray-400 uppercase">
-              Game score
-            </span>
-            <span className="font-orbitron text-sm font-bold text-amber-300">
-              {examState.score.gameScore}
-            </span>
-          </div>
-          <div className="flex items-center space-x-3 rounded-lg border border-gray-800 bg-[#111417] px-4 py-2">
-            {examState.isTimeFrozen && (
-              <Snowflake
-                className="h-4 w-4 text-cyan-200"
-                aria-label="Timer frozen"
-              />
-            )}
-            <span className="font-orbitron text-xs tracking-wider text-gray-300 uppercase">
-              {examState.isTimeFrozen ? "Frozen" : "Time left"}
-            </span>
-            <span className="font-orbitron text-lg font-bold text-[#88D6FA]">
-              {formatTime(timeLeft)}
-            </span>
-          </div>
-        </div>
-      </header>
+      {/* MAIN CONTENT: Layout Split Kiri-Kanan */}
+      <main className="relative z-10 flex flex-1 items-center justify-center p-6 pt-24 md:p-10">
+        <div className="flex w-full max-w-6xl flex-col items-start gap-10 md:flex-row">
+          
+          {/* 2. KOLOM KIRI: Kotak Navigasi Angka & Timer */}
+          <aside className="w-full shrink-0 md:w-[280px]">
+            <h3 className="mb-2 text-center font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-white">
+              {teamName || userName || "DOWN123"}
+            </h3>
+            <div className="rounded-xl bg-[#041a2f] p-5 shadow-2xl">
+              <nav className="mb-6 grid grid-cols-4 gap-2" aria-label="Exam questions">
+                {examState.questions.map((question, index) => {
+                  const isAnswered = Boolean(answers[question.id]?.trim());
+                  const isCompleted = examState.completedQuestionIds.includes(question.id);
+                  const isCurrent = index === currentQuestionIndex;
+                  const canVisit = isCompleted || question.id === examState.currentQuestionId;
 
-      <main className="flex flex-1 flex-col p-6 md:p-10">
-        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col space-y-6">
-          {runnerMessage && (
-            <div
-              className="font-montserrat rounded-lg border border-amber-400/60 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
-              role="alert"
-            >
-              {runnerMessage}
+                  return (
+                    <button
+                      key={question.id}
+                      type="button"
+                      onClick={() => void navigateToQuestion(index)}
+                      disabled={isNavigating || isActivatingPowerUp || isSubmitting || !canVisit}
+                      className={`h-9 w-full rounded font-orbitron text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
+                        isCurrent
+                          ? "bg-[#4deeea] text-black"
+                          : isCompleted
+                            ? "bg-teal-600 text-white"
+                            : isAnswered
+                              ? "bg-white text-black"
+                              : "bg-[#e2e8f0] text-gray-800 hover:bg-gray-300"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  );
+                })}
+              </nav>
+              <div className="flex items-center gap-2 font-orbitron text-[11px] uppercase tracking-widest text-white">
+                Time Left : <span className="text-sm font-bold">{formatTime(timeLeft)}</span>
+                {examState.isTimeFrozen && (
+                  <Snowflake className="h-4 w-4 text-cyan-200" aria-label="Timer frozen" />
+                )}
+              </div>
             </div>
-          )}
+          </aside>
 
-          <nav
-            className="flex flex-wrap gap-2 rounded-xl border border-gray-800 bg-[#161a1f] p-4"
-            aria-label="Exam questions"
-          >
-            {examState.questions.map((question, index) => {
-              const isAnswered = Boolean(answers[question.id]?.trim());
-              const isCompleted = examState.completedQuestionIds.includes(
-                question.id,
-              );
-              const isCurrent = index === currentQuestionIndex;
-              const canVisit =
-                isCompleted || question.id === examState.currentQuestionId;
+          {/* 3. KOLOM KANAN: Kotak Pertanyaan & Jawaban */}
+          <section className="relative flex w-full flex-1 flex-col mt-4 md:mt-0">
+            {/* Maskot Kanan Atas (Ganti src dengan path maskotmu) */}
+            <div className="absolute -top-20 right-0 z-20 hidden h-48 w-48 md:block lg:-top-28 lg:h-56 lg:w-56">
+              <img
+                src="/mascot-exermind.svg" 
+                alt="Exertion Mascot"
+                className="h-50 w-50 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+              />
+            </div>
 
-              return (
-                <button
-                  key={question.id}
-                  type="button"
-                  onClick={() => void navigateToQuestion(index)}
-                  disabled={
-                    isNavigating ||
-                    isActivatingPowerUp ||
-                    isSubmitting ||
-                    !canVisit
-                  }
-                  className={`h-9 w-9 rounded-lg font-orbitron text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
-                    isCurrent
-                      ? "bg-[#88D6FA] text-black ring-2 ring-white"
-                      : isCompleted
-                        ? "bg-teal-600 text-white"
-                        : isAnswered
-                          ? "bg-[#314163] text-[#88D6FA]"
-                          : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                  }`}
-                  aria-current={isCurrent ? "step" : undefined}
-                >
-                  {index + 1}
-                </button>
-              );
-            })}
-          </nav>
-
-          {currentQuestion ? (
-            <section className="flex flex-1 flex-col justify-between rounded-xl border border-gray-800 bg-[#161a1f] p-6 shadow-xl md:p-8">
-              <div className="space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-3">
-                  <span className="font-orbitron text-sm font-semibold text-[#88D6FA]">
-                    Question {currentQuestionIndex + 1} of{" "}
-                    {examState.questions.length}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {currentMultiplier > 1 && (
-                      <span className="rounded-full border border-amber-300/50 bg-amber-300/10 px-3 py-1 font-orbitron text-xs font-extrabold text-amber-200">
-                        {currentMultiplier}x points
-                      </span>
-                    )}
-                    {isCurrentCompleted && (
-                      <span className="rounded-full bg-teal-500/15 px-3 py-1 font-orbitron text-[10px] font-bold text-teal-300 uppercase">
-                        Completed
-                      </span>
-                    )}
-                    <span className="rounded bg-gray-800 px-3 py-1 font-mono text-xs text-gray-300 uppercase">
-                      {currentQuestion.type || "Multiple Choice"}
-                    </span>
+            {currentQuestion ? (
+              <div className="relative z-10 space-y-4">
+                {/* Alert jika ada error server (Dipertahankan dari JS asli) */}
+                {runnerMessage && (
+                  <div className="mb-4 rounded-lg border border-amber-500/50 bg-amber-500/20 px-4 py-3 text-sm text-amber-100">
+                    {runnerMessage}
                   </div>
+                )}
+
+                {/* Kotak Teks Pertanyaan */}
+                <div className="rounded-xl bg-[#041a2f] p-6 shadow-[0_0_25px_5px_rgba(255,255,255,1)] border border-white/10 md:p-8">
+                  <h2 className="font-montserrat text-lg font-semibold leading-relaxed text-white md:text-xl">
+                    {currentQuestionIndex + 1}. {currentQuestion.prompt}
+                  </h2>
                 </div>
 
-                <h2 className="font-montserrat text-lg leading-relaxed font-medium text-white md:text-xl">
-                  {currentQuestion.prompt}
-                </h2>
-
+                {/* Kotak Pilihan Jawaban */}
                 {isEssayQuestion ? (
                   <InputEsai
                     value={answers[currentQuestion.id] || ""}
-                    onChange={(value) =>
-                      updateAnswer(currentQuestion.id, value, true)
-                    }
-                    disabled={
-                      isCurrentCompleted ||
-                      isNavigating ||
-                      isActivatingPowerUp ||
-                      isSubmitting
-                    }
+                    onChange={(value) => updateAnswer(currentQuestion.id, value, true)}
+                    disabled={isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting}
                     onIllegalAction={(action) => void sendTelemetry(action)}
                   />
                 ) : (
-                  <div className="mt-6 space-y-3">
+                  <div className="mt-4 space-y-3">
                     {currentOptions.map(({ key, text }) => {
                       const isSelected = answers[currentQuestion.id] === key;
                       return (
@@ -809,106 +762,60 @@ export default function Final({
                           key={key}
                           type="button"
                           onClick={() => updateAnswer(currentQuestion.id, key)}
-                          disabled={
-                            isCurrentCompleted ||
-                            isNavigating ||
-                            isActivatingPowerUp ||
-                            isSubmitting
-                          }
-                          className={`font-montserrat flex w-full items-center justify-start rounded-lg border p-4 text-left text-sm transition-all disabled:cursor-not-allowed ${
+                          disabled={isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting}
+                          className={`w-full rounded-xl p-5 shadow-[0_0_25px_5px_rgba(255,255,255,1)] border border-white/10 text-left font-montserrat text-sm font-bold shadow-md transition-all disabled:cursor-not-allowed ${
                             isSelected
-                              ? "border-[#88D6FA] bg-[#042440] text-white ring-1 ring-[#88D6FA]"
-                              : "border-gray-800 bg-[#111417] text-gray-300 hover:border-gray-700 hover:bg-gray-800/50 disabled:hover:border-gray-800 disabled:hover:bg-[#111417]"
+                              ? "bg-[#44D5EA] text-[#041a2f] scale-[1.01] shadow-[0_0_10px_#ffffff,0_0_30px_#44D5EA]"
+                              : "bg-[#0a2742] text-white shadow-[0_0_15px_rgba(77,238,234,0.15)] border border-cyan-500/20 hover:bg-[#1C465C] hover:shadow-[0_0_25px_rgba(77,238,234,0.4)] hover:border-cyan-500/40"  
                           }`}
                         >
-                          <span
-                            className={`mr-3 flex h-7 w-7 items-center justify-center rounded-full font-orbitron text-xs font-bold ${
-                              isSelected
-                                ? "bg-[#88D6FA] text-black"
-                                : "bg-gray-800 text-gray-400"
-                            }`}
-                          >
-                            {String(key).toUpperCase()}
-                          </span>
-                          <span>{text}</span>
+                          {text}
                         </button>
                       );
                     })}
                   </div>
                 )}
+
+                {/* Tombol Next / Submit di Kanan Bawah */}
+                <div className="mt-8 flex justify-end">
+                  {currentQuestionIndex < examState.questions.length - 1 ? (
+                    <button
+                      type="button"
+                      onClick={() => void navigateToQuestion(currentQuestionIndex + 1)}
+                      disabled={isNavigating || isActivatingPowerUp || isSubmitting}
+                      className="rounded-xl bg-[#041a2f] px-12 py-3 font-orbitron text-sm font-bold text-white shadow-lg transition-all hover:bg-[#0a2742] disabled:opacity-50"
+                    >
+                      {isNavigating ? "Completing..." : "Next"}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={isSubmitting || isNavigating || isActivatingPowerUp}
+                      onClick={() => setShowConfirmModal(true)}
+                      className="rounded-xl bg-[#4deeea] px-12 py-3 font-orbitron text-sm font-bold text-[#041a2f] shadow-lg transition hover:bg-cyan-300 disabled:opacity-50"
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
+                    </button>
+                  )}
+                </div>
               </div>
-
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-gray-800 pt-6">
-                <button
-                  type="button"
-                  onClick={() =>
-                    void navigateToQuestion(currentQuestionIndex - 1)
-                  }
-                  disabled={
-                    currentQuestionIndex === 0 ||
-                    isNavigating ||
-                    isActivatingPowerUp ||
-                    isSubmitting
-                  }
-                  className="rounded-lg bg-gray-800 px-6 py-2.5 font-orbitron text-sm font-semibold text-white transition hover:bg-gray-700 disabled:opacity-40"
-                >
-                  Previous
-                </button>
-
-                <span className="font-montserrat text-xs text-gray-400">
-                  {savingCount > 0
-                    ? "Saving answer..."
-                    : isNavigating
-                      ? "Completing question..."
-                      : "Answers save to the server automatically"}
-                </span>
-
-                {currentQuestionIndex < examState.questions.length - 1 ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      void navigateToQuestion(currentQuestionIndex + 1)
-                    }
-                    disabled={
-                      isNavigating || isActivatingPowerUp || isSubmitting
-                    }
-                    className="rounded-lg bg-[#88D6FA] px-6 py-2.5 font-orbitron text-sm font-bold text-black transition hover:bg-sky-400 disabled:opacity-50"
-                  >
-                    {isNavigating ? "Completing..." : "Next Question"}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    disabled={
-                      isSubmitting || isNavigating || isActivatingPowerUp
-                    }
-                    onClick={() => setShowConfirmModal(true)}
-                    className="rounded-lg bg-green-500 px-8 py-2.5 font-orbitron text-sm font-bold text-black transition hover:bg-green-400 disabled:opacity-50"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit Exam"}
-                  </button>
-                )}
+            ) : (
+              <div className="flex flex-1 items-center justify-center rounded-xl bg-[#041a2f] p-12 text-center text-gray-400 shadow-xl">
+                No question is available at this position.
               </div>
-            </section>
-          ) : (
-            <div className="font-montserrat flex flex-1 items-center justify-center rounded-xl border border-gray-800 bg-[#161a1f] p-12 text-center text-gray-400">
-              No question is available at this position.
-            </div>
-          )}
+            )}
+          </section>
         </div>
       </main>
 
+      {/* Komponen Modal Tetap Sama */}
       <PowerupModal
         powerUps={examState.powerUps}
         activeMultiplier={currentMultiplier}
         isTimeFrozen={examState.isTimeFrozen}
         currentQuestionId={currentQuestion?.id}
         disabled={
-          isCurrentCompleted ||
-          isNavigating ||
-          isActivatingPowerUp ||
-          isSubmitting ||
-          !currentQuestion
+          isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting || !currentQuestion
         }
         onActivate={activateSelectedPowerUp}
       />
@@ -916,32 +823,23 @@ export default function Final({
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
           <div
-            className="w-full max-w-md space-y-6 rounded-2xl border border-gray-800 bg-[#161a1f] p-6 text-center shadow-2xl"
+            className="w-full max-w-md space-y-6 rounded-2xl border border-gray-800 bg-[#041a2f] p-6 text-center shadow-2xl"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="submit-exam-title"
           >
-            <h2
-              id="submit-exam-title"
-              className="font-orbitron text-xl font-bold text-white"
-            >
+            <h2 className="font-orbitron text-xl font-bold text-white">
               Confirm Exam Submission
             </h2>
             <p className="font-montserrat text-sm text-gray-300">
-              You have answered{" "}
-              <span className="font-bold text-[#88D6FA]">{answeredCount}</span>{" "}
-              of{" "}
-              <span className="font-bold text-white">
-                {examState.questions.length}
-              </span>{" "}
-              questions. Submission cannot be undone.
+              You have answered <span className="font-bold text-[#4deeea]">{answeredCount}</span> of{" "}
+              <span className="font-bold text-white">{examState.questions.length}</span> questions. Submission cannot be undone.
             </p>
             <div className="flex gap-4 pt-2">
               <button
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => setShowConfirmModal(false)}
-                className="flex-1 rounded-full border border-gray-700 bg-gray-800 py-3 font-orbitron text-xs font-semibold text-gray-300 hover:bg-gray-700"
+                className="flex-1 rounded-full border border-gray-600 bg-[#0a2742] py-3 font-orbitron text-xs font-semibold text-gray-300 hover:bg-[#14304a]"
               >
                 Continue Exam
               </button>
@@ -952,7 +850,7 @@ export default function Final({
                   setShowConfirmModal(false);
                   void executeSubmission("manual");
                 }}
-                className="flex-1 rounded-full bg-green-500 py-3 font-orbitron text-xs font-bold text-black hover:bg-green-400 disabled:opacity-50"
+                className="flex-1 rounded-full bg-[#4deeea] py-3 font-orbitron text-xs font-bold text-[#041a2f] hover:bg-cyan-300 disabled:opacity-50"
               >
                 {isSubmitting ? "Submitting..." : "Confirm & Submit"}
               </button>
@@ -964,15 +862,11 @@ export default function Final({
       {showWarningModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md">
           <div
-            className="w-full max-w-md space-y-5 rounded-2xl border border-yellow-500 bg-[#161a1f] p-6 text-center shadow-2xl"
+            className="w-full max-w-md space-y-5 rounded-2xl border border-yellow-500 bg-[#041a2f] p-6 text-center shadow-2xl"
             role="alertdialog"
             aria-modal="true"
-            aria-labelledby="anti-cheat-warning-title"
           >
-            <h2
-              id="anti-cheat-warning-title"
-              className="font-orbitron text-xl font-bold text-yellow-400 uppercase"
-            >
+            <h2 className="font-orbitron text-xl font-bold uppercase text-yellow-400">
               Anti-Cheat Warning
             </h2>
             <p className="font-montserrat text-xs leading-relaxed text-gray-200">
@@ -984,7 +878,7 @@ export default function Final({
             <button
               type="button"
               onClick={() => setShowWarningModal(false)}
-              className="w-full rounded-full bg-yellow-500 py-3 font-orbitron text-xs font-bold tracking-wide text-black uppercase hover:bg-yellow-400"
+              className="w-full rounded-full bg-yellow-500 py-3 font-orbitron text-xs font-bold uppercase tracking-wide text-black hover:bg-yellow-400"
             >
               Resume Exam
             </button>
