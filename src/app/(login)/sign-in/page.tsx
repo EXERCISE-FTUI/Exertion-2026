@@ -124,19 +124,19 @@ const SigninPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex w-full sm:w-[50%] flex-col justify-start pl-4 pr-10 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-10 sm:py-0 pt-10 sm:pt-[15%] lg:pt-[20%] z-10"
+            className="flex w-full sm:w-[50%] flex-col justify-start pl-4 pr-10 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-10 sm:py-0 pt-10 sm:pt-[25%] lg:pt-[27%] z-10"
           >
-            <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
+            <motion.div variants={itemVariants} className="pt-0 lg:pt-1">
               <h2 className="text-center sm:text-start font-orbitron text-3xl sm:text-4xl lg:text-5xl font-bold tracking-wider text-white drop-shadow-[0_0_10px_rgba(68,213,234,0.8)]">
                 LOGIN
               </h2>
-              <p className="mt-1 lg:mt-2 text-center sm:text-start font-montserrat text-xs sm:text-sm text-gray-300">
+              <p className="mt-1 lg:mt-1.5 text-center sm:text-start font-montserrat text-xs sm:text-sm text-gray-300">
                 Please enter your details
               </p>
             </motion.div>
 
-            <form className="mt-4 lg:mt-4 space-y-2 lg:space-y-3" onSubmit={handleSubmit(onSubmit)}>
-              <div className="space-y-2 lg:space-y-3 rounded-md font-montserrat">
+            <form className="mt-3 lg:mt-3.5 space-y-2 lg:space-y-2.5" onSubmit={handleSubmit(onSubmit)}>
+              <div className="space-y-2 lg:space-y-2.5 rounded-md font-montserrat">
                 <motion.div variants={itemVariants}>
                   <AuthInput
                     id="email"
@@ -185,11 +185,11 @@ const SigninPage = () => {
                 )}
               </div>
 
-              <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
+              <motion.div variants={itemVariants} className="pt-1.5 lg:pt-2">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group relative flex w-full justify-center rounded-full bg-[#88D6FA] border-2 border-white hover:bg-sky-400 px-3 py-2.5 sm:py-3 font-montserrat text-sm font-semibold text-black disabled:opacity-50 transition-colors"
+                  className="group relative flex w-full justify-center rounded-full bg-[#88D6FA] border-2 border-white hover:bg-sky-400 px-3 py-2.5 sm:py-2.5 font-montserrat text-sm font-semibold text-black disabled:opacity-50 transition-colors"
                 >
                   {isLoading ? (
                     <svg
@@ -217,15 +217,15 @@ const SigninPage = () => {
                 </button>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="relative -top-1 sm:-top-2 flex items-center justify-center gap-4 w-full pt-3 lg:pt-5 pb-1 lg:pb-2">
+              <motion.div variants={itemVariants} className="flex items-center justify-center gap-4 w-full py-1.5 lg:py-2">
                 <p className="text-xs lg:text-sm text-gray-300 font-montserrat">OR</p>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="flex justify-center w-full font-montserrat mt-0 lg:-mt-1">
+              <motion.div variants={itemVariants} className="flex justify-center w-full font-montserrat mt-0">
                 <ButtonGoogle onClick={signInWithGoogle} />
               </motion.div>
 
-              <motion.p variants={itemVariants} className="text-center text-xs lg:text-sm text-white font-montserrat pt-0 pb-2">
+              <motion.p variants={itemVariants} className="text-center text-xs lg:text-sm text-white font-montserrat pt-1.5 pb-1">
                 Don’t Have an Account?{" "}
                 <Link
                   href="/sign-up"
