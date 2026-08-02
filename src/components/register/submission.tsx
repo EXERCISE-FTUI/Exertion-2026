@@ -417,6 +417,12 @@ const Submission = forwardRef<SubmissionRef, Props>(
       updateSubmissionProgress(0); // Reset progress
 
       // Basic validation
+      if (formData.submission && !(formData.submission instanceof File)) {
+        setSaveMessage("Submission already saved.");
+        setIsSaving(false);
+        return true;
+      }
+
       if (!formData.submission) {
         setSaveError(true);
         setSaveMessage("Please upload a submission file.");
@@ -533,12 +539,12 @@ const Submission = forwardRef<SubmissionRef, Props>(
             <StatusRow
               label="Submission status"
               value={
-                formData.submissionDriveId
+                formData.submission
                   ? "Submitted for grading"
                   : "Not submitted"
               }
               valueColor={
-                formData.submissionDriveId
+                formData.submission
                   ? "text-green-400"
                   : "text-yellow-400"
               }
