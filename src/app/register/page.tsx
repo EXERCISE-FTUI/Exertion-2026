@@ -404,12 +404,37 @@ export default function RegisterPage() {
 
               setFormData((prev: FormData) => ({ ...prev, ...updates }));
 
-              if (docs.student_id_card_link && docs.twibbon_upload_link && docs.instagram_story_link) {
+              const leaderDocsComplete = !!(
+                docs.student_id_card_link &&
+                docs.twibbon_upload_link &&
+                docs.instagram_story_link
+              );
+
+              const member2DocsComplete = !data.member2_name || !!(
+                docs.member2_student_id_card_link &&
+                docs.member2_twibbon_upload_link &&
+                docs.member2_instagram_story_link
+              );
+
+              const member3DocsComplete = !data.member3_name || !!(
+                docs.member3_student_id_card_link &&
+                docs.member3_twibbon_upload_link &&
+                docs.member3_instagram_story_link
+              );
+
+              const allDocsComplete = leaderDocsComplete && member2DocsComplete && member3DocsComplete;
+
+              const submissionComplete = data.competition_name === "ExerMind" ? true : !!docs.task_link;
+
+              if (allDocsComplete) {
                 nextStep = 4;
                 if (data.competition_name === "ExerMind") nextStep = 5;
-                else if (docs.task_link) nextStep = 5;
+                else if (submissionComplete) nextStep = 5;
               }
-              if (docs.payment_proof) router.push("/register/success");
+
+              if (docs.payment_proof && allDocsComplete && submissionComplete) {
+                router.push("/register/success");
+              }
             }
             setCurrentStep(nextStep);
           }
