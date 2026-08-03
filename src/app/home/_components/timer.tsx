@@ -44,7 +44,7 @@ const Timer = () => {
 
   // Countdown timer effect
   useEffect(() => {
-    const targetDate = new Date("2026-08-02T23:59:59").getTime(); // jam tujuan
+    const targetDate = new Date("2026-08-07T07:07:59").getTime(); // jam tujuan
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -121,11 +121,11 @@ const Timer = () => {
       <div className="my-[1.5vw] flex w-full items-center justify-center gap-6 text-[min(2vw,1.5rem)] text-white md:my-[1.3rem]">
         <div className="flex w-fit items-center justify-center gap-1">
           <CalendarDays className="w-[5vw] md:w-[6rem]" />
-          <div className="text-[min(2vw,1.5rem)]">2nd August 2026</div>
+          <div className="text-[min(2vw,1.5rem)]">7th August 2026</div>
         </div>
         <div className="flex w-fit items-center justify-center gap-1">
           <Clock className="w-[4.5vw] md:w-[4.5rem]" />
-          <div className="text-[min(2vw,1.5rem)]">23:59</div>
+          <div className="text-[min(2vw,1.5rem)]">07:07</div>
         </div>
       </div>
 
