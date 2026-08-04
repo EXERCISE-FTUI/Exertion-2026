@@ -1,246 +1,70 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { getExamState } from "@/actions/exermind/getExamState";
-import { createClient } from "@/utils/supabase/client";
-import {
-  actionSucceeded,
-  getActionMessage,
-  normalizeExamState,
-  type ExamStateView,
-} from "../_components/examState";
 
-export default function ExermindFinishPage() {
-  const [userName, setUserName] = useState("Contestant");
-  const [teamName, setTeamName] = useState("");
-  const [examState, setExamState] = useState<ExamStateView | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+export default function FinishPage() {
+  return (
+    <main className="flex min-h-screen w-full items-center justify-center bg-gradient-to-b from-[#49769F] via-[#7BBDE8] to-[#BDD8E9] p-4">
+      <div
+        className="relative flex w-full max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-[#001D39] to-[#0A4174] px-4 py-6 shadow-2xl sm:px-8 sm:py-12"
+        style={{
+          clipPath:
+            "polygon(0 0, calc(100% - clamp(24px, 8vw, 60px)) 0, 100% clamp(24px, 8vw, 60px), 100% 100%, clamp(24px, 8vw, 60px) 100%, 0 calc(100% - clamp(24px, 8vw, 60px)))",
+        }}
+      >
+        <img
+          src="/exermind3hexagon.svg"
+          className="absolute -top-2 left-2 h-12 w-12 object-contain opacity-90 brightness-110 max-[280px]:h-8 max-[280px]:w-8 sm:-top-4 sm:left-16 sm:h-24 sm:w-24"
+        />
+        <img
+          src="/exermind_left_big_hexagon.svg"
+          className="absolute -left-8 top-8 h-20 w-20 object-contain opacity-90 brightness-110 max-[280px]:h-14 max-[280px]:w-14 sm:-left-12 sm:top-10 sm:h-44 sm:w-44"
+        />
+        <img
+          src="/exermind_left_triangle.svg"
+          className="absolute -left-3 top-1/2 h-8 w-8 object-contain opacity-90 brightness-110 max-[280px]:h-6 max-[280px]:w-6 sm:-left-5 sm:h-20 sm:w-20"
+        />
+        <img
+          src="/exermind_left_inner_hexagon.svg"
+          className="absolute bottom-6 left-4 h-16 w-16 object-contain opacity-90 brightness-110 max-[280px]:bottom-8 max-[280px]:h-12 max-[280px]:w-12 sm:bottom-12 sm:left-16 sm:h-32 sm:w-32"
+        />
 
-  useEffect(() => {
-    const loadFinishData = async () => {
-      try {
-        const supabase = createClient();
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
+        <img
+          src="/exermind_right_3hexagon.svg"
+          className="absolute bottom-12 right-4 h-14 w-14 object-contain opacity-90 brightness-110 max-[280px]:h-10 max-[280px]:w-10 sm:bottom-16 sm:right-20 sm:h-28 sm:w-28"
+        />
+        <img
+          src="/exermind_right_inner_hexagon.svg"
+          className="absolute -right-12 top-6 h-24 w-24 object-contain opacity-90 brightness-110 max-[280px]:h-16 max-[280px]:w-16 sm:-right-20 sm:top-8 sm:h-60 sm:w-60"
+        />
 
-        if (!user) {
-          router.replace("/sign-in");
-          return;
-        }
+        <img
+          src="/exermind_bottom_circuit_line.svg"
+          className="absolute bottom-1 left-0 h-4 w-full object-cover opacity-90 brightness-110 sm:bottom-3 sm:h-10"
+        />
 
-        const [{ data: profile }, { data: team }, stateResult] =
-          await Promise.all([
-            supabase
-              .from("profiles")
-              .select("display_name, full_name")
-              .eq("id", user.id)
-              .single(),
-            supabase
-              .from("teams")
-              .select("team_name")
-              .eq("leader_user_id", user.id)
-              .single(),
-            getExamState(),
-          ]);
-
-        if (!actionSucceeded(stateResult)) {
-          setErrorMessage(
-            getActionMessage(stateResult) || "Could not load the exam result.",
-          );
-          return;
-        }
-
-        const state = normalizeExamState(stateResult);
-        if (!state?.session) {
-          router.replace("/exermind/start");
-          return;
-        }
-
-        if (state.session.status === "IN_PROGRESS") {
-          router.replace("/exermind/exam");
-          return;
-        }
-
-        setUserName(
-          profile?.display_name ||
-            profile?.full_name ||
-            user.user_metadata?.display_name ||
-            "Contestant",
-        );
-        setTeamName(team?.team_name || "");
-        setExamState(state);
-      } catch (error) {
-        console.error("Error loading finish page data:", error);
-        setErrorMessage("Could not load the exam result.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadFinishData();
-  }, [router]);
-
-  const result = useMemo(() => {
-    if (!examState) return null;
-
-    const details = Object.values(examState.answerDetails);
-    const isGraded =
-      examState.questions.some((question) => question.type !== "ESSAY") ||
-      details.some((answer) => typeof answer.isCorrect === "boolean");
-    const correctCount = details.filter(
-      (answer) => answer.isCorrect === true,
-    ).length;
-    const totalQuestions = examState.questions.length;
-    const accuracy =
-      isGraded && examState.score.totalPoints > 0
-        ? Number(
-            (
-              (examState.score.earnedPoints / examState.score.totalPoints) *
-              100
-            ).toFixed(2),
-          )
-        : null;
-
-    return {
-      isGraded,
-      correctCount,
-      totalQuestions,
-      accuracy,
-      gameScore: examState.score.gameScore,
-      earnedPoints: examState.score.earnedPoints,
-      totalPoints: examState.score.totalPoints,
-    };
-  }, [examState]);
-
-  if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-[#111417] text-white">
-        <div className="flex flex-col items-center space-y-4 font-orbitron">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#88D6FA] border-t-transparent" />
-          <p>Loading Exam Result...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (errorMessage || !examState || !result) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#111417] p-6 text-white">
-        <div className="max-w-md space-y-4 rounded-xl border border-red-500/60 bg-red-950/30 p-6 text-center">
-          <h1 className="font-orbitron text-xl font-bold text-red-300">
-            Result unavailable
+        <div className="relative z-10 flex w-full flex-col items-center text-center">
+          <h1 className="font-orbitron text-xl font-black tracking-widest text-white max-[280px]:text-lg sm:text-3xl md:text-4xl">
+            GOOD LUCK!
           </h1>
-          <p className="font-montserrat text-sm text-gray-200">
-            {errorMessage || "The exam result could not be loaded."}
+
+          <img
+            src="/exermind_maskot.svg"
+            className="mb-4 mt-4 h-28 w-28 object-contain max-[280px]:mb-3 max-[280px]:mt-3 max-[280px]:h-20 max-[280px]:w-20 sm:mb-6 sm:mt-6 sm:h-44 sm:w-44"
+          />
+
+          <p className="text-xs font-medium text-white max-[280px]:text-[10px] sm:text-base md:text-lg">
+            Your answer has been saved
           </p>
+          <p className="mt-1 text-[11px] font-light text-[#BDD8E9] max-[280px]:text-[8px] sm:mt-2 sm:text-sm md:text-base">
+            Please wait for further announcements
+          </p>
+
           <Link
-            href="/exermind"
-            className="inline-flex rounded-full bg-[#88D6FA] px-6 py-2 font-orbitron text-xs font-bold text-black"
+            href="/home"
+            className="mt-6 whitespace-nowrap rounded-full bg-white px-7 py-2 text-xs font-bold text-[#001D39] transition-colors hover:bg-[#BDD8E9] max-[280px]:mt-4 max-[280px]:px-4 max-[280px]:py-1.5 max-[280px]:text-[9px] sm:mt-8 sm:px-9 sm:py-2.5 sm:text-base cursor-pointer"
           >
-            Reload status
+            Back To Home
           </Link>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <main className="flex min-h-screen w-full items-center justify-center bg-[#111417] p-6 text-white">
-      <div className="relative flex w-full max-w-2xl flex-col items-center space-y-6 rounded-2xl border border-gray-800 bg-[#161a1f] p-8 text-center shadow-2xl">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-teal-500/20 text-teal-400">
-          <CheckCircle2 className="h-12 w-12" aria-hidden="true" />
-        </div>
-
-        <div className="space-y-2">
-          <h1 className="font-orbitron text-2xl font-bold tracking-wider text-white md:text-3xl">
-            EXAM COMPLETED
-          </h1>
-          <p className="font-montserrat text-sm text-gray-300">
-            Thank you,{" "}
-            <span className="font-semibold text-[#88D6FA]">{userName}</span>.
-          </p>
-          {teamName && (
-            <p className="font-montserrat text-xs text-gray-400">
-              Team: <span className="font-medium text-white">{teamName}</span>
-            </p>
-          )}
-        </div>
-
-        {result.isGraded ? (
-          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-            <section className="rounded-xl border border-[#88D6FA]/30 bg-[#042440] p-6">
-              <span className="font-orbitron text-xs font-semibold text-gray-400 uppercase">
-                Accuracy
-              </span>
-              <div className="mt-2 font-orbitron text-4xl font-extrabold text-[#88D6FA]">
-                {result.accuracy}%
-              </div>
-              <p className="font-montserrat mt-2 text-xs text-gray-300">
-                {result.correctCount} correct of {result.totalQuestions}
-              </p>
-            </section>
-
-            <section className="rounded-xl border border-amber-300/30 bg-amber-950/20 p-6">
-              <span className="font-orbitron text-xs font-semibold text-gray-400 uppercase">
-                Game score
-              </span>
-              <div className="mt-2 font-orbitron text-4xl font-extrabold text-amber-300">
-                {result.gameScore}
-              </div>
-              <p className="font-montserrat mt-2 text-xs text-gray-300">
-                Includes Double Points multipliers
-              </p>
-            </section>
-          </div>
-        ) : (
-          <section className="w-full space-y-2 rounded-xl border border-[#88D6FA]/30 bg-[#042440] p-6">
-            <span className="font-orbitron text-sm font-bold text-[#88D6FA] uppercase">
-              Responses recorded
-            </span>
-            <p className="font-montserrat text-xs leading-relaxed text-gray-200">
-              Your essay responses were submitted for evaluation.
-            </p>
-          </section>
-        )}
-
-        {result.isGraded && (
-          <div className="font-montserrat flex w-full justify-between rounded-xl border border-gray-800 bg-[#111417] p-4 text-xs text-gray-300">
-            <span>Base points</span>
-            <span className="font-mono font-bold text-white">
-              {result.earnedPoints} / {result.totalPoints}
-            </span>
-          </div>
-        )}
-
-        <div className="font-montserrat w-full rounded-xl border border-gray-800 bg-[#111417] p-4 text-left text-xs text-gray-300">
-          <div className="flex justify-between border-b border-gray-800 pb-2">
-            <span>Status</span>
-            <span className="font-bold text-teal-400 uppercase">
-              {examState.session?.status || "SUBMITTED"}
-            </span>
-          </div>
-          {examState.session?.submittedAt && (
-            <div className="flex justify-between pt-2">
-              <span>Submitted at</span>
-              <span className="font-mono text-gray-400">
-                {new Date(examState.session.submittedAt).toLocaleString()}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <Link
-          href="/home"
-          className="inline-flex w-full items-center justify-center rounded-full bg-[#88D6FA] py-3.5 font-orbitron text-sm font-bold tracking-wider text-black uppercase shadow-lg transition hover:bg-sky-400 active:scale-95"
-        >
-          Return to Home
-        </Link>
       </div>
     </main>
   );
