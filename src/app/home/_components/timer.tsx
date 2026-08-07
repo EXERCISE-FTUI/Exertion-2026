@@ -44,7 +44,7 @@ const Timer = () => {
 
   // Countdown timer effect
   useEffect(() => {
-    const targetDate = new Date("2026-08-08T08:08:59").getTime(); // jam tujuan
+    const targetDate = new Date("2026-08-08T011:59:59").getTime(); // jam tujuan
 
     const updateCountdown = () => {
       const now = new Date().getTime();
