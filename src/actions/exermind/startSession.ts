@@ -13,6 +13,8 @@ import {
   sanitizeExamState,
 } from "@/lib/exermind/server";
 
+import { EXERMIND_CONFIG } from "@/config/exermind.config";
+
 type StartSessionResult = ActionResult<ExamState> & {
   isExisting?: boolean;
   session?: ExamSessionState;

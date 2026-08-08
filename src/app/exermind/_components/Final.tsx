@@ -352,6 +352,12 @@ export default function Final({
           currentQuestion.id,
         );
 
+        if (!EXERMIND_CONFIG.LOCKED_SEQUENCE) {
+          await flushPendingAnswers();
+          setCurrentQuestionIndex(boundedTarget);
+          return;
+        }
+
         if (!currentCompleted) {
           if (currentQuestion.id !== nextState.currentQuestionId) {
             const authoritativeIndex = questions.findIndex(
@@ -387,7 +393,7 @@ export default function Final({
         setIsNavigating(false);
       }
     },
-    [finalizeQuestion, isActivatingPowerUp, isNavigating, isSubmitting],
+    [finalizeQuestion, flushPendingAnswers, isActivatingPowerUp, isNavigating, isSubmitting],
   );
 
   const activateSelectedPowerUp = useCallback(
@@ -484,6 +490,7 @@ export default function Final({
           : undefined;
 
         if (
+          EXERMIND_CONFIG.LOCKED_SEQUENCE &&
           mode === "manual" &&
           currentQuestion &&
           currentAnswer?.trim() &&
@@ -625,8 +632,7 @@ export default function Final({
     [currentQuestion],
   );
   const isEssayQuestion =
-    currentQuestion?.type === "ESSAY" ||
-    EXERMIND_CONFIG.QUESTION_TYPE === "ESSAY";
+    currentQuestion?.type?.toUpperCase() === "ESSAY";
   const answeredCount = Object.values(answers).filter((answer) =>
     answer.trim(),
   ).length;
@@ -686,7 +692,10 @@ export default function Final({
                   const isAnswered = Boolean(answers[question.id]?.trim());
                   const isCompleted = examState.completedQuestionIds.includes(question.id);
                   const isCurrent = index === currentQuestionIndex;
-                  const canVisit = isCompleted || question.id === examState.currentQuestionId;
+                  const canVisit =
+                    !EXERMIND_CONFIG.LOCKED_SEQUENCE ||
+                    isCompleted ||
+                    question.id === examState.currentQuestionId;
 
                   return (
                     <button
@@ -696,12 +705,10 @@ export default function Final({
                       disabled={isNavigating || isActivatingPowerUp || isSubmitting || !canVisit}
                       className={`h-9 w-full rounded font-orbitron text-xs font-bold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
                         isCurrent
-                          ? "bg-[#4deeea] text-black"
-                          : isCompleted
-                            ? "bg-teal-600 text-white"
-                            : isAnswered
-                              ? "bg-white text-black"
-                              : "bg-[#e2e8f0] text-gray-800 hover:bg-gray-300"
+                          ? "bg-[#4deeea] text-black shadow-[0_0_10px_#4deeea]"
+                          : isAnswered || isCompleted
+                            ? "bg-[#00D68F] text-black font-extrabold shadow-[0_0_8px_rgba(0,214,143,0.5)]"
+                            : "bg-[#0a2742] text-gray-300 border border-white/20 hover:bg-[#1C465C]"
                       }`}
                     >
                       {index + 1}
@@ -750,7 +757,7 @@ export default function Final({
                   <InputEsai
                     value={answers[currentQuestion.id] || ""}
                     onChange={(value) => updateAnswer(currentQuestion.id, value, true)}
-                    disabled={isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting}
+                    disabled={(EXERMIND_CONFIG.LOCKED_SEQUENCE && isCurrentCompleted) || isNavigating || isActivatingPowerUp || isSubmitting}
                     onIllegalAction={(action) => void sendTelemetry(action)}
                   />
                 ) : (
@@ -762,7 +769,7 @@ export default function Final({
                           key={key}
                           type="button"
                           onClick={() => updateAnswer(currentQuestion.id, key)}
-                          disabled={isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting}
+                          disabled={(EXERMIND_CONFIG.LOCKED_SEQUENCE && isCurrentCompleted) || isNavigating || isActivatingPowerUp || isSubmitting}
                           className={`w-full rounded-xl p-5 shadow-[0_0_25px_5px_rgba(255,255,255,1)] border border-white/10 text-left font-montserrat text-sm font-bold shadow-md transition-all disabled:cursor-not-allowed ${
                             isSelected
                               ? "bg-[#44D5EA] text-[#041a2f] scale-[1.01] shadow-[0_0_10px_#ffffff,0_0_30px_#44D5EA]"
@@ -808,17 +815,19 @@ export default function Final({
         </div>
       </main>
 
-      {/* Komponen Modal Tetap Sama */}
-      <PowerupModal
-        powerUps={examState.powerUps}
-        activeMultiplier={currentMultiplier}
-        isTimeFrozen={examState.isTimeFrozen}
-        currentQuestionId={currentQuestion?.id}
-        disabled={
-          isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting || !currentQuestion
-        }
-        onActivate={activateSelectedPowerUp}
-      />
+      {/* Floating PowerUp Modal */}
+      {EXERMIND_CONFIG.SKILLS_ACTIVE && (
+        <PowerupModal
+          powerUps={examState.powerUps}
+          activeMultiplier={currentMultiplier}
+          isTimeFrozen={examState.isTimeFrozen}
+          currentQuestionId={currentQuestion?.id}
+          disabled={
+            isCurrentCompleted || isNavigating || isActivatingPowerUp || isSubmitting || !currentQuestion
+          }
+          onActivate={activateSelectedPowerUp}
+        />
+      )}
 
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">

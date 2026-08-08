@@ -470,7 +470,7 @@ begin
   from (
     select question.id, random() as random_order
     from exermind_exam.questions as question
-    where question.type::text = 'MCQ'
+    where trim(both '"' from upper(trim(coalesce(question.round::text, '')))) = 'PRELIMINARY'
     order by random_order
     limit 60
   ) as pool;

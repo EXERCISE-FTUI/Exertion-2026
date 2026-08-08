@@ -9,6 +9,7 @@ import { startSession } from "@/actions/exermind/startSession";
 import { getExamState } from "@/actions/exermind/getExamState";
 import { normalizeExamState } from "../_components/examState";
 import Image from "next/image";
+import { EXERMIND_CONFIG } from "@/config/exermind.config";
 
 /* ─── Token Error Modal ─── */
 function TokenErrorModal({
@@ -188,7 +189,10 @@ export default function ExermindStartPage() {
           const state = normalizeExamState(stateResult);
           const status = state?.session?.status;
 
-          if (status === "IN_PROGRESS" && state?.powerUps.length === 3) {
+          if (
+            status === "IN_PROGRESS" &&
+            (state?.powerUps.length === 3 || !EXERMIND_CONFIG.SKILLS_ACTIVE)
+          ) {
             router.replace("/exermind/exam");
             return;
           }
@@ -211,7 +215,7 @@ export default function ExermindStartPage() {
     initStartData();
   }, [router]);
 
-  /* Token validation — dummy for now */
+  /* Token validation — configured via EXERMIND_CONFIG.EXAM_TOKEN */
   const handleAttemptTest = () => {
     const trimmed = tokenInput.trim();
     if (!trimmed) {
@@ -222,10 +226,8 @@ export default function ExermindStartPage() {
       return;
     }
 
-    // Dummy validation: accept any non-empty token for now
-    // Replace with real API call when backend is ready
-    const VALID_TOKEN = "EXERMIND2026";
-    if (trimmed.toUpperCase() !== VALID_TOKEN) {
+    const validToken = (EXERMIND_CONFIG.EXAM_TOKEN || "").trim().toUpperCase();
+    if (trimmed.toUpperCase() !== validToken) {
       setTokenErrorMsg(
         "Silakan hubungi pihak panitia atau masukkan token yang benar.",
       );
@@ -233,8 +235,12 @@ export default function ExermindStartPage() {
       return;
     }
 
-    // Token valid → proceed to power-up selection
-    setHasClickedStart(true);
+    // Token valid → if skills are enabled, show power-up selection; otherwise start immediately
+    if (EXERMIND_CONFIG.SKILLS_ACTIVE) {
+      setHasClickedStart(true);
+    } else {
+      handleStartExam(["TIME_FREEZE", "HINT", "DOUBLE_POINTS"]);
+    }
   };
 
   const handleStartExam = async (selectedPowerups: PowerUpType[]) => {
