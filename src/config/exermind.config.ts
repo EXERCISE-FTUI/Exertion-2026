@@ -5,10 +5,15 @@ export const EXERMIND_CONFIG = {
   MAXIMUM_QUESTION_COUNT: 60,
 
   /**
-   * ROUND_TYPE: "PRELIMINARY" | "FINAL"
+   * ROUND_TYPE: "PRELIMINARY" | "FINAL" | "TEST"
    * Determines which round's questions are seeded and randomized into an exam session.
    */
-  ROUND_TYPE: "PRELIMINARY" as "PRELIMINARY" | "FINAL",
+  ROUND_TYPE: "TEST" as "PRELIMINARY" | "FINAL" | "TEST",
+
+  /**
+   * IS_TEST_QUESTION: If true, selects questions tagged with "TEST" round category.
+   */
+  IS_TEST_QUESTION: true,
 
   /**
    * EXAM_TOKEN: Passkey token required on the start page to access and attempt the exam.
@@ -41,3 +46,10 @@ export const EXERMIND_CONFIG = {
    */
   LOCKED_SEQUENCE: false,
 };
+
+/**
+ * Returns "TEST" if IS_TEST_QUESTION is true, otherwise returns EXERMIND_CONFIG.ROUND_TYPE.
+ */
+export function getActiveRound(): string {
+  return EXERMIND_CONFIG.IS_TEST_QUESTION ? "TEST" : EXERMIND_CONFIG.ROUND_TYPE;
+}

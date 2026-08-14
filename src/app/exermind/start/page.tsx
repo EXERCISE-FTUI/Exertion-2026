@@ -180,9 +180,8 @@ export default function ExermindStartPage() {
           console.error("Team fetch error:", teamError);
           router.replace("/home");
           return;
-        } else {
-          setTeamName(team.team_name || "Team");
         }
+        setTeamName(team.team_name || "Team");
 
         try {
           const stateResult = await getExamState();

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getExamState } from "@/actions/exermind/getExamState";
 import { createClient } from "@/utils/supabase/client";
+import { EXERMIND_CONFIG } from "@/config/exermind.config";
 import Final from "../_components/Final";
 import {
   actionSucceeded,
@@ -40,33 +41,28 @@ export default function ExermindExamPage() {
           return;
         }
 
-        const [
-          { data: profile },
-          { data: team, error: teamError },
-          stateResult,
-        ] = await Promise.all([
-          supabase
-            .from("profiles")
-            .select("display_name, full_name")
-            .eq("id", user.id)
-            .single(),
-          supabase
-            .from("teams")
-            .select("id, team_name")
-            .eq("leader_user_id", user.id)
-            .single(),
-          getExamState(),
-        ]);
+        const { data: teamData, error: teamError } = await supabase
+          .from("teams")
+          .select("id, team_name")
+          .eq("leader_user_id", user.id)
+          .single();
 
-        if (teamError || !team) {
+        if (teamError || !teamData) {
           router.replace("/home");
           return;
         }
 
-        if (!actionSucceeded(stateResult)) {
-          setErrorMessage(
-            getActionMessage(stateResult) || "Failed to load exam state.",
-          );
+        const [{ data: profile }, stateResult] = await Promise.all([
+          supabase
+            .from("profiles")
+            .select("display_name, full_name")
+            .eq("id", user.id)
+            .maybeSingle(),
+          getExamState(),
+        ]);
+
+        if (!stateResult.success || !stateResult.session) {
+          router.replace("/exermind/start");
           return;
         }
 
@@ -84,7 +80,7 @@ export default function ExermindExamPage() {
           return;
         }
 
-        if (state.powerUps.length !== 3) {
+        if (state.powerUps.length !== 3 && EXERMIND_CONFIG.SKILLS_ACTIVE) {
           router.replace("/exermind/start");
           return;
         }
@@ -100,7 +96,7 @@ export default function ExermindExamPage() {
             user.user_metadata?.display_name ||
             "Contestant",
         );
-        setTeamName(team.team_name || "Team");
+        setTeamName(teamData?.team_name || "Team");
         setExamState(state);
 
         let tabId = sessionStorage.getItem("exermind_tab_id");
@@ -109,7 +105,7 @@ export default function ExermindExamPage() {
           sessionStorage.setItem("exermind_tab_id", tabId);
         }
 
-        const lockKey = `exermind_active_tab_${team.id}`;
+        const lockKey = `exermind_active_tab_${teamData?.id ?? "test"}`;
         activeLockKey = lockKey;
         const existingLock = localStorage.getItem(lockKey);
 
@@ -144,7 +140,7 @@ export default function ExermindExamPage() {
 
         if ("BroadcastChannel" in window) {
           broadcastChannel = new BroadcastChannel(
-            `exermind_channel_${team.id}`,
+            `exermind_channel_${teamData?.id ?? "test"}`,
           );
           broadcastChannel.postMessage({
             type: "PING_EXAM_TAB",
