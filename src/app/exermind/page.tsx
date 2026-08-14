@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getExamState } from "@/actions/exermind/getExamState";
+import { EXERMIND_CONFIG } from "@/config/exermind.config";
 import { normalizeExamState } from "./_components/examState";
 
 export default function ExermindRouteGate() {

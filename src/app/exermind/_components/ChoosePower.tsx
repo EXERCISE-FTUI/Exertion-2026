@@ -1,26 +1,139 @@
 "use client";
 
 import { useState } from "react";
-import PowerUpComponent, {
-  type PowerUpOption,
-  type PowerUpSelection,
-  type PowerUpType,
-} from "./powerup";
+import { motion, AnimatePresence } from "motion/react";
+import clsx from "clsx";
+import type { PowerUpOption, PowerUpType } from "./powerup";
 
-interface ChoosePowerProps {
+export interface ChoosePowerProps {
   onComplete?: (powerUps: PowerUpType[]) => void;
   disabled?: boolean;
 }
 
-const EMPTY_SELECTION: PowerUpSelection = [null, null, null];
+interface PowerUpOptionBtnProps {
+  index: number;
+  onClick: () => void;
+  disabled?: boolean;
+}
+
+const PowerUpOptionsBtn = ({
+  index,
+  onClick,
+  disabled = false,
+}: PowerUpOptionBtnProps) => {
+  return (
+    <div className="highlight">
+      <motion.div
+        initial={{ y: 0 }}
+        whileHover={disabled ? undefined : { scale: 1.05, y: -10 }}
+        whileTap={disabled ? undefined : { scale: 0.95 }}
+        onClick={disabled ? undefined : onClick}
+        className={clsx(
+          `flex flex-col items-center gap-2 rounded-md bg-blackish-blue p-3 select-none w-38 pt-12 cursor-pointer`,
+          {
+            "first-opt": index === 0,
+            "second-opt": index === 1,
+            "third-opt": index === 2,
+            "opacity-50 cursor-not-allowed": disabled,
+          },
+        )}
+      >
+        <img
+          src={`/powerup/${
+            index === 0 ? "clocknew" : index === 1 ? "bulbnew" : "point"
+          }.svg`}
+          alt=""
+          className="h-18"
+        />
+        <p className="font-orbitron text-xs text-white">
+          {index === 0 ? "FREEZE TIME" : index === 1 ? "HINT" : "DOUBLEUP POINT"}
+        </p>
+      </motion.div>
+    </div>
+  );
+};
+
+interface PowerUpItemBtnProps {
+  index: number;
+  currentItem: number | null;
+  currentSelectedItem: PowerUpOption;
+  handleSelect: () => void;
+  disabled?: boolean;
+  className?: string;
+}
+
+const PowerUpItemBtn = ({
+  index,
+  currentItem,
+  currentSelectedItem,
+  handleSelect,
+  disabled = false,
+  className,
+}: PowerUpItemBtnProps) => {
+  return (
+    <motion.div
+      initial={{ y: 0 }}
+      animate={
+        currentItem === index ? { y: -10, scale: 1.05 } : { y: 0, scale: 1 }
+      }
+      onClick={disabled ? undefined : handleSelect}
+      className={`${className} z-10 flex min-h-32 min-w-30 justify-center rounded-md bg-blackish-blue select-none cursor-pointer ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+    >
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentSelectedItem ?? `empty-${index}`}
+          initial={{ scale: 0.5, opacity: currentSelectedItem ? 1 : 0 }}
+          animate={{ scale: 1, opacity: currentSelectedItem ? 1 : 0 }}
+          exit={{ scale: 0.5, opacity: 0 }}
+          src={
+            currentSelectedItem
+              ? `/powerup/${
+                  currentSelectedItem === "HINT"
+                    ? "bulbnew"
+                    : currentSelectedItem === "DOUBLE_POINTS"
+                      ? "point"
+                      : "clocknew"
+                }.svg`
+              : undefined
+          }
+          alt=""
+          className="w-20 select-none"
+        />
+      </AnimatePresence>
+    </motion.div>
+  );
+};
 
 export default function ChoosePower({
   onComplete,
   disabled = false,
 }: ChoosePowerProps) {
+  const [currentItem, setCurrentItem] = useState<number | null>(0);
   const [selectedItems, setSelectedItems] = useState<PowerUpOption[]>([
-    ...EMPTY_SELECTION,
+    null,
+    null,
+    null,
   ]);
+
+  const handleChoosingItem = (power: PowerUpType) => {
+    if (disabled || currentItem === null) return;
+    const updated = [...selectedItems];
+    updated[currentItem] = power;
+    setSelectedItems(updated);
+
+    // Auto-advance to next empty slot
+    const nextSlot = updated.findIndex((item) => item === null);
+    setCurrentItem(nextSlot !== -1 ? nextSlot : null);
+  };
+
+  const removeSelectedItem = (index: number) => {
+    if (disabled) return;
+    const updated = [...selectedItems];
+    updated[index] = null;
+    setSelectedItems(updated);
+  };
 
   const isComplete =
     selectedItems.length === 3 &&
@@ -28,25 +141,91 @@ export default function ChoosePower({
 
   const submitSelection = () => {
     if (!isComplete || disabled) return;
-    onComplete?.(selectedItems);
+    onComplete?.(selectedItems as PowerUpType[]);
   };
 
   return (
-    <section className="relative flex min-h-[calc(100vh-73px)] flex-1 overflow-hidden bg-linear-to-t from-[#0B8071] from-[-10%] via-[#38405F] via-40% to-[#111417] to-[120%] px-5 py-10 sm:px-10">
-      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col justify-between gap-10">
-        <img
-          src="/home/header/logo_exertion.svg"
-          alt="Exertion"
-          className="h-10 w-fit sm:h-12"
-        />
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="flex min-h-screen flex-col justify-between overflow-hidden p-10 bg-[url('/powerup/background.svg'),linear-gradient(180deg,#528CC0_0%,#528FC5_50%,#7CBCE8_100%)] bg-cover bg-center">
+        {/* Logo */}
+        <div>
+          <img
+            src="/home/header/logo_exertion.svg"
+            alt="EXERTION Logo"
+            className="h-12"
+          />
+        </div>
 
-        <PowerUpComponent
-          selectedItems={selectedItems}
-          setSelectedItems={setSelectedItems}
-          disabled={disabled}
-        />
+        {/* PowerUp Selection */}
+        <div className="max-w-none z-20 flex w-full flex-col items-center gap-10">
+          <div className="flex flex-row gap-10">
+            <PowerUpOptionsBtn
+              index={0}
+              onClick={() => handleChoosingItem("TIME_FREEZE")}
+              disabled={disabled}
+            />
 
-        <div className="flex justify-end">
+            <PowerUpOptionsBtn
+              index={1}
+              onClick={() => handleChoosingItem("HINT")}
+              disabled={disabled}
+            />
+
+            <PowerUpOptionsBtn
+              index={2}
+              onClick={() => handleChoosingItem("DOUBLE_POINTS")}
+              disabled={disabled}
+            />
+          </div>
+
+          <div className="flex flex-row items-center">
+            <p className="font-exo-2 text-2xl font-bold text-white pt-8">
+              Choose your power-up
+            </p>
+            <img src="/powerup/mascuit.svg" alt="" className="-my-25 -mx-16" />
+          </div>
+
+          <div className="flex flex-row gap-5">
+            <PowerUpItemBtn
+              index={0}
+              currentSelectedItem={selectedItems[0]}
+              currentItem={currentItem}
+              handleSelect={() => {
+                removeSelectedItem(0);
+                setCurrentItem(0);
+              }}
+              disabled={disabled}
+              className="first-item"
+            />
+
+            <PowerUpItemBtn
+              index={1}
+              currentSelectedItem={selectedItems[1]}
+              currentItem={currentItem}
+              handleSelect={() => {
+                removeSelectedItem(1);
+                setCurrentItem(1);
+              }}
+              disabled={disabled}
+              className="second-item"
+            />
+
+            <PowerUpItemBtn
+              index={2}
+              currentSelectedItem={selectedItems[2]}
+              currentItem={currentItem}
+              handleSelect={() => {
+                removeSelectedItem(2);
+                setCurrentItem(2);
+              }}
+              disabled={disabled}
+              className="third-item"
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="z-10 mx-10 flex justify-end pt-10">
           <button
             type="button"
             className="rounded-sm bg-blackish-green px-10 py-3 font-orbitron font-bold text-white transition hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#88D6FA] disabled:cursor-not-allowed disabled:opacity-50"
@@ -57,22 +236,6 @@ export default function ChoosePower({
           </button>
         </div>
       </div>
-
-      <svg
-        className="pointer-events-none absolute top-0 right-0 w-64 translate-x-1/4 -translate-y-1/4 stroke-1 opacity-60"
-        viewBox="0 0 251 226"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M249.531 104.164L208.606 215.888L84.6217 224.906L1.60555 122.084L42.5303 10.3602L166.514 1.34167L249.531 104.164Z"
-          stroke="#FFE2E4"
-        />
-        <path
-          d="M224.576 110.249L194.231 193.09L95.3282 196.693L26.8493 117.24L57.1945 34.3985L156.097 30.7954L224.576 110.249Z"
-          stroke="#FFE2E4"
-        />
-      </svg>
-    </section>
+    </div>
   );
 }

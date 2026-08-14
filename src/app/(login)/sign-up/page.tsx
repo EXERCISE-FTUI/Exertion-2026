@@ -132,19 +132,19 @@ const SignupPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex w-full sm:w-[50%] flex-col justify-start pl-6 pr-12 sm:pl-14 sm:pr-20 lg:pl-24 lg:pr-32 py-10 sm:py-0 pt-10 sm:pt-[12%] lg:pt-[16%] z-10"
+            className="flex w-full sm:w-[50%] flex-col justify-start pl-4 pr-10 sm:pl-10 sm:pr-16 lg:pl-16 lg:pr-24 py-10 sm:py-0 pt-10 sm:pt-[24%] lg:pt-[26%] z-10"
           >
-            <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
+            <motion.div variants={itemVariants} className="pt-0 lg:pt-1">
               <h2 className="text-center sm:text-start font-orbitron text-2xl sm:text-3xl lg:text-4xl font-bold tracking-wider text-white drop-shadow-[0_0_10px_rgba(68,213,234,0.8)]">
                 SIGN UP
               </h2>
-              <p className="mt-0 lg:mt-0.5 text-center sm:text-start font-montserrat text-xs sm:text-sm text-gray-300">
+              <p className="mt-0.5 lg:mt-1 text-center sm:text-start font-montserrat text-xs sm:text-sm text-gray-300">
                 Let's get you started
               </p>
             </motion.div>
 
-            <form className="mt-4 lg:mt-6 space-y-2" onSubmit={handleSubmit(onSubmit)}>
-              <div className="space-y-2 rounded-md font-montserrat">
+            <form className="mt-2.5 lg:mt-3 space-y-1.5 lg:space-y-2" onSubmit={handleSubmit(onSubmit)}>
+              <div className="space-y-1.5 lg:space-y-2 rounded-md font-montserrat">
                 <motion.div variants={itemVariants}>
                   <AuthInput
                     id="fullName"
@@ -206,7 +206,7 @@ const SignupPage = () => {
                 {serverError && (
                   <motion.div
                     variants={itemVariants}
-                    className="relative flex flex-row items-center gap-2 rounded-md border border-red-400 bg-red-100 px-3 py-2 text-red-700"
+                    className="relative flex flex-row items-center gap-2 rounded-md border border-red-400 bg-red-100 px-3 py-1.5 text-red-700"
                     role="alert"
                   >
                     <CircleAlert className="h-4 w-4 sm:h-5 sm:w-5 stroke-1" />
@@ -218,11 +218,11 @@ const SignupPage = () => {
                 )}
               </div>
 
-              <motion.div variants={itemVariants} className="pt-2 lg:pt-4">
+              <motion.div variants={itemVariants} className="pt-1.5 lg:pt-2">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group relative flex w-full justify-center rounded-full bg-[#88D6FA] border-2 border-white hover:bg-sky-400 px-3 py-2.5 sm:py-3 font-montserrat text-sm font-semibold text-black disabled:opacity-50 transition-colors"
+                  className="group relative flex w-full justify-center rounded-full bg-[#88D6FA] border-2 border-white hover:bg-sky-400 px-3 py-2 sm:py-2.5 font-montserrat text-sm font-semibold text-black disabled:opacity-50 transition-colors"
                 >
                   {isLoading ? (
                     <svg
@@ -250,7 +250,7 @@ const SignupPage = () => {
                 </button>
               </motion.div>
 
-              <motion.p variants={itemVariants} className="text-center text-xs lg:text-sm text-white font-montserrat pt-2 lg:pt-3 pb-2">
+              <motion.p variants={itemVariants} className="text-center text-xs lg:text-sm text-white font-montserrat pt-1 pb-1">
                 Already have an account?{" "}
                 <Link
                   href="/sign-in"
