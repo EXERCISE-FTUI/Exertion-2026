@@ -29,9 +29,16 @@ export interface TelemetryLogEvent {
   details?: string;
 }
 
+export interface RedisTelemetryStatus {
+  isConfigured: boolean;
+  isConnected: boolean;
+  message: string;
+}
+
 export interface AdminTelemetryResult {
   success: boolean;
   error?: string;
+  redisStatus: RedisTelemetryStatus;
   stats: {
     totalSessions: number;
     activeSessions: number;
@@ -44,6 +51,27 @@ export interface AdminTelemetryResult {
 }
 
 export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
+  // 0. Test Upstash Redis Health
+  const { isRedisConfigured, redis } = await import("@/utils/redis");
+  let redisStatus: RedisTelemetryStatus = {
+    isConfigured: isRedisConfigured,
+    isConnected: false,
+    message: isRedisConfigured
+      ? "Configured, checking connection..."
+      : "UPSTASH_REDIS_REST_URL unconfigured. Running in Direct PostgreSQL DB Fallback Mode.",
+  };
+
+  if (isRedisConfigured && redis) {
+    try {
+      await redis.ping();
+      redisStatus.isConnected = true;
+      redisStatus.message = "Upstash Redis is ONLINE and healthy.";
+    } catch (err: any) {
+      redisStatus.isConnected = false;
+      redisStatus.message = `Upstash Redis PING failed: ${err?.message || "Connection refused"}. Direct DB Fallback Active.`;
+    }
+  }
+
   try {
     const supabase = await createClient();
 
@@ -66,6 +94,7 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
       return {
         success: false,
         error: sessionsError?.message || "Failed to fetch exam sessions.",
+        redisStatus,
         stats: { totalSessions: 0, activeSessions: 0, completedSessions: 0, totalAnswersLogged: 0, averageScore: 0 },
         sessions: [],
         logs: [],
@@ -238,6 +267,7 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
 
     return {
       success: true,
+      redisStatus,
       stats: {
         totalSessions: rawSessions.length,
         activeSessions: activeSessionsCount,
@@ -253,6 +283,7 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
     return {
       success: false,
       error: err?.message || "Unexpected error retrieving telemetry.",
+      redisStatus,
       stats: { totalSessions: 0, activeSessions: 0, completedSessions: 0, totalAnswersLogged: 0, averageScore: 0 },
       sessions: [],
       logs: [],

@@ -45,19 +45,14 @@ export async function saveAnswer({
       }
     }
 
-    // 3. Save to Supabase RPC if in locked mode or saving the current server question
-    if (
-      EXERMIND_CONFIG.LOCKED_SEQUENCE ||
-      questionId === state.currentQuestionId
-    ) {
-      const { data, error } = await callExamRpc<ExamState>("save_answer", {
-        p_question_id: questionId,
-        p_answer: answer,
-      });
+    // 3. Always save answer to Supabase PostgreSQL DB to guarantee persistence & rehydration on refresh
+    const { data: dbData, error: dbError } = await callExamRpc<ExamState>("save_answer", {
+      p_question_id: questionId,
+      p_answer: answer,
+    });
 
-      if (data && !error) {
-        state = data;
-      }
+    if (dbData && !dbError) {
+      state = dbData;
     }
 
     // 4. Merge Redis drafts into local state answers if Redis is available
