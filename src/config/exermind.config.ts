@@ -2,7 +2,7 @@ export const EXERMIND_CONFIG = {
   /**
    * MAXIMUM_QUESTION_COUNT: Maximum number of questions assigned to an exam session.
    */
-  MAXIMUM_QUESTION_COUNT: 60,
+  MAXIMUM_QUESTION_COUNT: 30,
 
   /**
    * ROUND_TYPE: "PRELIMINARY" | "FINAL" | "TEST"
