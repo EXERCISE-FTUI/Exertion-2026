@@ -45,18 +45,18 @@ export async function saveAnswer({
       }
     }
 
-    // 3. Save to Supabase RPC if in locked mode or saving the current server question
+    // 3. Save to Supabase RPC if in locked sequence or saving current active question
     if (
       EXERMIND_CONFIG.LOCKED_SEQUENCE ||
       questionId === state.currentQuestionId
     ) {
-      const { data, error } = await callExamRpc<ExamState>("save_answer", {
+      const { data: dbData, error: dbError } = await callExamRpc<ExamState>("save_answer", {
         p_question_id: questionId,
         p_answer: answer,
       });
 
-      if (data && !error) {
-        state = data;
+      if (dbData && !dbError && Array.isArray(dbData.questions)) {
+        state = dbData;
       }
     }
 
@@ -66,21 +66,22 @@ export async function saveAnswer({
         const redisKey = `exermind:drafts:${sessionId}`;
         const drafts = await redis.hgetall<Record<string, string>>(redisKey);
         if (drafts) {
+          const currentAnswers = state.answers ?? {};
           state = {
             ...state,
             answers: {
-              ...state.answers,
+              ...currentAnswers,
               ...Object.fromEntries(
                 Object.entries(drafts).map(([qId, val]) => [
                   qId,
                   {
                     answer: val,
-                    completedAt: state.answers[qId]?.completedAt ?? null,
-                    isCorrect: state.answers[qId]?.isCorrect ?? null,
-                    earnedPoints: state.answers[qId]?.earnedPoints ?? 0,
-                    totalPoints: state.answers[qId]?.totalPoints ?? 1,
-                    gamePoints: state.answers[qId]?.gamePoints ?? 0,
-                    multiplier: state.answers[qId]?.multiplier ?? 1,
+                    completedAt: currentAnswers[qId]?.completedAt ?? null,
+                    isCorrect: currentAnswers[qId]?.isCorrect ?? null,
+                    earnedPoints: currentAnswers[qId]?.earnedPoints ?? 0,
+                    totalPoints: currentAnswers[qId]?.totalPoints ?? 1,
+                    gamePoints: currentAnswers[qId]?.gamePoints ?? 0,
+                    multiplier: currentAnswers[qId]?.multiplier ?? 1,
                   },
                 ]),
               ),
