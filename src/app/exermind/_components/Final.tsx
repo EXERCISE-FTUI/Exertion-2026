@@ -747,9 +747,37 @@ export default function Final({
 
                 {/* Kotak Teks Pertanyaan */}
                 <div className="rounded-xl bg-[#041a2f] p-6 shadow-[0_0_25px_5px_rgba(255,255,255,1)] border border-white/10 md:p-8">
-                  <h2 className="font-montserrat text-lg font-semibold leading-relaxed text-white md:text-xl">
-                    {currentQuestionIndex + 1}. {currentQuestion.prompt}
-                  </h2>
+                  <div className="font-montserrat text-lg font-semibold leading-relaxed text-white md:text-xl">
+                    <span className="font-bold text-[#4deeea] mr-2">{currentQuestionIndex + 1}.</span>
+                    {currentQuestion.prompt
+                      .replace(/([^\n])\s*\*\s+/g, "$1\n* ")
+                      .split("\n")
+                      .map((line, idx) => {
+                        const trimmed = line.trim();
+                        if (trimmed.startsWith("* ") || trimmed.startsWith("- ")) {
+                          return (
+                            <div key={idx} className="my-1.5 flex items-start gap-2.5 pl-6 text-[#4deeea]">
+                              <span className="text-[#4deeea] font-bold text-xl leading-none">•</span>
+                              <span className="text-white font-medium">{trimmed.substring(2)}</span>
+                            </div>
+                          );
+                        }
+                        return (
+                          <span key={idx} className="block min-h-[1.2rem] my-1">
+                            {line}
+                          </span>
+                        );
+                      })}
+                  </div>
+                  {(currentQuestion.content?.image_url || currentQuestion.content?.image) && (
+                    <div className="mt-4 flex justify-center">
+                      <img
+                        src={String(currentQuestion.content.image_url || currentQuestion.content.image)}
+                        alt={`Question ${currentQuestionIndex + 1} Diagram`}
+                        className="max-h-80 w-auto rounded-lg border border-cyan-500/40 object-contain shadow-md"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Kotak Pilihan Jawaban */}
