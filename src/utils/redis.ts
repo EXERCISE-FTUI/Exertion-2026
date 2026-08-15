@@ -1,8 +1,12 @@
 import { Redis } from "@upstash/redis";
 import { EXERMIND_CONFIG } from "@/config/exermind.config";
 
-const url = process.env.UPSTASH_REDIS_REST_URL || EXERMIND_CONFIG.REDIS_URL;
-const token = process.env.UPSTASH_REDIS_REST_TOKEN || EXERMIND_CONFIG.REDIS_TOKEN;
+const envUrl = process.env.UPSTASH_REDIS_REST_URL;
+const envToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+// Use process.env if both are set; otherwise use EXERMIND_CONFIG pair atomically
+const url = envUrl && envToken ? envUrl : EXERMIND_CONFIG.UPSTASH_REDIS_REST_URL;
+const token = envUrl && envToken ? envToken : EXERMIND_CONFIG.UPSTASH_REDIS_REST_TOKEN;
 
 export const isRedisConfigured = Boolean(url && token);
 

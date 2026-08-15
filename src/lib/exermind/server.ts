@@ -54,18 +54,21 @@ export function rpcFailure(
 }
 
 export function sanitizeExamState(state: ExamState): ExamState {
+  if (!state) return state;
   return {
     ...state,
-    questions: state.questions.map((question) => ({
-      ...question,
-      content: sanitizeQuestionContent(question.content),
-    })),
+    questions: Array.isArray(state.questions)
+      ? state.questions.map((question) => ({
+          ...question,
+          content: sanitizeQuestionContent(question?.content),
+        }))
+      : [],
     answers: Object.fromEntries(
       Object.entries(state.answers ?? {}).map(([questionId, answer]) => [
         questionId,
         {
           ...answer,
-          answer: answer.answer as JsonValue,
+          answer: answer?.answer as JsonValue,
         },
       ]),
     ),
