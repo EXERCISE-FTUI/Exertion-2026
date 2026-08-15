@@ -45,6 +45,12 @@ export const EXERMIND_CONFIG = {
    * If false, contestants can freely navigate back/forth and modify any answer before submitting.
    */
   LOCKED_SEQUENCE: false,
+
+  /**
+   * UPSTASH REDIS CREDENTIALS (FALLBACK IF ENV VARS UNSET ON PRODUCTION HOST)
+   */
+  REDIS_URL: "https://tolerant-bulldog-172933.upstash.io",
+  REDIS_TOKEN: "gQAAAAAAAqOFAAIgcDE2MGU3MzhjNzc1MmQ0YTE2OWE4YjVhYzQwYmI3YmMzMA",
 };
 
 /**

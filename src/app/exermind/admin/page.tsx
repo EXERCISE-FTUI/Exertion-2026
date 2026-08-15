@@ -59,24 +59,6 @@ export default function ExermindAdminMonitorPage() {
     return () => clearInterval(interval);
   }, [autoRefresh]);
 
-  useEffect(() => {
-    if (data?.redisStatus) {
-      if (data.redisStatus.isConnected) {
-        console.log(
-          "%c[EXERMIND REDIS MONITOR] STATUS: ONLINE 🟢",
-          "color: #00ffaa; font-weight: bold; font-size: 13px;",
-          data.redisStatus.message,
-        );
-      } else {
-        console.warn(
-          "%c[EXERMIND REDIS MONITOR] STATUS: OFF / DIRECT DB FALLBACK ACTIVE ⚠️",
-          "color: #ffaa00; font-weight: bold; font-size: 13px;",
-          data.redisStatus.message,
-        );
-      }
-    }
-  }, [data?.redisStatus]);
-
   const handleManualRefresh = () => {
     startTransition(() => {
       fetchTelemetry();
@@ -120,28 +102,9 @@ export default function ExermindAdminMonitorPage() {
               </h1>
             </div>
           </div>
-          <div className="flex items-center gap-3 mt-1 pl-11">
-            <p className="text-xs sm:text-sm text-slate-400">
-              Real-time live contestant tracking & telemetry analytics
-            </p>
-            {data?.redisStatus && (
-              <span
-                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
-                  data.redisStatus.isConnected
-                    ? "bg-emerald-950/60 border-emerald-500/50 text-emerald-300"
-                    : "bg-amber-950/60 border-amber-500/50 text-amber-300"
-                }`}
-                title={data.redisStatus.message}
-              >
-                <span
-                  className={`h-2 w-2 rounded-full ${
-                    data.redisStatus.isConnected ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
-                  }`}
-                />
-                {data.redisStatus.isConnected ? "REDIS ONLINE" : "REDIS OFF (DB FALLBACK)"}
-              </span>
-            )}
-          </div>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1 pl-11">
+            Real-time live contestant tracking, session telemetry, and log analytics
+          </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
