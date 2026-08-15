@@ -750,6 +750,15 @@ export default function Final({
                   <h2 className="font-montserrat text-lg font-semibold leading-relaxed text-white md:text-xl">
                     {currentQuestionIndex + 1}. {currentQuestion.prompt}
                   </h2>
+                  {(currentQuestion.content?.image_url || currentQuestion.content?.image) && (
+                    <div className="mt-4 flex justify-center">
+                      <img
+                        src={String(currentQuestion.content.image_url || currentQuestion.content.image)}
+                        alt={`Question ${currentQuestionIndex + 1} Diagram`}
+                        className="max-h-80 w-auto rounded-lg border border-cyan-500/40 object-contain shadow-md"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Kotak Pilihan Jawaban */}
