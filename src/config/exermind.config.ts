@@ -8,12 +8,12 @@ export const EXERMIND_CONFIG = {
    * ROUND_TYPE: "PRELIMINARY" | "FINAL" | "TEST"
    * Determines which round's questions are seeded and randomized into an exam session.
    */
-  ROUND_TYPE: "TEST" as "PRELIMINARY" | "FINAL" | "TEST",
+  ROUND_TYPE: "PRELIMINARY" as "PRELIMINARY" | "FINAL" | "TEST",
 
   /**
    * IS_TEST_QUESTION: If true, selects questions tagged with "TEST" round category.
    */
-  IS_TEST_QUESTION: true,
+  IS_TEST_QUESTION: false,
 
   /**
    * EXAM_TOKEN: Passkey token required on the start page to access and attempt the exam.
