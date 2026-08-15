@@ -209,7 +209,11 @@ export default function Final({
       const next = previous.then(async () => {
         setSavingCount((count) => count + 1);
         try {
-          const response = await saveAnswer({ questionId, answer });
+          const response = await saveAnswer({
+            sessionId: examStateRef.current.session?.id,
+            questionId,
+            answer,
+          });
           if (!actionSucceeded(response)) {
             setRunnerMessage(
               getActionMessage(response) || "The answer could not be saved.",
@@ -258,19 +262,25 @@ export default function Final({
   );
 
   const flushPendingAnswers = useCallback(async (): Promise<boolean> => {
+    const promises: Promise<boolean>[] = [];
+
     for (const [questionId, timer] of Object.entries(saveTimersRef.current)) {
       if (!timer) continue;
       clearTimeout(timer);
       saveTimersRef.current[questionId] = undefined;
-      void queueAnswerSave(questionId, answersRef.current[questionId] ?? "");
+      promises.push(
+        queueAnswerSave(questionId, answersRef.current[questionId] ?? ""),
+      );
     }
 
     const pendingSaves = Object.values(saveQueuesRef.current).filter(
       (save): save is Promise<boolean> => Boolean(save),
     );
-    if (pendingSaves.length === 0) return true;
+    promises.push(...pendingSaves);
 
-    const results = await Promise.all(pendingSaves);
+    if (promises.length === 0) return true;
+
+    const results = await Promise.all(promises);
     return results.every(Boolean);
   }, [queueAnswerSave]);
 
@@ -500,7 +510,7 @@ export default function Final({
           if (!completedState) return;
         }
 
-        const response = await submitExam();
+        const response = await submitExam(answersRef.current);
         if (!actionSucceeded(response)) {
           setRunnerMessage(
             getActionMessage(response) || "The exam could not be submitted.",

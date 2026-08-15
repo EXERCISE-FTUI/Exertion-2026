@@ -17,41 +17,27 @@ interface SubmitExamData {
 
 type SubmitExamResult = ActionResult<SubmitExamData> & Partial<ExamResult>;
 
-export async function submitExam(): Promise<SubmitExamResult> {
+export async function submitExam(clientAnswers?: Record<string, string>): Promise<SubmitExamResult> {
   try {
     const stateResponse = await callExamRpc<ExamState>("get_exam_state");
     const sessionId = stateResponse.data?.session?.id;
+    let redisDrafts: Record<string, string> | null = null;
 
-    // 1. Flush any high-speed draft answers from Redis into Supabase before submitting
+    // 1. Fetch any high-speed draft answers from Redis before submitting
     if (sessionId && isRedisConfigured && redis) {
       try {
         const redisKey = `exermind:drafts:${sessionId}`;
-        const drafts = await redis.hgetall<Record<string, string>>(redisKey);
-
-        if (drafts && Object.keys(drafts).length > 0) {
-          const supabase = await createClient();
-
-          for (const [questionId, answer] of Object.entries(drafts)) {
-            if (answer && typeof answer === "string") {
-              await supabase
-                .schema("exermind_exam")
-                .from("session_answers")
-                .upsert(
-                  {
-                    session_id: sessionId,
-                    question_id: questionId,
-                    answer: answer as any,
-                    updated_at: new Date().toISOString(),
-                  },
-                  { onConflict: "session_id, question_id" },
-                );
-            }
-          }
-        }
+        redisDrafts = await redis.hgetall<Record<string, string>>(redisKey);
       } catch (flushErr) {
-        console.error("Failed to flush Redis drafts prior to submission:", flushErr);
+        console.error("Failed to read Redis drafts prior to submission:", flushErr);
       }
     }
+
+    // 2. Merge client answers (browser state) and Redis drafts (Upstash backup)
+    const mergedDrafts: Record<string, string> = {
+      ...(redisDrafts ?? {}),
+      ...(clientAnswers ?? {}),
+    };
 
     const warningResponse = sessionId
       ? await getWarningCount({
@@ -61,20 +47,14 @@ export async function submitExam(): Promise<SubmitExamResult> {
 
     const { data, error } = await callExamRpc<SubmitExamData>("submit_exam", {
       p_warning_count: warningResponse?.warningCount ?? null,
+      p_drafts: mergedDrafts,
     });
 
     if (error || !data) {
       return rpcFailure(error, "Failed to submit the exam.");
     }
 
-    // Clean up Redis draft key upon successful submission
-    if (sessionId && isRedisConfigured && redis) {
-      try {
-        await redis.del(`exermind:drafts:${sessionId}`);
-      } catch (delErr) {
-        console.error("Failed to clean up Redis drafts:", delErr);
-      }
-    }
+    // Note: Redis draft keys are intentionally NOT deleted to serve as a backup log
 
     const normalizedData = {
       ...data,

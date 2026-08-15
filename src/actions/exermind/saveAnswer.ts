@@ -11,12 +11,14 @@ import { isRedisConfigured, redis } from "@/utils/redis";
 import { EXERMIND_CONFIG } from "@/config/exermind.config";
 
 export async function saveAnswer({
+  sessionId: providedSessionId,
   questionId,
   answer,
 }: {
+  sessionId?: string;
   questionId: string;
   answer: string;
-}): Promise<ActionResult<ExamState>> {
+}): Promise<ActionResult<ExamState | null>> {
   if (!questionId || typeof answer !== "string") {
     return invalidInput(
       "EXERMIND_INVALID_INPUT",
@@ -25,16 +27,19 @@ export async function saveAnswer({
   }
 
   try {
-    // 1. Get active session state to obtain session ID and current question
-    const stateRes = await callExamRpc<ExamState>("get_exam_state");
-    if (stateRes.error || !stateRes.data) {
-      return rpcFailure(stateRes.error, "Failed to locate active session.");
+    let sessionId = providedSessionId;
+    let state: ExamState | null = null;
+
+    if (!sessionId) {
+      const stateRes = await callExamRpc<ExamState>("get_exam_state");
+      if (stateRes.error || !stateRes.data) {
+        return rpcFailure(stateRes.error, "Failed to locate active session.");
+      }
+      state = stateRes.data;
+      sessionId = state.session.id;
     }
 
-    let state = stateRes.data;
-    const sessionId = state.session.id;
-
-    // 2. High-speed Redis draft answer saving
+    // 2. High-speed Redis draft answer saving (sub-10ms)
     if (isRedisConfigured && redis && sessionId) {
       try {
         const redisKey = `exermind:drafts:${sessionId}`;
@@ -45,11 +50,8 @@ export async function saveAnswer({
       }
     }
 
-    // 3. Save to Supabase RPC if in locked sequence or saving current active question
-    if (
-      EXERMIND_CONFIG.LOCKED_SEQUENCE ||
-      questionId === state.currentQuestionId
-    ) {
+    // 3. Save to Supabase RPC ONLY if in locked sequence mode
+    if (EXERMIND_CONFIG.LOCKED_SEQUENCE) {
       const { data: dbData, error: dbError } = await callExamRpc<ExamState>("save_answer", {
         p_question_id: questionId,
         p_answer: answer,
@@ -60,8 +62,8 @@ export async function saveAnswer({
       }
     }
 
-    // 4. Merge Redis drafts into local state answers if Redis is available
-    if (isRedisConfigured && redis && sessionId) {
+    // 4. Merge Redis drafts into local state answers if Redis is available and state exists
+    if (state && isRedisConfigured && redis && sessionId) {
       try {
         const redisKey = `exermind:drafts:${sessionId}`;
         const drafts = await redis.hgetall<Record<string, string>>(redisKey);
@@ -95,7 +97,7 @@ export async function saveAnswer({
 
     return {
       success: true,
-      data: sanitizeExamState(state),
+      data: state ? sanitizeExamState(state) : null,
     };
   } catch (error) {
     return rpcFailure(error, "Failed to save the answer.");
