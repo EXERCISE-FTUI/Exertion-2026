@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { incrementWarningCount } from "@/actions/exermind/warningCount";
+import { isRedisConfigured, redis } from "@/utils/redis";
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +14,26 @@ export async function POST(request: Request) {
       const warningRes = await incrementWarningCount({ sessionId: session_id });
       if (warningRes.success && warningRes.warningCount) {
         currentWarningCount = warningRes.warningCount;
+      }
+    }
+
+    // Save real-time telemetry log entry to Upstash Redis
+    if (isRedisConfigured && redis && session_id && event_type) {
+      try {
+        const logEntry = {
+          id: `tel-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          session_id,
+          event_type,
+          timestamp: new Date(timestamp || Date.now()).toISOString(),
+          warning_count: currentWarningCount,
+          metadata: metadata || {},
+        };
+
+        const redisKey = "exermind:telemetry:logs";
+        await redis.lpush(redisKey, JSON.stringify(logEntry));
+        await redis.ltrim(redisKey, 0, 499); // Keep latest 500 telemetry events
+      } catch (redisErr) {
+        console.error("Failed to write telemetry log to Redis:", redisErr);
       }
     }
 

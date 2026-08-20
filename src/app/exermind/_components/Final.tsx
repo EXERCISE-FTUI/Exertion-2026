@@ -9,6 +9,7 @@ import { getExamState } from "@/actions/exermind/getExamState";
 import { saveAnswer } from "@/actions/exermind/saveAnswer";
 import { submitExam } from "@/actions/exermind/submitExam";
 import { getWarningCount } from "@/actions/exermind/warningCount";
+import { resolveFreeze } from "@/actions/exermind/resolveFreeze";
 import { EXERMIND_CONFIG } from "@/config/exermind.config";
 import InputEsai from "./InputEsai";
 import PowerupModal, { type PowerUpActivationFeedback } from "./PowerupModal";
@@ -364,6 +365,18 @@ export default function Final({
 
         if (!EXERMIND_CONFIG.LOCKED_SEQUENCE) {
           await flushPendingAnswers();
+
+          // Resolve active TIME_FREEZE when navigating away from the frozen question
+          const activeFreeze = nextState.powerUps.find(
+            (p) => p.type === "TIME_FREEZE" && p.used && p.questionId === currentQuestion.id,
+          );
+          if (nextState.session?.isTimeFrozen && activeFreeze) {
+            const resolveRes = await resolveFreeze({ questionId: currentQuestion.id });
+            if (resolveRes.success && resolveRes.data) {
+              applyAuthoritativeState(resolveRes.data);
+            }
+          }
+
           setCurrentQuestionIndex(boundedTarget);
           return;
         }
@@ -421,7 +434,10 @@ export default function Final({
         };
       }
 
-      if (state.currentQuestionId !== currentQuestion.id) {
+      if (
+        EXERMIND_CONFIG.LOCKED_SEQUENCE &&
+        state.currentQuestionId !== currentQuestion.id
+      ) {
         return {
           success: false,
           message:

@@ -38,7 +38,7 @@ export const EXERMIND_CONFIG = {
   /* 
   * SKILLS_ACTIVE: Toggle whether skills / power-ups are enabled in the exam.
   */
-  SKILLS_ACTIVE: false,
+  SKILLS_ACTIVE: true,
 
   /**
    * LOCKED_SEQUENCE: If true, questions must be answered sequentially and get locked upon pressing next.

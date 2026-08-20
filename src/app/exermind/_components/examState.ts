@@ -25,6 +25,8 @@ export interface ExamSessionView {
   expiresAt: string;
   submittedAt?: string;
   warningCount: number;
+  isTimeFrozen?: boolean;
+  freezeStartedAt?: string;
 }
 
 export interface ExamAnswerDetailView {
@@ -134,6 +136,8 @@ export const normalizeExamState = (value: unknown): ExamStateView | null => {
       expiresAt: state.session.expiresAt,
       submittedAt: state.session.submittedAt ?? undefined,
       warningCount: 0,
+      isTimeFrozen: Boolean(state.session.isTimeFrozen),
+      freezeStartedAt: state.session.freezeStartedAt ?? undefined,
     },
     questions: state.questions,
     answers,

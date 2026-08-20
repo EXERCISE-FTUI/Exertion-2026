@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { isRedisConfigured, redis } from "@/utils/redis";
 
 export interface TelemetrySessionItem {
   sessionId: string;
@@ -13,6 +14,7 @@ export interface TelemetrySessionItem {
   submittedAt: string | null;
   totalQuestions: number;
   answeredCount: number;
+  warningCount: number;
   powerUps: string[];
   score: number | null;
   gameScore: number | null;
@@ -154,6 +156,36 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
       });
     });
 
+    // 5.5 Fetch Live Redis Drafts & Warnings for Active Sessions
+    const redisAnswerCounts = new Map<string, number>();
+    const redisWarningCounts = new Map<string, number>();
+    const redisClient = redis;
+
+    if (isRedisConfigured && redisClient && sessionIds.length > 0) {
+      try {
+        await Promise.all(
+          sessionIds.map(async (sid) => {
+            try {
+              const drafts = await redisClient.hgetall<Record<string, string>>(`exermind:drafts:${sid}`);
+              if (drafts) {
+                const validCount = Object.values(drafts).filter(
+                  (v) => v !== null && v !== undefined && v !== "" && v !== "null"
+                ).length;
+                redisAnswerCounts.set(sid, validCount);
+              }
+
+              const warnings = await redisClient.get<number>(`exermind:warnings:${sid}`);
+              if (warnings !== null && warnings !== undefined) {
+                redisWarningCounts.set(sid, Number(warnings));
+              }
+            } catch (_) {}
+          })
+        );
+      } catch (redisErr) {
+        console.error("Error fetching Redis live session metrics:", redisErr);
+      }
+    }
+
     // 6. Build Session Items & Logs
     const sessions: TelemetrySessionItem[] = [];
     const logs: TelemetryLogEvent[] = [];
@@ -167,7 +199,12 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
       const teamName = teamInfo?.name || `Team (${s.team_id.slice(0, 8)})`;
       const leaderName = teamInfo?.leaderId ? (leaderNameMap.get(teamInfo.leaderId) || "Contestant") : "Contestant";
       const totalQuestions = Array.isArray(s.question_order) ? s.question_order.length : 60;
-      const answeredCount = answerCounts.get(s.id) || 0;
+      
+      const dbAnswered = answerCounts.get(s.id) || 0;
+      const redisAnswered = redisAnswerCounts.get(s.id) || 0;
+      const answeredCount = Math.max(dbAnswered, redisAnswered);
+      const warningCount = redisWarningCounts.get(s.id) || 0;
+      
       const powerUps = powerupsMap.get(s.id) || [];
       const sub = submissionMap.get(s.id);
 
@@ -191,6 +228,7 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
         submittedAt: sub?.submittedAt || null,
         totalQuestions,
         answeredCount,
+        warningCount,
         powerUps,
         score: sub?.score ?? null,
         gameScore: sub?.gameScore ?? null,
@@ -232,6 +270,40 @@ export async function getAdminTelemetry(): Promise<AdminTelemetryResult> {
         });
       }
     });
+
+    // Fetch live anticheat telemetry logs from Upstash Redis
+    if (isRedisConfigured && redisClient) {
+      try {
+        const sessionToTeamMap = new Map<string, string>();
+        rawSessions.forEach((s) => {
+          const tInfo = teamMap.get(s.team_id);
+          sessionToTeamMap.set(s.id, tInfo?.name || `Team (${s.team_id.slice(0, 8)})`);
+        });
+
+        const rawLogs = await redisClient.lrange<string>("exermind:telemetry:logs", 0, 199);
+        if (Array.isArray(rawLogs)) {
+          rawLogs.forEach((item) => {
+            try {
+              const parsed = typeof item === "string" ? JSON.parse(item) : item;
+              if (parsed && parsed.event_type) {
+                const teamName = sessionToTeamMap.get(parsed.session_id) || `Session (${String(parsed.session_id || "").slice(0, 8)})`;
+
+                logs.push({
+                  id: parsed.id || `tel-${Math.random()}`,
+                  timestamp: parsed.timestamp || new Date().toISOString(),
+                  teamName,
+                  eventType: parsed.event_type as TelemetryLogEvent["eventType"],
+                  message: `Anticheat event: ${parsed.event_type}`,
+                  details: `Warnings: ${parsed.warning_count ?? 0} | Meta: ${JSON.stringify(parsed.metadata || {})}`,
+                });
+              }
+            } catch (_) {}
+          });
+        }
+      } catch (redisErr) {
+        console.error("Failed to fetch Redis telemetry logs:", redisErr);
+      }
+    }
 
     // Sort logs descending by timestamp
     logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());

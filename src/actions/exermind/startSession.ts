@@ -37,6 +37,7 @@ export async function startSession({
   try {
     const { data, error } = await callExamRpc<ExamState>("start_session", {
       p_power_ups: selection,
+      p_limit: EXERMIND_CONFIG.MAXIMUM_QUESTION_COUNT,
     });
 
     if (error || !data) {
