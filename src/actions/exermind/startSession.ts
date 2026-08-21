@@ -39,6 +39,7 @@ export async function startSession({
       p_power_ups: selection,
       p_limit: EXERMIND_CONFIG.MAXIMUM_QUESTION_COUNT,
       p_round: getActiveRound(),
+      p_essay_limit: EXERMIND_CONFIG.MAXIMUM_ESSAY_QUESTION_COUNT,
     });
 
     if (error || !data) {
