@@ -13,7 +13,7 @@ import {
   sanitizeExamState,
 } from "@/lib/exermind/server";
 
-import { EXERMIND_CONFIG } from "@/config/exermind.config";
+import { EXERMIND_CONFIG, getActiveRound } from "@/config/exermind.config";
 
 type StartSessionResult = ActionResult<ExamState> & {
   isExisting?: boolean;
@@ -38,6 +38,7 @@ export async function startSession({
     const { data, error } = await callExamRpc<ExamState>("start_session", {
       p_power_ups: selection,
       p_limit: EXERMIND_CONFIG.MAXIMUM_QUESTION_COUNT,
+      p_round: getActiveRound(),
     });
 
     if (error || !data) {
