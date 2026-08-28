@@ -135,7 +135,9 @@ export default function PowerupModal({
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {powerUps.map((powerUp, index) => {
+            {powerUps
+              .filter((powerUp) => powerUp.type !== "DOUBLE_POINTS")
+              .map((powerUp, index) => {
               const { label, Icon } = POWER_UP_META[powerUp.type];
               const isActivating = activatingId === powerUp.id;
               const isDuplicateFreeze =

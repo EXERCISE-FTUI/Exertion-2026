@@ -13,7 +13,7 @@ export const EXERMIND_CONFIG = {
    * ROUND_TYPE: "PRELIMINARY" | "FINAL" | "TEST"
    * Determines which round's questions are seeded and randomized into an exam session.
    */
-  ROUND_TYPE: "PRELIMINARY" as "PRELIMINARY" | "FINAL" | "TEST",
+  ROUND_TYPE: "FINAL" as "PRELIMINARY" | "FINAL" | "TEST",
 
   /**
    * IS_TEST_QUESTION: If true, selects questions tagged with "TEST" round category.
@@ -43,7 +43,7 @@ export const EXERMIND_CONFIG = {
   /* 
   * SKILLS_ACTIVE: Toggle whether skills / power-ups are enabled in the exam.
   */
-  SKILLS_ACTIVE: false,
+  SKILLS_ACTIVE: true,
 
   /**
    * LOCKED_SEQUENCE: If true, questions must be answered sequentially and get locked upon pressing next.
