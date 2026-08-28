@@ -23,7 +23,7 @@ export const EXERMIND_CONFIG = {
   /**
    * EXAM_TOKEN: Passkey token required on the start page to access and attempt the exam.
    */
-  EXAM_TOKEN: "EXERMIND2026",
+  EXAM_TOKEN: "PENYISIHAN7",
 
   /**
    * MAX_WARNING_COUNT: Maximum allowable warning count (anti-cheat placeholder).
