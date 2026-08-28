@@ -7,7 +7,7 @@ export const EXERMIND_CONFIG = {
   /**
    * MAXIMUM_ESSAY_QUESTION_COUNT: Maximum number of essay questions allowed per exam session.
    */
-  MAXIMUM_ESSAY_QUESTION_COUNT: 5,
+  MAXIMUM_ESSAY_QUESTION_COUNT: 10,
 
   /**
    * ROUND_TYPE: "PRELIMINARY" | "FINAL" | "TEST"
