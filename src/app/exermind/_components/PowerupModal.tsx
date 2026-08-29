@@ -155,6 +155,12 @@ export default function PowerupModal({
                 activeMultiplier,
               });
 
+              const isQuestionPowerUpLimitReached =
+                !powerUp.used &&
+                powerUps.some(
+                  (p) => p.used && p.questionId === currentQuestionId,
+                );
+
               return (
                 <button
                   key={powerUp.id}
@@ -164,6 +170,7 @@ export default function PowerupModal({
                     disabled ||
                     isDuplicateFreeze ||
                     isDuplicateDoublePoints ||
+                    isQuestionPowerUpLimitReached ||
                     (powerUp.used && !canReviewHint) ||
                     Boolean(activatingId)
                   }
@@ -173,11 +180,13 @@ export default function PowerupModal({
                       ? canReviewHint
                         ? ", show hint again"
                         : ", used"
-                      : isDuplicateFreeze
-                        ? ", unavailable while time is frozen"
-                        : isDuplicateDoublePoints
-                          ? ", unavailable while Double Points is active"
-                          : ""
+                      : isQuestionPowerUpLimitReached
+                        ? ", only one power-up allowed per question"
+                        : isDuplicateFreeze
+                          ? ", unavailable while time is frozen"
+                          : isDuplicateDoublePoints
+                            ? ", unavailable while Double Points is active"
+                            : ""
                   }`}
                 >
                   <Icon

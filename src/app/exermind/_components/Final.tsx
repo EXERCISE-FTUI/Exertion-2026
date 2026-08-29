@@ -161,10 +161,16 @@ export default function Final({
     const nextState = normalizeExamState(response);
     if (!nextState?.session) return null;
 
+    const mergedAnswers = {
+      ...answersRef.current,
+      ...nextState.answers,
+    };
+
+    nextState.answers = mergedAnswers;
     examStateRef.current = nextState;
-    answersRef.current = nextState.answers;
+    answersRef.current = mergedAnswers;
     setExamState(nextState);
-    setAnswers(nextState.answers);
+    setAnswers(mergedAnswers);
     return nextState;
   }, []);
 
@@ -658,7 +664,9 @@ export default function Final({
     [currentQuestion],
   );
   const isEssayQuestion =
-    currentQuestion?.type?.toUpperCase() === "ESSAY";
+    ["ESSAY", "ESAI", "ISIAN"].includes(
+      currentQuestion?.type?.toUpperCase() || "",
+    );
   const answeredCount = Object.values(answers).filter((answer) =>
     answer.trim(),
   ).length;
