@@ -161,10 +161,12 @@ export default function Final({
     const nextState = normalizeExamState(response);
     if (!nextState?.session) return null;
 
-    const mergedAnswers = {
-      ...answersRef.current,
-      ...nextState.answers,
-    };
+    const mergedAnswers: Record<string, string> = { ...answersRef.current };
+    for (const [qId, ans] of Object.entries(nextState.answers)) {
+      if (ans && ans.trim() !== "") {
+        mergedAnswers[qId] = ans;
+      }
+    }
 
     nextState.answers = mergedAnswers;
     examStateRef.current = nextState;

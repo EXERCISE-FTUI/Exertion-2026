@@ -170,12 +170,6 @@ export default function ChoosePower({
               onClick={() => handleChoosingItem("HINT")}
               disabled={disabled}
             />
-
-            <PowerUpOptionsBtn
-              index={2}
-              onClick={() => handleChoosingItem("DOUBLE_POINTS")}
-              disabled={disabled}
-            />
           </div>
 
           <div className="flex flex-row items-center">

@@ -155,6 +155,11 @@ export default function PowerupModal({
                 activeMultiplier,
               });
 
+              const isUsedOnThisQuestion =
+                powerUp.used && powerUp.questionId === currentQuestionId;
+              const isUsedOnOtherQuestion =
+                powerUp.used && powerUp.questionId !== currentQuestionId;
+
               const isQuestionPowerUpLimitReached =
                 !powerUp.used &&
                 powerUps.some(
@@ -174,28 +179,50 @@ export default function PowerupModal({
                     (powerUp.used && !canReviewHint) ||
                     Boolean(activatingId)
                   }
-                  className="group flex min-w-28 items-center gap-2 rounded-lg border border-[#7287b7] bg-[#283553] px-3 py-2 text-left text-white transition hover:border-[#88D6FA] hover:bg-[#314163] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#88D6FA] disabled:cursor-not-allowed disabled:opacity-40"
+                  className={`group flex min-w-32 items-center gap-2.5 rounded-lg border px-3.5 py-2 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed ${
+                    isUsedOnThisQuestion
+                      ? "border-emerald-400/80 bg-emerald-950/60 text-emerald-200 shadow-[0_0_12px_rgba(52,211,153,0.3)] hover:bg-emerald-900/60"
+                      : isUsedOnOtherQuestion
+                        ? "border-slate-700/60 bg-slate-900/50 text-slate-500 opacity-40"
+                        : "border-[#7287b7] bg-[#283553] text-white hover:border-[#88D6FA] hover:bg-[#314163]"
+                  }`}
                   aria-label={`Power-up slot ${index + 1}: ${label}${
-                    powerUp.used
-                      ? canReviewHint
-                        ? ", show hint again"
-                        : ", used"
-                      : isQuestionPowerUpLimitReached
-                        ? ", only one power-up allowed per question"
-                        : isDuplicateFreeze
-                          ? ", unavailable while time is frozen"
-                          : isDuplicateDoublePoints
-                            ? ", unavailable while Double Points is active"
+                    isUsedOnThisQuestion
+                      ? ", active on this question"
+                      : isUsedOnOtherQuestion
+                        ? ", used on another question"
+                        : isQuestionPowerUpLimitReached
+                          ? ", only one power-up allowed per question"
+                          : isDuplicateFreeze
+                            ? ", unavailable while time is frozen"
                             : ""
                   }`}
                 >
                   <Icon
-                    className="h-5 w-5 shrink-0 text-[#88D6FA]"
+                    className={`h-5 w-5 shrink-0 ${
+                      isUsedOnThisQuestion
+                        ? "text-emerald-400"
+                        : isUsedOnOtherQuestion
+                          ? "text-slate-600"
+                          : "text-[#88D6FA]"
+                    }`}
                     aria-hidden="true"
                   />
-                  <span className="font-orbitron text-[10px] font-semibold">
-                    {isActivating ? "Activating..." : label}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-orbitron text-[10px] font-semibold">
+                      {isActivating ? "Activating..." : label}
+                    </span>
+                    {isUsedOnThisQuestion && (
+                      <span className="text-[9px] font-bold text-emerald-300/90 uppercase tracking-wider">
+                        Used Here
+                      </span>
+                    )}
+                    {isUsedOnOtherQuestion && (
+                      <span className="text-[9px] text-slate-500 uppercase tracking-wider">
+                        Used
+                      </span>
+                    )}
+                  </div>
                 </button>
               );
             })}
